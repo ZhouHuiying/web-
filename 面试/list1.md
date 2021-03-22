@@ -37,7 +37,7 @@
   html5html5 新增元素
 
 ### 网络
-  常用的 headerheader
+  常用的 header
   304304 状态码的过程
   httphttp 和 httpshttps 的区别，以及 httpshttps 建立链接的过程
   跨域的解决方案有哪几种？说一下 jsonpjsonp 的工作原理
