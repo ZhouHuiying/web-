@@ -1,0 +1,84 @@
+TypeScript:
+    是一种面向对象的编程语言。
+    对象，类，方法
+
+基础类型：
+    any, number, string, boolean, 数组, 元组, enum, void, null, undefined, never
+
+变量声明：
+    var uname:string = "abc";
+    var uname:string;
+    var uname = "abc";
+    var uname;
+
+类型断言
+类型推断
+
+变量作用域：全局作用域，类作用域，局部作用域
+运算符：算术，逻辑，关系，按位，赋值，三元/条件、字符串、类型
+条件语句：if if-else if-else-if-else switch-case
+循环：for 
+      for in : for(var val in list)、
+      for of
+      forEach
+      every
+      some
+      while
+      do while
+      break
+      continue
+函数：function function_name(){}   返回值 带参数函数
+      可选参数：用问号标识
+      默认参数
+      剩余参数 ...name
+      匿名函数：var res = function( [arguments] ) { ... }
+      构造函数：var myFunction = new Function("a", "b", "return a * b"); 
+      递归函数：
+      函数重载：重载是方法名字相同，而参数不同，返回类型可以相同也可以不同。
+
+TypeScript Number：
+    Number对象：
+        toExponential() toFixed() toLocaleString() toPrecision() 	toString() 	valueOf()
+
+TypeScript String：
+    方法：
+    	charAt()：返回在指定位置的字符。
+        charCodeAt()：返回在指定的位置的字符的 Unicode 编码。
+        concat()：连接两个或更多字符串，并返回新的字符串。
+        indexOf()：返回某个指定的字符串值在字符串中首次出现的位置。
+        lastIndexOf()：从后向前搜索字符串，并从起始位置（0）开始计算返回字符串最后出现的位置。
+        localeCompare()：用本地特定的顺序来比较两个字符串。
+        match() 	replace() 	search() slice() 	split() substr() 	substring() toLocaleLowerCase() 	toLocaleUpperCase()toLowerCase() toString() toUpperCase() 	valueOf()
+
+TypeScript Array(数组):
+
+TypeScript 元组:
+    我们知道数组中元素的数据类型都一般是相同的（any[] 类型的数组可以不同），如果存储的元素数据类型不同，则需要使用元组。
+
+TypeScript 联合类型:
+    联合类型（Union Types）可以通过管道(|)将变量设置多种类型，赋值时可以根据设置的类型来赋值。
+    var val:string|number 
+    val = 12 
+    console.log("数字为 "+ val) 
+    val = "Runoob" 
+    console.log("字符串为 " + val)
+
+TypeScript 接口
+
+TypeScript 类  
+    class class_name { // 类作用域 }
+    static 关键字用于定义类的数据成员（属性和方法）为静态的，静态成员可以直接通过类名调用。
+    访问控制符:
+        TypeScript 中，可以使用访问控制符来保护对类、变量、方法和构造方法的访问。TypeScript 支持 3 种不同的访问权限。
+            public（默认） : 公有，可以在任何地方被访问。
+            protected : 受保护，可以被其自身以及其子类和父类访问。
+            private : 私有，只能被其定义所在的类访问。
+
+TypeScript 对象
+
+TypeScript 命名空间: 命名空间一个最明确的目的就是解决重名问题。
+
+TypeScript 模块:
+    模块导出使用关键字 export 关键字
+
+TypeScript 声明文件

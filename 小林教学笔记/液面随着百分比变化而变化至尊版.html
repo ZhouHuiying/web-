@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div class="container">
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+        <canvas class="canvas" width="200" height="200"></canvas>
+    </div>
+    
+</body>
+</html>
+<script>
+    let canvas = document.getElementsByClassName('canvas');
+    const dataList = [
+        {name: 'OEE', progress: 0},
+        {name: 'AE', progress: 10},
+        {name: 'PE', progress: 30},
+        {name: 'QE', progress: 50},
+        {name: 'QE', progress: 60},
+        {name: 'QE', progress: 70},
+        {name: 'QE', progress: 90},
+        {name: 'QE', progress: 100},
+    ]
+    for (let i = 0; i < canvas.length; i++) {
+        let ctx = canvas[i].getContext('2d');
+        draw(ctx, 100, 100, 50, dataList[i].name, dataList[i].progress);
+    }
+    // x, y是圆坐标，ｒ为圆半径, name为模块名称，progress为百分比
+    function draw(ctx, x, y, r, name, progress) {
+        // 画最外面的圆
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.strokeStyle="#42A7FF";
+        ctx.stroke();
+        // 画波浪区域
+        ctx.beginPath();
+
+        // 根据progress百分比调整液面高度
+        let startDeg, endDeg, deg, startX, endX, Y;
+        if (progress <= 50) {
+            deg = Math.asin((50 - progress) / 50);
+            startDeg = deg;
+            endDeg = Math.PI - deg;
+            startX = x - r * Math.cos(deg);
+            endX = x + r * Math.cos(deg);
+            Y = y + r * Math.sin(deg);
+        } else {
+            deg = Math.asin((progress - 50) / 50);
+            startDeg = -deg;
+            endDeg = Math.PI + deg;
+            startX = x - r * Math.cos(deg);
+            endX = x + r * Math.cos(deg);
+            Y = y - r * Math.sin(deg);
+        }
+        if (deg != Math.PI / 2) {
+            ctx.moveTo(startX + 2, Y);
+            ctx.bezierCurveTo((x + startX) / 2, Y - 20 * Math.cos(deg), (x + endX) / 2,  Y + 20 * Math.cos(deg), endX - 2, Y);
+        }
+        ctx.arc(x, y, r - 2, startDeg, endDeg);
+        ctx.fillStyle = "#42A7FF";
+        ctx.fill();
+        ctx.stroke();
+        // 主题名字
+        ctx.textAlign = 'center';
+        ctx.beginPath();
+        ctx.fillStyle = "#D9B692";
+        ctx.fillText(name, x, y - r / 1.5);
+        // 显示百分比
+        ctx.beginPath();
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillStyle = "black";
+        ctx.fillText(`${progress}%`, x, y - r / 2.6);
+    }
+    
+</script>

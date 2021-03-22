@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 闭包example
+
+    function hd(){
+      let n=1;
+      return function sum(){
+        console.log(++n)
+      };
+    }
+    let a=hd();   //重新开辟出一块空间来保存得到的值，下次调用的时候在这个基础上累加
+    a(); //输出2 
+    a(); //输出3
+    let b=hd();  //重新开辟空间
+    b(); //输出1
+
+// -------------
+    function hd(){
+      let n=1;
+      return function sum(){
+        let m=1;
+        return function show(){  //开辟内存空间保留m 外面的值n也被保留了
+          console.log(++m)
+        }
+      };
+    }
+    let a=hd()();   
+    a();  //m 2
+    a();  //m 3
+
+//-------------构造函数中作用域的使用形态
+    function hd(){
+      let n=1;
+      this.sum = function(){
+        console.log(++n)
+      }
+    }
+    let a = new hd();  //a下面有一个属性sum,sum会被保留，和sum同级作用域的n的值也会被保留
+    a.sum();
+    a.sum();
+
+//块级作用域
+    {
+      let a= 1; //在外面不能使用a let/const 用var声明的变量在全局作用域里
+    }
+
+//let const var 在for循环中执行原理
+    for(var i=1;i<=3;i++){
+      console.log(i)   //定义到全局，可以打印window.i var没有块级作用域
+    }
+
+    for(let i=1;i<=3;i++){
+      console.log(i)   //定义到块里面，不可以打印window.i 因为在外面访问不到
+    }
+//多级作用域嵌套详解
+//(1)
+    let arr=[];
+    for(let i=1;i<=3;i++){
+      arr.push(
+        function(){
+          return i;
+        }
+      )
+      console.log(i) //打印出1 2 3
+    }
+
+    let arr=[];
+    for(var i=1;i<=3;i++){ //打印出3 3 3
+      arr.push(
+        function(){
+          return i;
+        }
+      )
+      console.log(i) 
+    }
+
+    let arr=[];
+    for(var i=1;i<=3;i++){ //打印出1 2 3   环境和作用域问题
+      (function(i){
+        arr.push(
+        function(){
+          return i;
+        }
+      )
+      })
+      console.log(i) 
+    }
+    
+    //闭包：子函数可以访问到其他函数作用域里的数据
+    
+    //使用闭包获取区间商品
+    let arr = [1,2,3,4,5,6,7,8,9,10,11];
+    let hd = arr.filter(function(v){
+      return v>=2 && v<=9;
+    })
+    console.log(hd)
+    // --
+    function between(a,b){
+      return function(v){
+        return v>=a && v<=b;
+      }
+    }
+    console.log(arr.filter(between(2,9))) //filter函数接收的参数是一个函数，因此将between传给他，返回的是
+                                          //里面return的函数，该函数可以获取到传递过去的a和b的值。
+    
+
+    // ----
+    var num=123;
+  function fc1(){
+    var num=456
+    return num++
+  }
+  console.log(fc1()) //456
+  console.log(num)  //123
+  </script>
+</body>
+</html>

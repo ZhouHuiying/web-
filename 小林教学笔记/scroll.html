@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, .scroll-box {
+            height: 100%;
+            width: 100%;
+        }
+        .scroll-box {
+            overflow-y: auto;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="scroll-box">
+        <div class="content" style="height: 2000px;"></div>
+    </div>
+</body>
+<script>
+
+let client = document.getElementsByClassName('scroll-box')[0];
+let clientHight = client.clientHeight;
+function flash() {
+    let contentHight = document.getElementsByClassName('content')[0].clientHeight;
+    let scrollTop = document.getElementsByClassName('scroll-box')[0].scrollTop;
+    console.log("容器大小:" + clientHight + ',滚动距离:' + scrollTop + ',总长度：' + contentHight);
+    if (scrollTop + clientHight + 200 >= contentHight) {
+        console.log('到底了');
+        //　TODO 在此调用接口加载新数据
+    }
+}
+
+client.addEventListener('scroll', flash);
+</script>
+</html>

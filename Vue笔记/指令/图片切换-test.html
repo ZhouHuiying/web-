@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+#mask{
+    background-color: rosybrown;
+    width: 300px;
+    height: 300px;
+}
+.img1{
+    width: 20px;
+    height: 20px;
+    margin-top: 100px;
+}
+.img2{
+    width: 20px;
+    height: 20px;
+    margin-left: 280px;
+}
+.image{
+    width: 100px;
+    height: 100px;
+    background-color: saddlebrown;
+}
+</style>
+
+<body>  
+    <div id="mask">
+        <img src="../images/prev.jpg" alt="" class="img1">
+        <img src="../images/next.jpg" alt="" class="img2">
+        <div class="image">111</div>
+    </div>
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+    var app = new Vue({
+        el: '#mask',  
+        data: {
+            imgArr:[
+                "../images/f1.jpg",
+                "../images/f2.jpg",
+                "../images/f3.jpg",
+                "../images/f4.jpg"
+            ],
+            index:0
+        },
+        methods:{
+            prev: function(){
+                this.index--;
+            },
+            next: function(){
+                this.index++;
+            }
+        }
+        })  
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+const statusMap = {
+    mdc_offline: {
+        arrName: 'name1',
+        color: '#ff494',
+        tag: 'danger',
+    },
+    offline: {
+        arrName: 'name1',
+        color: '#ff494',
+        tag: 'danger',
+    },
+    close: {
+        arrName: 'name1',
+        color: '#ff494',
+        tag: 'danger',
+    },
+    idle: {
+        arrName: 'name1',
+        color: '#ff494',
+        tag: 'danger',
+    },
+}
+
+for (let key in statusMap) {
+    console.log(statusMap[key].arrName);
+    console.log(statusMap[key].color);
+    console.log(statusMap[key].tag);
+}
+</script>
+</html>

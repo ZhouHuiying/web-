@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    * {
+        margin: 0;
+    }
+    .container {
+        height: 220px;
+        padding:0 20px;
+        overflow-y: auto;
+        background: #f1f1f1;
+    }
+    .wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100%;
+        flex-wrap: nowrap;
+    }
+    ::-webkit-scrollbar{
+        width: 5px;
+        height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+        width: 5px;
+        border-radius: 5px;
+        background-color: skyblue;
+    }
+    .card {
+        flex-shrink: 0;
+        width: 400px;
+        height: 180px;
+        margin-right:20px; 
+        border-radius: 5px;
+        background-color: #fff;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+        </div>
+        
+    </div>
+</body>
+</html>

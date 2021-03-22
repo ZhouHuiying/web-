@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <style>
+    button{
+      position: absolute;
+    }
+  </style>
+  <button message="houdunren">houdunren</button>
+  <button message="hdcms">hdcms</button>
+</body>
+<script>
+ 
+  let btns = document.querySelectorAll('button');
+  btns.forEach(function(item){
+    let left = 1;
+    let interval =false;
+    item.addEventListener('click',function(){
+      if(!interval){
+        setInterval(function(){
+        item.style.left = left++ + "px";
+  },5)
+      }
+      
+    })
+  })
+  
+</script>
+</html>

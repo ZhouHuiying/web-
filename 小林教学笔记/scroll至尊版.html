@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        /* 头部样式 */
+        .tabs {
+            position: relative;
+            display: flex;
+            height: 50px;
+        }
+
+        /* 伪类样式处理安卓无法显示.5px大小的边框线 */
+        .tabs::after {
+            position: absolute;
+            box-sizing: border-box;
+            content: ' ';
+            right: 0;bottom: 0;left: 0;
+            border-bottom: 1px solid #ebedf0;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+        .tab {
+            width: 50%;
+            text-align: center;
+            line-height: 50px;
+        }
+        .search-wrapper {
+            height: 40px;
+        }
+        input {
+            height: 40px;
+            background:none;  
+            outline:none;  
+            border:none;
+        }
+        /* 滚动区域 */
+        .scroll-box {
+            /* 为了实现头部底部不动，只有滚动区域滚动，所以滚动区域的高度为
+            最外层div.height(这个例子是body) - tabs.height - search-wrapper.height - tabbar.height
+            */
+            height: calc(100% - 140px);
+            overflow-y: auto;
+            background-color: blue;
+        }
+        /* 底部工具栏样式 */
+        .tabbar {
+            position: relative;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 50px;
+            text-align: center
+        }
+        /* 伪类样式处理安卓无法显示.5px大小的边框线 */
+        .tabbar::after {
+            position: absolute;
+            box-sizing: border-box;
+            content: ' ';
+            right: 0;bottom: 0;left: 0;
+            border-bottom: 1px solid #ebedf0;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+        .tabbar-item {
+            width: 50px;
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- 头部 -->
+    <div class="tabs">
+        <div class="tab">正在上课</div>
+        <div class="tab">所有课程</div>
+    </div>
+    <!-- 搜索框 -->
+    <div class="search-wrapper"><input type="text" placeholder="搜索"></div>
+    <!-- 滚动区域 -->
+    <div class="scroll-box">
+        <div class="content" style="height:2000px">
+        <!--　添加的内容在这里面，这里写ｈｅｉｇｈｔ为2000是为了模拟有数据的情况，到时候在这里写v-for就行了 -->
+        </div>
+    </div>
+    <!-- 底部工具栏,vant应该有可以直接用的tabbar -->
+    <div class="tabbar">
+        <div class="tabbar-item">1</div>
+        <div class="tabbar-item">2</div>
+        <div class="tabbar-item">3</div>
+        <div class="tabbar-item">4</div>
+    </div>
+</body>
+<script>
+
+let client = document.getElementsByClassName('scroll-box')[0];
+let clientHight = client.clientHeight;
+function flash() {
+    let contentHight = document.getElementsByClassName('content')[0].clientHeight;
+    let scrollTop = document.getElementsByClassName('scroll-box')[0].scrollTop;
+    console.log("容器大小:" + clientHight + ',滚动距离:' + scrollTop + ',总长度：' + contentHight);
+    if (scrollTop + clientHight + 200 >= contentHight) {
+        console.log('到底了');
+        //　TODO 在此调用接口加载新数据
+    }
+}
+
+client.addEventListener('scroll', flash);
+</script>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+.button{
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+.num{
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    border: 1px solid black;  
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+</style>
+
+<body>
+    <div id="app">
+            <button @click="sub" class="button">-</button>
+            <span class="num">{{num}}</span>
+            <button @click="add" class="button">+</button>   
+    </div>
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',  
+            data:{ 
+                num:1
+            },
+            methods:{
+                add: function(){
+                    if(this.num<10){
+                        this.num++;
+                    }else{
+                        console.log('111');
+                        
+                        alert('不能再加了')
+                    }  
+                },
+                sub: function(){
+                    if(this.num>0){
+                        this.num--;
+                    }else{
+                        alert('不能再减了');
+                    }
+                }
+            }
+            })  
+    </script>
+</body>
+</html>
