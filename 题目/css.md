@@ -1,6 +1,101 @@
+### DOM事件流
+<!-- C:\Users\CY888\Desktop\笔记\Web 前端知识点 总\04-JavaScript基础\46-事件的传播和事件冒泡.md -->
+#### 三个阶段
+事件传播的三个阶段是：事件捕获阶段、处于目标阶段、事件冒泡阶段。 
+首先发生的事件捕获，为截获事件提供机会。然后是事件的目标接受事件。最后一个阶段是事件冒泡阶段，可以在这个阶段对事件做出响应。 虽然捕获阶段在规范中规定不允许响应事件，但是实际上还是会执行，所以有两次机会获取到目标对象。
 
-## 事件委托
+#### 事件捕获
+addEventListener可以捕获事件：
+```javascript
+    box1.addEventListener("click", function () {
+        alert("捕获 box3");
+    }, true);
+```
+上面的方法中，参数为true，代表事件在捕获阶段执行。
 
+**重点**：捕获阶段，事件依次传递的顺序是：window --> document --> html--> body --> 父元素、子元素、目标元素。
+这几个元素在事件捕获阶段的完整写法是：
+
+```javascript
+    window.addEventListener("click", function () {
+        alert("捕获 window");
+    }, true);
+
+    document.addEventListener("click", function () {
+        alert("捕获 document");
+    }, true);
+
+    document.documentElement.addEventListener("click", function () {
+        alert("捕获 html");
+    }, true);
+
+    document.body.addEventListener("click", function () {
+        alert("捕获 body");
+    }, true);
+
+    fatherBox.addEventListener("click", function () {
+        alert("捕获 father");
+    }, true);
+
+    childBox.addEventListener("click", function () {
+        alert("捕获 child");
+    }, true);
+
+```
+
+#### 事件冒泡
+**事件冒泡**: 当一个元素上的事件被触发的时候（比如说鼠标点击了一个按钮），同样的事件将会在那个元素的所有**祖先元素**中被触发。这一过程被称为事件冒泡；这个事件从原始元素开始一直冒泡到DOM树的最上层。
+
+通俗来讲，冒泡指的是：**子元素的事件被触发时，父元素的同样的事件也会被触发**。取消冒泡就是取消这种机制。
+```javascript
+    //事件冒泡
+    box3.onclick = function () {
+        alert("child");
+    }
+
+    box2.onclick = function () {
+        alert("father");
+    }
+
+    box1.onclick = function () {
+        alert("grandfather");
+    }
+
+    document.onclick = function () {
+        alert("body");
+    }
+
+```
+当我点击子元素 box3 的时候，它的父元素box2、box1、body都依次被触发了。即使我改变代码的顺序，也不会影响效果的顺序。
+
+冒泡顺序：div -> body -> html -> document -> window
+
+##### 不是所有的事件都能冒泡
+以下事件不冒泡：blur、focus、load、unload、onmouseenter、onmouseleave。意思是，事件不会往父元素那里传递。
+我们检查一个元素是否会冒泡，可以通过事件的以下参数：
+```javascript
+    event.bubbles
+```
+如果返回值为true，说明该事件会冒泡；反之则相反。
+
+##### 阻止冒泡
+event.stopPropagation();
+
+#### 事件委托
+
+#### 自定义事件
+自定义事件的代码如下：
+```javascript
+    var myEvent = new Event('clickTest');
+    element.addEventListener('clickTest', function () {
+        console.log('smyhvae');
+    });
+
+	//元素注册事件
+    element.dispatchEvent(myEvent); //注意，参数是写事件对象 myEvent，不是写 事件名 clickTest
+
+```
+#### 事件委托
 事件委托，通俗地来讲，就是把一个元素响应事件（click、keydown......）的函数委托到另一个元素。
 
 比如说有一个列表 ul，列表之中有大量的列表项 `<a>`标签：
@@ -72,12 +167,3 @@
 换而言之，参数为false，说明事件是在冒泡阶段触发（子元素向父元素传递事件）。而父节点注册了事件函数，子节点没有注册事件函数，此时，会在父节点中执行函数体里的代码。
 
 **总结**：事件委托是利用了冒泡机制，减少了事件绑定的次数，减少内存消耗，提高性能。
-
-事件委托的参考链接：
-
-- [荐 | JavaScript事件代理和委托（Delegation）](https://www.cnblogs.com/owenChen/archive/2013/02/18/2915521.html)
-
-- [JavaScript 事件委托详解](https://zhuanlan.zhihu.com/p/26536815)
-
-
-
