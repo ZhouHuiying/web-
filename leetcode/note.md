@@ -140,6 +140,3 @@ set、map、hashMap、
   排序
  
 
- 
-### 正则 reg.test()
-  str.toLowerCase().match(/[a-z]+/g  //匹配小写字母a-z
