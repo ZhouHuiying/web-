@@ -1,25 +1,37 @@
 ### js 基本数据类型:
+  Undefined:
+    使用var声明变量但未对其进行初始化，这个变量的值就是undefined。
+  Null：
+    表示一个空对象指针，使用typeof操作符检测null会返回object
+  Boolean：
+    true false
+  Number:
+    十进制、八进制0、十六进制0x NaN:非数值 
+    将非数值转换为数值：Number()-可以用于任何数据类型；parseInt() parseFloat() -专门用于把字符串转换成数值；
+  String
+  Object：
+    var o = new Object()
+  symbol（ES6 新增的）
+  BigInt（ES2020）
 
-Undefined:
-  使用var声明变量但未对其进行初始化，这个变量的值就是undefined。
-Null：
-  表示一个空对象指针，使用typeof操作符检测null会返回object
-Boolean：
-  true false
-Number:
-  十进制、八进制0、十六进制0x NaN:非数值 
-  将非数值转换为数值：Number()-可以用于任何数据类型；parseInt() parseFloat() -专门用于把字符串转换成数值；
-String
-Object：
-  var o = new Object()
+#### 0.1 + 0.2 === 0.3 嘛？为什么？
+不等于，在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。
+精度丢失可能出现在进制转换和对阶运算中；
 
-### null 和 undefined 区别
+#### NaN 是什么，用 typeof 会输出什么?
+Not a Number，表示非数字，typeof NaN === 'number'
 
-undefined：是所有没有赋值变量的默认值，自动赋值;
-null：主动释放一个变量引用的对象，表示一个变量不再指向任何对象地址,当使用完一个比较大的对象时，需要对其进行释放内存时，设置为null。
-共同点：都是原始类型，变量保存在栈中；
-不同点：undefined——表示变量声明过但并未赋过值。它是所有未赋值变量默认值。
-        null表示一个变量将来可能指向一个对象。一般用于主动释放指向对象的引用。
+#### JS 整数是怎么表示的
+通过 Number 类型来表示，遵循 IEEE754 标准，通过 64 位来表示一个数字，（1 + 11 + 52），最大安全数字是 Math.pow(2, 53) - 1；
+Number() 的存储空间：Math.pow(2, 53) ，53 为有效数字；如果后台发送一个超过自己最大的数字，会发生截断等于JS 能支持的最大数字；
+
+#### null 和 undefined 区别
+  undefined：是所有没有赋值变量的默认值，自动赋值;
+
+  null：主动释放一个变量引用的对象，表示一个变量不再指向任何对象地址,当使用完一个比较大的对象时，需要对其进行释放内存时，设置为null。
+  共同点：都是原始类型，变量保存在栈中；
+  不同点：undefined——表示变量声明过但并未赋过值。它是所有未赋值变量默认值。
+          null表示一个变量将来可能指向一个对象。一般用于主动释放指向对象的引用。
 
 ### var let const区别
 
@@ -37,18 +49,18 @@ const:
   const命令声明的常量也是不提升，同样存在暂时性死区，只能在声明的位置后面使用。
   const实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址所保存的数据不得改动。对于简单类型的数据（数值、字符串、布尔值），值就保存在变量指向的那个内存地址，因此等同于常量。但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针，const只能保证这个指针是固定的（即总是指向另一个固定的地址），至于它指向的数据结构是不是可变的，就完全不能控制了。因此，将一个对象声明为常量必须非常小心
 
-### typeof 和 instanceof 区别
-
+### typeof 和 instanceof
+#### typeof 和 instanceof 区别
 js是一个弱类型的语言，所以一般想知道当前变量是哪一种类型必须判断类型，都知道判断类型的两种方式：typeof、 instanceof
 它们各有缺点：
   typeof适用于基础数据类型判断，引用类型判断都是object。 
   instanceof的用途是判断一个对象是否在某个对象原型链上。或者说判断一个对象是某个对象的实例。    
     a instanceof b：判断a是否为b的实例，可以用于继承关系中。
 
-### instanceof 的原理和弊端
+#### instanceof 的原理和弊端
   https://blog.csdn.net/lunahaijiao/article/details/84974355
 
-### JavaScript中事件循环的理解
+### JavaScript中事件循环的理解 Event Loop
 
 #### JS同步和异步 事件循环的定义
   同步：前一个任务结束后再执行后一个任务，程序的执行顺序和任务的排列顺序是一致的、同步的。
@@ -218,7 +230,7 @@ js 中的异步机制可以分为以下几种：
 - 逻辑运算符：`&&`、`||`、`！` 。非布尔值进行**与或**运算时，会先将其转换为布尔值，然后再运算，但运算结果是**原值**。
 - 关系运算符：`<`、`>` `<=` `>=`等。关系运算符，得到的运算结果都是布尔值：要么是true，要么是false。
 
-### es6 数据结构中 map 和 set 有什么不同
+### es6 中 map 和 set 
 #### set:
   Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没有重复的值
   let set = new Set(['a','e','i','o','u','A','E','I','O','U']);
@@ -282,9 +294,23 @@ js 中的异步机制可以分为以下几种：
         for(item of deck){
             map.set(item,map.has(item) ? map.get(item)+1 : 1);
         }
-        
-### 箭头函数能不能做构造函数，为什么？
-(https://blog.csdn.net/weixin_42798473/article/details/105319353)
+
+### 函数
+
+#### 构造函数是什么
+  构造函数：是一种特殊的函数，主要用来创建和初始化对象，也就是为对象的成员变量赋初始值。它与 `new` 一起使用才有意义。
+
+#### 构造函数和普通函数的区别
+  (1) 调用方式不一样。作用也不一样（构造函数用来新建实例对象）;
+    普通函数的调用方式：直接调用 person();
+    构造函数的调用方式：需要使用new关键字来调用 new Person();内部用this 来构造属性和方法;
+  (2) this 的指向也有所不同：
+  -   1.以函数的形式调用时，this 永远都是 window。比如`fun();`相当于`window.fun();`
+  -   2.以方法的形式调用时，this 是调用方法的那个对象
+  -   3.以构造函数的形式调用时，this 是新创建的实例对象
+
+  构造函数的实例可以通过实例的constructor访问对应的构造函数；
+
 #### 箭头函数
   const fn2 = (a, b) => a + b;  //只有一条语句，所以可以不用加{}
   箭头函数的好处：
@@ -301,19 +327,127 @@ js 中的异步机制可以分为以下几种：
     所有的引用类型的__ proto __属性值均指向它的构造函数的prototype的属性值;
     当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么会去他的__ proto __(即它的构造函数的prototype）中寻找;
 
-### 构造函数是啥
-  构造函数：是一种特殊的函数，主要用来创建和初始化对象，也就是为对象的成员变量赋初始值。它与 `new` 一起使用才有意义。
+#### 箭头函数能不能做构造函数，为什么？
+(https://blog.csdn.net/weixin_42798473/article/details/105319353)
 
-#### 构造函数和普通函数的区别
-  (1) 调用方式不一样。作用也不一样（构造函数用来新建实例对象）;
-    普通函数的调用方式：直接调用 person();
-    构造函数的调用方式：需要使用new关键字来调用 new Person();内部用this 来构造属性和方法;
-  (2) this 的指向也有所不同：
-  -   1.以函数的形式调用时，this 永远都是 window。比如`fun();`相当于`window.fun();`
-  -   2.以方法的形式调用时，this 是调用方法的那个对象
-  -   3.以构造函数的形式调用时，this 是新创建的实例对象
+#### new 一个函数发生了什么
+- 创造一个全新的对象
+- 这个对象会被执行 [[Prototype]] 连接，将这个新对象的 [[Prototype]] 链接到这个构造函数.prototype 所指向的对象
+- 这个新对象会绑定到函数调用的 this
+- 如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象
 
-  构造函数的实例可以通过实例的constructor访问对应的构造函数；
+#### 函数中的arguments是数组吗？类数组转数组的方法了解一下？
+在javascript中所有的函数内部都包含了一个隐藏的变量叫arguments;它存放着所有传递到这个函数中的参数；
+```javascript
+  (function fn(){
+  console.log(arguments)
+  })(1,2,3,4)    //[1,2,3,4]
+```
+类数组转化为数组的方法：
+  - 扩展运算符: ... 运算符 
+      var args = [ ...arguments]; 
+      要注意是否是 iterable object;
+
+  - Array.from:
+      Array.from()是ES6中新增的方法，可以将两类对象转为真正的数组：类数组对象和可遍历（iterable）对象（包括ES6新增的数据结构Set和Map）;
+      var arrayLike = {
+        '0':'a',
+        '1':'b',
+        '2':'c',
+        length:3
+      };
+      var arr = Array.from(arrayLike);//['a','b','c'];
+
+  - Array.prototype.slice.call(arrayLike)
+
+#### 变量提升
+  函数在运行的时候，会首先创建执行上下文，然后将执行上下文入栈，然后当此执行上下文处于栈顶时，开始运行执行上下文。
+  在创建执行上下文的过程中会做三件事：
+    创建变量对象，
+    创建作用域链，
+    确定 this 指向，
+  其中创建变量对象的过程中，首先会为 arguments 创建一个属性，值为 arguments，然后会扫码 function 函数声明，创建一个同名属性，值为函数的引用，接着会扫码 var 变量声明，创建一个同名属性，值为 undefined，这就是变量提升。
+
+#### 函数柯里化
+含义：把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。
+eg.
+  ```javascript
+    // 普通的add函数
+    function add(x, y) {
+        return x + y
+    }
+    // Currying后
+    function curryingAdd(x) {
+        return function (y) {
+            return x + y
+        }
+    }
+    add(1, 2)           // 3
+    curryingAdd(1)(2)   // 3
+  ```
+通用的封装方法:
+  ```javascript
+  // 初步封装
+    var currying = function(fn) {
+        // args 获取第一个方法内的全部参数
+        var args = Array.prototype.slice.call(arguments, 1)
+        return function() {
+            // 将后面方法里的全部参数和args进行合并
+            var newArgs = args.concat(Array.prototype.slice.call(arguments))
+            // 把合并后的参数通过apply作为fn的参数并执行
+            return fn.apply(this, newArgs)
+        }
+    }
+    // 支持多参数传递
+    function progressCurrying(fn, args) {
+        var _this = this
+        var len = fn.length;
+        var args = args || [];
+        return function() {
+            var _args = Array.prototype.slice.call(arguments);
+            Array.prototype.push.apply(args, _args);
+
+            // 如果参数个数小于最初的fn.length，则递归调用，继续收集参数
+            if (_args.length < len) {
+                return progressCurrying.call(_this, fn, _args);
+            }
+
+            // 参数收集完毕，则执行fn
+            return fn.apply(this, _args);
+        }
+    }
+  ```
+例题：
+  ```javascript
+// 实现一个add方法，使计算结果能够满足如下预期：
+  add(1)(2)(3) = 6;
+  add(1, 2, 3)(4) = 10;
+  add(1)(2)(3)(4)(5) = 15;
+
+  function add() {
+      // 第一次执行时，定义一个数组专门用来存储所有的参数
+      var _args = Array.prototype.slice.call(arguments);
+
+      // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+      var _adder = function() {
+          _args.push(...arguments);
+          return _adder;
+      };
+
+      // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+      _adder.toString = function () {
+          return _args.reduce(function (a, b) {
+              return a + b;
+          });
+      }
+      return _adder;
+  }
+
+  add(1)(2)(3)                // 6
+  add(1, 2, 3)(4)             // 10
+  add(1)(2)(3)(4)(5)          // 15
+  add(2, 6)(1)                // 9
+  ```
 
 ### prototype 是啥，什么是原型，什么是实例原型，说说你的理解
 (C:\Users\CY888\Desktop\笔记\Web 前端知识点 总\04-JavaScript基础\26-对象的创建&构造函数.md)
@@ -350,11 +484,36 @@ js 中的异步机制可以分为以下几种：
 原型链的原理：让一个引用类型继承另一个引用类型的属性和方法；
 原型对象通过constructor属性指向构造函数，实例通过Prototype属性指向原型对象；
 
-原型对象也是对象，所以它也有原型，当我们使用或访问一个对象的属性或方法时：
-- 它会先在对象自身中寻找，如果有则直接使用；
-- 如果没有则会去原型对象中寻找，如果找到则直接使用；
-- 如果没有则去原型的原型中寻找，直到找到Object对象的原型。
-- Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回 null
+什么是原型链？
+  原型对象也是对象，所以它也有原型，当我们使用或访问一个对象的属性或方法时：
+  - 它会先在对象自身中寻找，如果有则直接使用；
+  - 如果没有则会去原型对象中寻找，如果找到则直接使用；
+  - 如果没有则去原型的原型中寻找，直到找到Object对象的原型。
+  - Object对象的原型没有原型，如果在Object原型中依然没有找到，则返回 null
+
+### 闭包
+#### 含义
+闭包是指有权访问另外一个函数作用域中的变量的函数；
+JavaScript代码的整个执行过程，分为两个阶段，代码编译阶段与代码执行阶段。
+  编译阶段由编译器完成，将代码翻译成可执行代码，这个阶段作用域规则会确定。
+  执行阶段由引擎完成，主要任务是执行可执行代码，执行上下文在这个阶段创建。
+
+#### 什么是作用域
+ES5 中只存在两种作用域：全局作用域和函数作用域。在 JavaScript 中，我们将作用域定义为一套规则，这套规则用来管理引擎如何在当前作用域以及嵌套子作用域中根据标识符名称进行变量（变量名或者函数名）查找；
+
+#### 什么是作用域链
+首先要了解作用域链，当访问一个变量时，编译器在执行这段代码时，会首先从当前的作用域中查找是否有这个标识符，如果没有找到，就会去父作用域查找，如果父作用域还没找到继续向上查找，直到全局作用域为止。
+而作用域链，就是有当前作用域与上层作用域的一系列变量对象组成，它保证了当前执行的作用域对符合访问权限的变量和函数的有序访问。 
+
+#### 闭包产生的本质
+当前环境中存在指向父级作用域的引用
+
+#### 什么是闭包
+闭包是一种特殊的对象，它由两部分组成：执行上下文（代号 A），以及在该执行上下文中创建的函数 （代号 B），当 B 执行时，如果访问了 A 中变量对象的值，那么闭包就会产生，且在 Chrome 中使用这个执行上下文 A 的函数名代指闭包。
+
+#### 一般如何产生闭包
+  返回函数;
+  函数当做参数传递;
 
 ### 对象
 #### js创建对象的几种方式
@@ -382,6 +541,8 @@ ES5 继承和 ES6 继承的区别、ES6 中的继承有什么好处、js 为什�
 #### js继承的方式
 (https://segmentfault.com/a/1190000008754962)
 （1）第一种是以原型链的方式来实现继承，但是这种实现方式存在的缺点是，在包含有引用类型的数据时，会被所有的实例对象所共享，容易造成修改的混乱。还有就是在创建子类型的时候不能向超类型传递参数。
+    原型链继承：
+       一个对象可以使用另外一个对象的属性或者方法，就称之为继承。具体是通过将这个对象的原型设置为另外一个对象，这样根据原型链的规则，如果查找一个对象属性且在自身不存在时，就会查找另外一个对象，相当于一个对象可以使用另外一个对象的属性和方法了
 
 （2）第二种方式是使用借用构造函数的方式，这种方式是通过在子类型的函数中调用超类型的构造函数来实现的，这一种方法解决了不能向超类型传递参数的缺点，但是它存在的一个问题就是无法实现函数方法的复用，并且超类型原型定义的方法子类型也没有办法访问到。 —call()方法；
 
@@ -400,5 +561,242 @@ ES5 继承和 ES6 继承的区别、ES6 中的继承有什么好处、js 为什�
   apply 、 call 、bind 三者都可以利用后续参数传参；
   bind是返回对应函数，便于稍后调用；apply、call则是立即调用 。
 
+### 深拷贝和浅拷贝
 
+#### 概念
+  浅拷贝：只拷贝最外面一层的数据；更深层次的对象，只拷贝引用。
+  深拷贝：拷贝多层数据；每一层级别的数据都会拷贝。深拷贝会把对象里**所有的数据**重新复制到新的内存空间，是最彻底的拷贝。
 
+#### 浅拷贝的实现方式
+
+##### 用for in 实现浅拷贝
+```js
+  const obj1 = {
+      name: 'qianguyihao',
+      age: 28,
+      info: {
+          desc: '很厉害',
+      },
+  };
+  const obj2 = {};
+  //  用 for in 将 obj1 的值拷贝给 obj2
+  for (let key in obj1) {
+      obj2[key] = obj1[key];
+  }
+  console.log('obj2:' + JSON.stringify(obj2));
+  obj1.info.desc = '永不止步'; // 当修改 obj1 的第二层数据时，obj2的值也会被改变。所以  for in 是浅拷贝
+  console.log('obj2:' + JSON.stringify(obj2));
+  ```
+  上方代码中，用 for in 做拷贝时，只能做到浅拷贝。也就是说，在 obj2 中， name 和 age 这两个属性会单独存放在新的内存地址中，和 obj1 没有关系。但是，`obj2.info` 属性，跟 `obj1.info`属性，**它俩指向的是同一个堆内存地址**。所以，当我修改 `obj1.info` 里的值之后，`obj2.info`的值也会被修改。
+
+##### 用 Object.assgin() 实现浅拷贝
+```js
+// 语法1
+obj2 = Object.assgin(obj2, obj1);
+
+// 语法2
+Object.assign(目标对象, 源对象1, 源对象2...);
+```
+**解释**：将`obj1` 拷贝给 `obj2`。执行完毕后，obj2 的值会被更新。
+**作用**：将 obj1 的值追加到 obj2 中。如果对象里的属性名相同，会被覆盖。
+从语法2中可以看出，Object.assign() 可以将多个“源对象”拷贝到“目标对象”中。
+**例 1**：
+```js
+const obj1 = {
+    name: 'qianguyihao',
+    age: 28,
+    info: {
+        desc: 'hello',
+    },
+};
+// 浅拷贝：把 obj1 拷贝给 obj2。如果 obj1 只有一层数据，那么，obj1 和 obj2 则互不影响
+const obj2 = Object.assign({}, obj1);
+console.log('obj2:' + JSON.stringify(obj2));
+obj1.info.desc = '永不止步'; // 由于 Object.assign() 只是浅拷贝，所以当修改 obj1 的第二层数据时，obj2 对应的值也会被改变。
+console.log('obj2:' + JSON.stringify(obj2));
+```
+代码解释：由于 Object.assign() 只是浅拷贝，所以在当前这个案例中， obj2 中的 name 属性和 age 属性是单独存放在新的堆内存地址中的，和 obj1 没有关系；但是，`obj2.info` 属性，跟 `obj1.info`属性，**它俩指向的是同一个堆内存地址**。所以，当我修改 `obj1.info` 里的值之后，`obj2.info`的值也会被修改。
+
+#### 深拷贝的实现方式
+##### 用 for in 递归实现深拷贝
+```js
+let obj1 = {
+    name: 'qianguyihao',
+    age: 28,
+    info: {
+        desc: 'hello',
+    },
+    color: ['red', 'blue', 'green'],
+};
+let obj2 = {};
+
+deepCopy(obj2, obj1);
+console.log(obj2);
+obj1.info.desc = 'github';
+console.log(obj2);
+
+// 方法：深拷贝
+function deepCopy(newObj, oldObj) {
+    for (let key in oldObj) {
+        // 获取属性值 oldObj[key]
+        let item = oldObj[key];
+        // 判断这个值是否是数组
+        if (item instanceof Array) {
+            newObj[key] = [];
+            deepCopy(newObj[key], item);
+        } else if (item instanceof Object) {
+            // 判断这个值是否是对象
+            newObj[key] = {};
+            deepCopy(newObj[key], item);
+        } else {
+            // 简单数据类型，直接赋值
+            newObj[key] = item;
+        }
+    }
+}
+```
+
+### DOM事件流
+<!-- C:\Users\CY888\Desktop\笔记\Web 前端知识点 总\04-JavaScript基础\46-事件的传播和事件冒泡.md -->
+#### 三个阶段
+事件传播的三个阶段是：事件捕获阶段、处于目标阶段、事件冒泡阶段。 
+首先发生的事件捕获，为截获事件提供机会。然后是事件的目标接受事件。最后一个阶段是事件冒泡阶段，可以在这个阶段对事件做出响应。 虽然捕获阶段在规范中规定不允许响应事件，但是实际上还是会执行，所以有两次机会获取到目标对象。
+
+#### 事件捕获
+addEventListener可以捕获事件：
+```javascript
+    box1.addEventListener("click", function () {
+        alert("捕获 box3");
+    }, true);
+```
+上面的方法中，参数为true，代表事件在捕获阶段执行。
+
+**重点**：捕获阶段，事件依次传递的顺序是：window --> document --> html--> body --> 父元素、子元素、目标元素。
+这几个元素在事件捕获阶段的完整写法是：
+
+```javascript
+    window.addEventListener("click", function () {
+        alert("捕获 window");
+    }, true);
+
+    document.addEventListener("click", function () {
+        alert("捕获 document");
+    }, true);
+
+    document.documentElement.addEventListener("click", function () {
+        alert("捕获 html");
+    }, true);
+
+    document.body.addEventListener("click", function () {
+        alert("捕获 body");
+    }, true);
+
+    fatherBox.addEventListener("click", function () {
+        alert("捕获 father");
+    }, true);
+
+    childBox.addEventListener("click", function () {
+        alert("捕获 child");
+    }, true);
+
+```
+
+#### 事件冒泡
+**事件冒泡**: 当一个元素上的事件被触发的时候（比如说鼠标点击了一个按钮），同样的事件将会在那个元素的所有**祖先元素**中被触发。这一过程被称为事件冒泡；这个事件从原始元素开始一直冒泡到DOM树的最上层。
+
+通俗来讲，冒泡指的是：**子元素的事件被触发时，父元素的同样的事件也会被触发**。取消冒泡就是取消这种机制。
+```javascript
+    //事件冒泡
+    box3.onclick = function () {
+        alert("child");
+    }
+
+    box2.onclick = function () {
+        alert("father");
+    }
+
+    box1.onclick = function () {
+        alert("grandfather");
+    }
+
+    document.onclick = function () {
+        alert("body");
+    }
+
+```
+当我点击子元素 box3 的时候，它的父元素box2、box1、body都依次被触发了。即使我改变代码的顺序，也不会影响效果的顺序。
+
+冒泡顺序：div -> body -> html -> document -> window
+
+##### 不是所有的事件都能冒泡
+以下事件不冒泡：blur、focus、load、unload、onmouseenter、onmouseleave。意思是，事件不会往父元素那里传递。
+我们检查一个元素是否会冒泡，可以通过事件的以下参数：
+```javascript
+    event.bubbles
+```
+如果返回值为true，说明该事件会冒泡；反之则相反。
+
+##### 阻止冒泡
+event.stopPropagation();
+
+### Symbol
+#### 含义
+ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值；
+Symbol 值通过Symbol函数生成。这就是说，对象的属性名现在可以有两种类型，一种是原来就有的字符串，另一种就是新增的 Symbol 类型。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
+let s = Symbol();
+Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象;
+Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+Symbol 值不能与其他类型的值进行运算，会报错。
+
+#### Symbol.prototype.description
+创建 Symbol 的时候，可以添加一个描述。
+  const sym = Symbol('foo');
+  sym.description // "foo"
+
+#### 作为属性名的 Symbol
+```javascript
+  let mySymbol = Symbol();
+  // 第一种写法
+  let a = {};
+  a[mySymbol] = 'Hello!';
+  // 第二种写法
+  let a = {
+    [mySymbol]: 'Hello!'
+  };
+  // 第三种写法
+  let a = {};
+  Object.defineProperty(a, mySymbol, { value: 'Hello!' });
+
+  // 以上写法都得到同样结果
+  a[mySymbol] // "Hello!"
+```
+! Symbol 值作为对象属性名时，不能用点运算符。a['mySymbol']
+
+#### 属性名的遍历
+Symbol 作为属性名，遍历对象的时候，该属性不会出现在for...in、for...of循环中，也不会被Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()返回。
+但是，它也不是私有属性，有一个Object.getOwnPropertySymbols()方法，可以获取指定对象的所有 Symbol 属性名。该方法返回一个数组，成员是当前对象的所有用作属性名的 Symbol 值。
+```javascript
+  const obj = {};
+  let a = Symbol('a');
+  let b = Symbol('b');
+
+  obj[a] = 'Hello';
+  obj[b] = 'World';
+
+  const objectSymbols = Object.getOwnPropertySymbols(obj);
+
+  objectSymbols
+  // [Symbol(a), Symbol(b)]
+```
+#### Symbol.for()，Symbol.keyFor()
+有时，我们希望重新使用同一个 Symbol 值，Symbol.for()方法可以做到这一点。它接受一个字符串作为参数，然后搜索有没有以该参数作为名称的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建一个以该字符串为名称的 Symbol 值，并将其注册到全局。
+  let s1 = Symbol.for('foo');
+  let s2 = Symbol.for('foo');
+  s1 === s2 // true
+
+Symbol.for()与Symbol()这两种写法，都会生成新的 Symbol。它们的区别是，前者会被登记在全局环境中供搜索，后者不会。Symbol.for()不会每次调用就返回一个新的 Symbol 类型的值，而是会先检查给定的key是否已经存在，如果不存在才会新建一个值。
+
+#### 用处！
+- 可以用来表示一个独一无二的变量防止命名冲突；
+- 利用 symbol 不会被常规的方法（除了 Object.getOwnPropertySymbols 外）遍历到，所以可以用来模拟私有变量；
+- 主要用来提供遍历接口，布置了 symbol.iterator 的对象才可以使用 for···of 循环，可以统一处理数据结构。调用之后回返回一个遍历器对象，包含有一个 next 方法，使用 next 方法后有两个返回值 value 和 done 分别表示函数当前执行位置的值和是否遍历完毕；
