@@ -1,16 +1,8 @@
-
-
-
-
-
-
 ## JavaScript
 
 ### 存储相关：请描述以下cookie、localStorage、sessionStorage的区别
 
-
 > 在H5之前，cookie一直都是本地存储的一个重要的方法。直到后面的两个出现了， 就开始用后面的两个做本地存储。
-
 
 **1、cookie**：
 
@@ -20,7 +12,6 @@
 
 我们可以通过`document.cookie`获取和修改cookie，获取到的其实就是一个字符串。
 
-
 cookie用于存储时的缺点：
 
 - 存储量太小，只有4kb
@@ -28,8 +19,6 @@ cookie用于存储时的缺点：
 - 所有http请求都带着，会影响获取资源的效率
 
 - api简单，需要封装才能用。`document.cookie = ...`
-
-
 
 ## HTML5
 
@@ -45,7 +34,6 @@ cookie用于存储时的缺点：
 - 网络存储: sessionStorage 和 localStorage
 
 
-
 参考链接：
 
 - [笔记：阿里、网易、滴滴共十次前端面试碰到的问题](https://zhoukekestar.github.io/notes/2017/06/07/interview-answers.html)
@@ -54,9 +42,6 @@ cookie用于存储时的缺点：
 ## CSS
 
 ### 如何让一个div元素隐藏？你能想到的方式有几种？
-
--
-
 
 
 ## ES6
@@ -69,12 +54,9 @@ cookie用于存储时的缺点：
 
 - `for of`获取对象里属性的值。
 
-
-
 ## 网络相关
 
 ### 浏览器输入url到显示内容，有哪些过程
-
 
 （1）浏览器解析url。包括：协议、域名、端口号、资源路径、参数查询
 
@@ -104,12 +86,6 @@ cookie用于存储时的缺点：
 - 从输入URL到页面加载发生了什么：<https://segmentfault.com/a/1190000006879700>
 
 
-
-
-
-
-
-
 ## GitHub
 
 - [荐]面试题和答案：<https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions/Questions-and-Answers>
@@ -126,17 +102,9 @@ cookie用于存储时的缺点：
 - <https://github.com/giscafer/front-end-manual/issues/3>
 
 
-
-
-
-
-
-
-
 ## 按时间排列
 
 ### 2018-03-11
-
 
 - web前端面试题汇总：<https://www.jianshu.com/p/2f7eb1ad7174>
 

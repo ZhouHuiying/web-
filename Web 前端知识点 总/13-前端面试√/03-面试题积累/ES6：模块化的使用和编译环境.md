@@ -80,7 +80,3 @@ export function fn2() {
 
 
 上方代码中，我把一个变量和两个函数作为了导出。
-
-
-（3）index.js：
-

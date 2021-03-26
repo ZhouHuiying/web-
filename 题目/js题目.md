@@ -717,3 +717,6 @@ Symbol.for()与Symbol()这两种写法，都会生成新的 Symbol。它们的�
 - 可以用来表示一个独一无二的变量防止命名冲突；
 - 利用 symbol 不会被常规的方法（除了 Object.getOwnPropertySymbols 外）遍历到，所以可以用来模拟私有变量；
 - 主要用来提供遍历接口，布置了 symbol.iterator 的对象才可以使用 for···of 循环，可以统一处理数据结构。调用之后回返回一个遍历器对象，包含有一个 next 方法，使用 next 方法后有两个返回值 value 和 done 分别表示函数当前执行位置的值和是否遍历完毕；
+
+
+### 存储相关：请描述以下cookie、localStorage、sessionStorage的区别
