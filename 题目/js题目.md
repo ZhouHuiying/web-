@@ -656,6 +656,14 @@ function deepCopy(newObj, oldObj) {
 }
 ```
 
+##### JSON 来深拷贝
+
+```javascript
+    var a = {...};
+    var b = JSON.parse(JSON.stringify(a)); //先将对象转成json字符串，然后再转成对象
+```
+缺点：JSON 不支持函数、引用、undefined、RegExp、Date……
+
 ### Symbol
 #### 含义
 ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值；
