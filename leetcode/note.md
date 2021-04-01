@@ -38,8 +38,13 @@
   递归是一个树结构，从字面可以其理解为重复“递推”和“回归”的过程，当“递推”到达底部时就会开始“回归”，其过程相当于树的深度优先遍历。
   迭代是一个环结构，从初始状态开始，每次迭代都遍历这个环，并更新状态，多次迭代直到到达结束状态。
 
-
-
+### 回溯法
+  深度优先搜索
+  回溯法思路的简单描述是：把问题的解空间转化成了图或者树的结构表示，然后使用深度优先搜索策略进行遍历，遍历的过程中记录和寻找所有可行解或者最优解。
+  基本思想类同于：图的深度优先搜索，二叉树的后序遍历；
+  回溯法实现：
+    递归、迭代
+    
 set、map、hashMap、
   
 ### 动态规划DP 
@@ -59,6 +64,16 @@ set、map、hashMap、
       };
       ```
     746. 使用最小花费爬楼梯
+    剑指 Offer 42. 连续子数组的最大和
+      var maxSubArray = function(nums) {
+      const dp = new Array(nums.length);
+      dp[0] = nums[0];
+      dp[1] = nums[0];
+      for(let i=2;i<=nums.length;i++){
+          dp[i] = Math.max(nums[i-1],nums[i-1]+dp[i-1]);
+      }
+      return Math.max(...dp)
+  };
 
 ### 指针:
     指针的基本要素：起始值、终止值、方向（增减）、速度;
@@ -111,11 +126,27 @@ set、map、hashMap、
                   j--
               };
           }
-
           return result % 1000000007; 
       };
         ```
-
+    (3) 快慢双指针：给定一个链表，删除链表的倒数第 n 个节点并返回链表的头指针
+      ```
+      function removeNthFromEnd( head ,  n ) {
+        let prehead = new ListNode(0);
+        prehead.next = head;
+        let fast = prehead;
+        let slow = prehead;
+        for(let i=0; i<n; i++){
+            fast = fast.next;
+        }
+        while(fast.next != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return prehead.next;
+    }
+      ```
 
         
 [回文链表的例子](https://leetcode-cn.com/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode-solution/)

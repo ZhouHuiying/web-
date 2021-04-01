@@ -1,0 +1,14 @@
+### MVVM 和 MVC 是什么，区别是什么？
+MVVM:
+- Model：负责数据存储
+- View：负责页面展示
+- View Model：负责业务逻辑处理（比如Ajax请求等），对数据进行加工后交给视图展示
+数据驱动视图，只关心数据变化，DOM操作被封装。
+
+MVC:
+  C指的是Controller。控制器能够控制视图的变化，也能控制数据的变化。
+  单向通信。一般情况下是：view 发出命令给控制器，控制器处理业务逻辑后控制 Model，Model再去改 view。
+
+区别：
+  主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。
+  mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。当 Model 频繁发生变化，开发者需要主动更新到 View 。   
