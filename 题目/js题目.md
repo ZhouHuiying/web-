@@ -230,7 +230,13 @@ js 中的异步机制可以分为以下几种：
 - 逻辑运算符：`&&`、`||`、`！` 。非布尔值进行**与或**运算时，会先将其转换为布尔值，然后再运算，但运算结果是**原值**。
 - 关系运算符：`<`、`>` `<=` `>=`等。关系运算符，得到的运算结果都是布尔值：要么是true，要么是false。
 
-### es6 中 map 和 set 
+### es6新特性
+
+- set map
+- async await
+- 箭头函数
+- 模板字符串
+
 #### set:
   Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没有重复的值
   let set = new Set(['a','e','i','o','u','A','E','I','O','U']);
@@ -295,6 +301,9 @@ js 中的异步机制可以分为以下几种：
             map.set(item,map.has(item) ? map.get(item)+1 : 1);
         }
 
+#### 模板字符串
+模板字符串（template string）是增强版的字符串，用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+
 ### 函数
 
 #### 构造函数是什么
@@ -313,13 +322,13 @@ js 中的异步机制可以分为以下几种：
 
 #### 箭头函数
   const fn2 = (a, b) => a + b;  //只有一条语句，所以可以不用加{}
-  箭头函数的好处：
+
+  箭头函数特点：
     箭头函数表达式的语法比函数表达式更简洁，并且没有自己的this，arguments，super或new.target。箭头函数表达式更适用于那些本来需要匿名函数的地方，并且它不能用作构造函数。
+    箭头函数它作为一个函数，它是没有prototype属性的。
 
   箭头函数可以让函数写起来更简洁优雅。还有一个很大的作用是与 this 的指向有关。
-  ES6 的箭头函数中：**箭头函数本身不绑定 this**，this 指向的是**箭头函数定义位置的 this**（也就是说，箭头函数在哪个位置定义的，this 就跟这个位置的 this 指向相同）。
-
-  箭头函数它作为一个函数，它是没有prototype属性的。
+    ES6 的箭头函数中：**箭头函数本身不绑定 this**，this 指向的是**箭头函数定义位置的 this**（也就是说，箭头函数在哪个位置定义的，this 就跟这个位置的 this 指向相同）。
 
   (!!!)
     所有的引用类型都有__ proto __属性;
@@ -920,14 +929,14 @@ event.stopPropagation();
 
 回答：
 
-```
 解决跨域的方法我们可以根据我们想要实现的目的来划分。
 
+##### 
 首先我们如果只是想要实现主域名下的不同子域名的跨域操作，我们可以使用设置 document.domain 来解决。
 
 （1）将 document.domain 设置为主域名，来实现相同子域名的跨域操作，这个时候主域名下的 cookie 就能够被子域名所访问。同时如果文档中含有主域名相同，子域名不同的 iframe 的话，我们也可以对这个 iframe 进行操作。
 
-如果是想要解决不同跨域窗口间的通信问题，比如说一个页面想要和页面的中的不同源的 iframe 进行通信的问题，我们可以使用 location.hash 或者 window.name 或者 postMessage 来解决。
+- 如果是想要解决不同跨域窗口间的通信问题，比如说一个页面想要和页面的中的不同源的 iframe 进行通信的问题，我们可以使用 location.hash 或者 window.name 或者 postMessage 来解决。
 
 （2）使用 location.hash 的方法，我们可以在主页面动态的修改 iframe 窗口的 hash 值，然后在 iframe 窗口里实现监听函数来实现这样一个单向的通信。因为在 iframe 是没有办法访问到不同源的父级窗口的，所以我们不能直接修改父级窗口的 hash 值来实现通信，我们可以在 iframe 中再加入一个 iframe ，这个 iframe 的内容是和父级页面同源的，所以我们可以 window.parent.parent 来修改最顶级页面的 src，以此来实现双向通信。
 
@@ -935,15 +944,91 @@ event.stopPropagation();
 
 （4）使用 postMessage 来解决的方法，这是一个 h5 中新增的一个 api。通过它我们可以实现多窗口间的信息传递，通过获取到指定窗口的引用，然后调用 postMessage 来发送信息，在窗口中我们通过对 message 信息的监听来接收信息，以此来实现不同源间的信息交换。
 
-如果是像解决 ajax 无法提交跨域请求的问题，我们可以使用 jsonp、cors、websocket 协议、服务器代理来解决问题。
+##### 
+- 如果是像解决 ajax 无法提交跨域请求的问题，我们可以使用 jsonp、cors、websocket 协议、服务器代理来解决问题。
 
-（5）使用 jsonp 来实现跨域请求，它的主要原理是通过动态构建 script  标签来实现跨域请求，因为浏览器对 script 标签的引入没有跨域的访问限制 。通过在请求的 url 后指定一个回调函数，然后服务器在返回数据的时候，构建一个 json 数据的包装，这个包装就是回调函数，然后返回给前端，前端接收到数据后，因为请求的是脚本文件，所以会直接执行，这样我们先前定义好的回调函数就可以被调用，从而实现了跨域请求的处理。这种方式只能用于 get 请求。
+（5）使用 **jsonp** 来实现跨域请求，它的主要原理是通过动态构建 script  标签来实现跨域请求，因为浏览器对 script 标签的引入没有跨域的访问限制 。通过在请求的 url 后指定一个回调函数，然后服务器在返回数据的时候，构建一个 json 数据的包装，这个包装就是回调函数，然后返回给前端，前端接收到数据后，因为请求的是脚本文件，所以会直接执行，这样我们先前定义好的回调函数就可以被调用，从而实现了跨域请求的处理。这种方式只能用于 get 请求。
 
-（6）使用 CORS 的方式，CORS 是一个 W3C 标准，全称是"跨域资源共享"。CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，因此我们只需要在服务器端配置就行。浏览器将 CORS 请求分成两类：简单请求和非简单请求。对于简单请求，浏览器直接发出 CORS 请求。具体来说，就是会在头信息之中，增加一个 Origin 字段。Origin 字段用来说明本次请求来自哪个源。服务器根据这个值，决定是否同意这次请求。对于如果 Origin 指定的源，不在许可范围内，服务器会返回一个正常的 HTTP 回应。浏览器发现，这个回应的头信息没有包含 Access-Control-Allow-Origin 字段，就知道出错了，从而抛出一个错误，ajax 不会收到响应信息。如果成功的话会包含一些以 Access-Control- 开头的字段。
+**JSONP的原理**：通过`<script>`标签的异步加载来实现的。比如说，实际开发中，我们发现，head标签里，可以通过`<script>`标签的src，里面放url，加载很多在线的插件。这就是用到了JSONP。
+
+
+ 具体实现过程：
+  - 先在客户端定义一个回调方法，预定义对数据的操作
+  - 再把这个回调方法的名称，通过URL传参的形式，提交到服务器的api接口；
+  - 服务器api接口组织好要发送给客户端的数据，再拿着客户端传递过来的回调方法名称，拼接出一个调用这个方法的字符串，发送给客户端去解析执行；
+  - 客户端拿到服务器返回的字符串之后，当作Script脚本去解析执行，这样就能够拿到JSONP的数据了
+
+```html
+<script>
+
+    var util = {};
+
+    //定义方法：动态创建 script 标签
+    /**
+     * [function 在页面中注入js脚本]
+     * @param  {[type]} url     [description]
+     * @param  {[type]} charset [description]
+     * @return {[type]}         [description]
+     */
+    util.createScript = function (url, charset) {
+        var script = document.createElement('script');
+        script.setAttribute('type', 'text/javascript');
+        charset && script.setAttribute('charset', charset);
+        script.setAttribute('src', url);
+        script.async = true;
+        return script;
+    };
+
+
+    /**
+     * [function 处理jsonp]
+     * @param  {[type]} url      [description]
+     * @param  {[type]} onsucess [description]
+     * @param  {[type]} onerror  [description]
+     * @param  {[type]} charset  [description]
+     * @return {[type]}          [description]
+     */
+    util.jsonp = function (url, onsuccess, onerror, charset) {
+        var callbackName = util.getName('tt_player'); //事先约定好的 函数名
+        window[callbackName] = function () {      //根据回调名称注册一个全局的函数
+            if (onsuccess && util.isFunction(onsuccess)) {
+                onsuccess(arguments[0]);
+            }
+        };
+        var script = util.createScript(url + '&callback=' + callbackName, charset);   //动态创建一个script标签
+        script.onload = script.onreadystatechange = function () {   //监听加载成功的事件，获取数据
+            if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+                script.onload = script.onreadystatechange = null;
+                // 移除该script的 DOM 对象
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+                // 删除函数或变量
+                window[callbackName] = null;  //最后不要忘了删除
+            }
+        };
+        script.onerror = function () {
+            if (onerror && util.isFunction(onerror)) {
+                onerror();
+            }
+        };
+        document.getElementsByTagName('head')[0].appendChild(script); //往html中增加这个标签，目的是把请求发送出去
+    };
+
+</script>
+```
+
+（6）使用 **CORS** 的方式，CORS 是一个 W3C 标准，全称是"跨域资源共享"。CORS 需要浏览器和服务器同时支持。目前，所有浏览器都支持该功能，因此我们只需要在服务器端配置就行。浏览器将 CORS 请求分成两类：简单请求和非简单请求。对于简单请求，浏览器直接发出 CORS 请求。具体来说，就是会在头信息之中，增加一个 Origin 字段。Origin 字段用来说明本次请求来自哪个源。服务器根据这个值，决定是否同意这次请求。对于如果 Origin 指定的源，不在许可范围内，服务器会返回一个正常的 HTTP 回应。浏览器发现，这个回应的头信息没有包含 Access-Control-Allow-Origin 字段，就知道出错了，从而抛出一个错误，ajax 不会收到响应信息。如果成功的话会包含一些以 Access-Control- 开头的字段。
 
 非简单请求，浏览器会先发出一次预检请求，来判断该域名是否在服务器的白名单中，如果收到肯定回复后才会发起请求。
 
-（7）使用 websocket 协议，这个协议没有同源限制。
+CORS 可以理解成是**既可以同步、也可以异步**的Ajax。
+
+（7）使用 **websocket** 协议，这个协议没有同源限制。
+
+WebSocket是HTML5新增的协议，它的目的是在浏览器和服务器之间建立一个不受限的双向通信的通道，比如说，服务器可以在任意时刻发送消息给浏览器。
 
 （8）使用服务器来代理跨域的访问请求，就是有跨域的请求操作时发送请求给后端，让后端代为请求，然后最后将获取的结果发返回。
-```
+
+（9）postMessage()方法
+H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中新增的，那就一定要提到。
