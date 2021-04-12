@@ -22,7 +22,7 @@
   (http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 
   采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
-
+  
   设置在容器上的属性：
     display: flex; 
     flex-direction: row | row-reverse | column | column-reverse;
