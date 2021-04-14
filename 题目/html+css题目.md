@@ -1,10 +1,10 @@
-### block、inline 和 inline-block 的元素有什么差别
+### 1、block、inline 和 inline-block 的元素有什么差别
   inline是内联元素，block是块级元素，inline-block是内联块元素; 
   (1)块级元素会独占一行，而内联元素和内联块元素则会在一行内显示。
   (2)块级元素和内联块元素可以设置 width、height 属性，而内联元素设置无效。
   (3)块级元素的 width 默认为 100%，而内联元素则是根据其自身的内容或子元素来决定其宽度。
 
-### display：flex 下水平垂直居中怎么实现
+### 2、display：flex 下水平垂直居中怎么实现
   水平居中：
     .box{
         display: flex;
@@ -17,7 +17,7 @@
     }
     都居中：justify-content:center; align-items: center;
 
-### flex布局（弹性布局） 
+### 3、flex布局（弹性布局） 
   (https://www.zhangxinxu.com/wordpress/2019/12/css-flex-deep/)
   (http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 
@@ -40,7 +40,7 @@
     flex:是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto;
     align-self: auto | flex-start | flex-end | center | baseline | stretch; //允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
-#### flex: 0 1 auto 表示什么意思
+#### 4、flex: 0 1 auto 表示什么意思
 flex CSS 属性设置的是，flex 元素如何根据其在 flex 容器中的所剩空间来动态拉伸或收缩，它是 flex-grow、flex-shrink、flex-basis 这三个属性的简化版;
 语法格式有单值、双值、三值三种语法格式;
   单值语法：值必须是以下之一：数值 number，那么解释为 flex: number 1 0、none、auto、initial；
@@ -61,26 +61,35 @@ flex属性经常使用的值：
   flex: none
     flex: none 等同于 flex: 0 0 auto。它根据 width 和 height 来调节元素大小，不灵活。
   
-### html行内元素和块级元素有哪些：
+### 5、html行内元素和块级元素有哪些：
   行内元素：最常用的是span，其他还有a abbr b big br em i label
   块级元素：比较有代表性的是div 其余有p h1 h2 h3 h4 h5 h6 table ul li ol header section aside footer dl dd dt form hr pre tbody tfoot th thead tr
 
-### webstorage
+### 6、webstorage （cookie localStorage sessionStorage）
 webstorage是本地存储，存储在客户端，包括localStorage和sessionStorage;
 
 #### localStorage 本地存储
+
 localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
+
 存放数据大小为一般为5M。
-而且它仅在客户端（即浏览器）中保存，不参与和服务器的通信。
+
+仅在客户端（即浏览器）中保存，不参与和服务器的通信。
 
 #### sessionStorage 会话存储
+
 sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除。
+
 存放数据大小为一般为5MB。
-而且它仅在客户端（即浏览器）中保存，不参与和服务器的通信。源生接口可以接受，亦可再次封装来对Object和Array有更好的支持；
+
+仅在客户端（即浏览器）中保存，不参与和服务器的通信。源生接口可以接受，亦可再次封装来对Object和Array有更好的支持；
 
 #### localStorage和sessionStorage作用域的不同
+
 不同浏览器无法共享localStorage或sessionStorage中的信息。
+
 相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），但是不同页面或标签页间无法共享sessionStorage的信息。
+
 这里需要注意的是，页面及标签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
 
 #### webstorage 优点
@@ -119,3 +128,59 @@ localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一
 
 上面几种方式都是存储少量数据的时候的存储方式，当我们需要在本地存储大量数据的时候，我们可以使用浏览器的 indexDB 这是浏
 览器提供的一种本地的数据库存储机制。它不是关系型数据库，它内部采用对象仓库的形式存储数据，它更接近 NoSQL 数据库。
+
+
+### 7、CSS3 新增了哪些特性？
+css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最新标准。
+
+  - 新增了一些选择器；
+  - 新样式：
+      边框：border-radius; box-shadow; border-image;\
+      背景：background-clip; background-origin; background-size; background-break;
+      文字：word-wrap; text-overflow; text-shadow; text-decoration;
+      颜色：rgba; hsla;
+  - transition 过渡
+  - transform 转换: 旋转，缩放，倾斜或平移给定元素;
+  - animation 动画:
+  - 渐变：linear-gradient; radial-gradient;
+  - flex弹性布局 
+  - Grid栅格布局
+
+### 8、iframe
+
+  iframe 元素会创建包含另外一个文档的内联框架（即行内框架）。
+
+  主要缺点：
+  （1） iframe 会阻塞主页面的 onload 事件。window 的 onload 事件需要在所有 iframe 加载完毕后（包含里面的元素）才会触发。
+        在 Safari 和 Chrome 里，通过 JavaScript 动态设置 iframe 的 src 可以避免这种阻塞情况。
+  （2） 搜索引擎的检索程序无法解读这种页面，不利于网页的 SEO 。
+  （3） iframe 和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载。
+  （4） 浏览器的后退按钮失效。
+  （5） 小型的移动设备无法完全显示框架。
+
+### 9、SEO（Search Engine Optimization，搜索引擎优化）
+
+SEO（Search Engine Optimization），搜索引擎优化，是指为了增加网页在搜索引擎自然搜索结果中的收录数量以及提升排序位置而做的优化行为。
+
+- 突出重要内容：
+  - 合理的title、description和keywords;
+  - 语义化书写HTML代码，符合W3C标准;
+  - 利用布局，把重要内容HTML代码放在最前;
+  - 重要内容不要用JS输出;
+  - 尽少使用iframe框架;
+  - 为图片加上alt属性,需要强调的地方可以加上title属性;
+  - 保留文字效果;
+  - 利用CSS截取字符;
+
+- 提升网站速度:
+  - 尽量外链CSS和JS，保证网页代码的整洁，也有利于日后维护;
+  - CSS放在文件头部，JS放在文件尾部，可使用工具对CSS和JS文件进行压缩;
+  - CSS Sprites;
+  - 为图片设置高度和宽度，可提高页面的加载速度;
+  - 为静态资源文件增加过期时间，让用户通过本地缓存来更快的访问网站;
+  - 减少大改版的频率;
+  - 压缩、格式化代码;
+  - 不使用CSS表达式，会影响效率;
+  - 使用CDN网络，可加快用户访问速度;
+  - 启用GZIP压缩，浏览速度变快，搜索引擎的蜘蛛抓取信息量也会增大;
+  - 善于利用浏览器插件;

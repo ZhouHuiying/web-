@@ -906,8 +906,6 @@ event.stopPropagation();
 
 **总结**：事件委托是利用了冒泡机制，减少了事件绑定的次数，减少内存消耗，提高性能。
 
-
-
 ### 跨域 
 
 #### 同源
@@ -1032,3 +1030,60 @@ WebSocket是HTML5新增的协议，它的目的是在浏览器和服务器之间
 
 （9）postMessage()方法
 H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中新增的，那就一定要提到。
+
+### 防抖和节流
+
+#### 滚动条监听的例子
+  (监听浏览器滚动事件，返回当前滚条与顶部的距离)
+  function showTop(){
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    console.log('滚动条位置' + scrollTop);
+    window.onscroll  = showTop;
+  }
+
+#### 防抖 debounce
+  定义：对于短时间内连续触发的事件，防抖的含义就是让某个时间期限内，事件处理函数只执行一次。
+
+  针对上述问题，可以在第一次触发事件时，不立即执行函数，而是给出一个期限值比如200ms，然后：
+    如果在200ms内没有再次触发滚动事件，那么就执行函数
+    如果在200ms内再次触发滚动事件，那么当前的计时取消，重新开始计时
+    
+  function debounce(fn,delay){
+      let timer = null //借助闭包
+      return function() {
+          if(timer){
+              clearTimeout(timer) 
+          }
+          timer = setTimeout(fn,delay) // 简化写法
+      }
+  }
+  function showTop  () {
+      var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+  　　console.log('滚动条位置：' + scrollTop);
+  }
+  window.onscroll = debounce(showTop,1000) // 为了方便观察效果我们取个大点的间断值，实际使用根据需要来配置
+
+#### 节流 throttle
+  设计一种类似控制阀门一样定期开放的函数，也就是让函数执行一次后，在某个时间段内暂时失效，过了这段时间后再重新激活；
+  效果：如果短时间内大量触发同一事件，那么在函数执行一次之后，该函数在指定的时间期限内不再工作，直至过了这段时间才重新生效。
+
+  function throttle(fn,delay){
+    let valid = true
+    return function() {
+      if(!valid){
+          //休息时间 暂不接客
+          return false 
+      }
+      // 工作时间，执行函数并且在间隔期内把状态位设为无效
+        valid = false
+        setTimeout(() => {
+            fn()
+            valid = true;
+        }, delay)
+    }
+  }
+
+#### 应用
+  搜索框input实时搜索；
+  页面resize(防抖)；
+
