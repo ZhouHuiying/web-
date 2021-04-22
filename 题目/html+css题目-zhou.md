@@ -113,7 +113,7 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
 
 作用：主要用于保存登录信息；
 
-#### cookies，sessionStorage 和 localStorage 的区别
+#### cookies，sessionStorage 和 localStorage 的区别？
 浏览器端常用的存储技术是 cookie 、localStorage 和 sessionStorage。
 
 cookie 其实最开始是服务器端用于记录用户状态的一种方式，由服务器设置，在客户端存储，然后每次发起同源请求时，发送给服
@@ -161,6 +161,27 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
 ### 9、SEO（Search Engine Optimization，搜索引擎优化）
 
 SEO（Search Engine Optimization），搜索引擎优化，是指为了增加网页在搜索引擎自然搜索结果中的收录数量以及提升排序位置而做的优化行为。
+ 
+ ```
+    （1）合理的 title、description、keywords：搜索对着三项的权重逐个减小，title 值强调重点即可，重要关键词出现不要超
+        过2次，而且要靠前，不同页面 title 要有所不同；description 把页面内容高度概括，长度合适，不可过分堆砌关键词，不
+        同页面 description 有所不同；keywords 列举出重要关键词即可。
+
+    （2）语义化的 HTML 代码，符合 W3C 规范：语义化代码让搜索引擎容易理解网页。
+
+    （3）重要内容 HTML 代码放在最前：搜索引擎抓取 HTML 顺序是从上到下，有的搜索引擎对抓取长度有限制，保证重要内容肯定被
+        抓取。
+ 
+    （4）重要内容不要用 js 输出：爬虫不会执行 js 获取内容
+
+    （5）少用 iframe：搜索引擎不会抓取 iframe 中的内容
+
+    （6）非装饰性图片必须加 alt
+
+    （7）提高网站速度：网站速度是搜索引擎排序的一个重要指标
+   ```
+   
+   <!-- --- -->
 
 - 突出重要内容：
   - 合理的title、description和keywords;

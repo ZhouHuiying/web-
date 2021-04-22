@@ -663,12 +663,12 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
   ，把任意三条边隐藏掉（颜色设为
   transparent），剩下的就是一个三角形。
   #demo {
-  width: 0;
-  height: 0;
-  border-width: 20px;
-  border-style: solid;
-  border-color: transparent transparent red transparent;
-}
+    width: 0;
+    height: 0;
+    border-width: 20px;
+    border-style: solid;
+    border-color: transparent transparent red transparent;
+  }
 ```
 
 #### 15.一个满屏品字布局如何设计?
@@ -832,9 +832,9 @@ table{border-collapse:collapse;border-spacing:0;}
 
 在不同浏览器下的区别：
 
-在谷歌浏览器里，使用collapse值和使用hidden值没有什么区别。
+  在谷歌浏览器里，使用collapse值和使用hidden值没有什么区别。
 
-在火狐浏览器、Opera和IE11里，使用collapse值的效果就如它的字面意思：table的行会消失，它的下面一行会补充它的位
+  在火狐浏览器、Opera和IE11里，使用collapse值的效果就如它的字面意思：table的行会消失，它的下面一行会补充它的位
 置。
 
 ```
@@ -847,9 +847,9 @@ table{border-collapse:collapse;border-spacing:0;}
 ```
 一般而言
 
-width:100%会使元素box的宽度等于父元素的content box的宽度。
-
-width:auto会使元素撑满整个父元素，margin、border、padding、content区域会自动分配水平空间。
+width:100% 会使元素box的宽度等于父元素的content box的宽度。
+ 
+width:auto 会使元素撑满整个父元素，margin、border、padding、content区域会自动分配水平空间。
 ```
 
 #### 23.绝对定位元素与非绝对定位元素的百分比计算的区别
@@ -875,7 +875,7 @@ url属性。
 （1）根据base64的编码原理，编码后的大小会比原文件大小大1/3，如果把大图片编码到html/css中，不仅会造成文件体
 积的增加，影响文件的加载速度，还会增加浏览器对html或css文件解析渲染的时间。
 
-（2）使用base64无法直接缓存，要缓存只能缓存包含base64的文件，比如HTML或者CSS，这相比域直接缓存图片的效果要
+（2）使用base64无法直接缓存，要缓存只能缓存包含base64的文件，比如HTML或者CSS，这相比于直接缓存图片的效果要
 差很多。
 
 （3）兼容性的问题，ie8以前的浏览器不支持。
@@ -2642,3 +2642,18 @@ body {
 
 元素的 font-size，基准为父元素字体
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

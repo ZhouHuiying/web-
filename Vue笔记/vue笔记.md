@@ -140,7 +140,6 @@ data:数据对象
     
     eg. set(list, "flag", !flag)
 
-    
 
 ### Vue3
     ref: ref将给定的值创建一个响应式的数据对象并赋值初始值（int或者string）;
