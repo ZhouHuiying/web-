@@ -205,3 +205,20 @@ SEO（Search Engine Optimization），搜索引擎优化，是指为了增加网
   - 使用CDN网络，可加快用户访问速度;
   - 启用GZIP压缩，浏览速度变快，搜索引擎的蜘蛛抓取信息量也会增大;
   - 善于利用浏览器插件;
+
+### 10、svg图中的元素
+
+  矩形 <rect>
+  圆形 <circle>
+  椭圆 <ellipse>
+  线 <line>
+  折线 <polyline>
+  多边形 <polygon>
+  路径 <path>
+  文本 <text>
+
+  Stroke属性
+  模糊效果
+  阴影
+  渐变 - 线性
+  渐变 - 放射性
