@@ -36,10 +36,10 @@ vuex的主要核心概念如下：State Mutation Action Getter
 #### State
 State提供唯一的公共数据源，所有共享的数据都要统一放到Store的State中进行存储
 
-组件访问State中数据的第一种方式：
+- 组件访问State中数据的第一种方式：
     this.$store.state.全局数据名称
 
-组件访问State中数据的第二种方式：
+- 组件访问State中数据的第二种方式：
    从vuex中按需导入mapState函数
     import {mapState} from 'vuex'
  通过刚才的mapState函数，将当前组件需要的全局数据，映射为当前组件的computed计算属性
@@ -51,10 +51,10 @@ State提供唯一的公共数据源，所有共享的数据都要统一放到Sto
 Mutation用于变更Store中的数据。
 只能通过Mutation变更Store数据，不可以直接操作Store数据，通过这种方式可以集中监控所有数据的变化。
 
-组件触发Mutation中数据的第一种方式：
+- 组件触发Mutation中数据的第一种方式：
   this.$store.commit('add')
 
-组件触发Mutation中数据的第二种方式：
+- 组件触发Mutation中数据的第二种方式：
  从vuex中按需导入mapMutation函数
     import {mapMutation} from 'vuex'
  通过刚才的mapMutation函数，将当前组件需要的mapMutation函数，映射为当前组件的methods方法

@@ -201,7 +201,7 @@ import store from './store'
 
 v-if(判断是否隐藏)、v-for(把数据遍历出来)、v-bind(绑定属性)、v-model(实现双向绑定)
 
-## vuex 相关
+## 12、vuex 相关
 
 ### vuex 有哪几种属性
 
@@ -262,10 +262,27 @@ Vuex 中修改 state 的唯一渠道就是执行 commit('xx', payload) 方法，
 
 devtoolPlugin 中提供了此功能。因为 dev 模式下所有的 state change 都会被记录下来，'时空穿梭' 功能其实就是将当前的 state 替换为记录中某个时刻的 state 状态，利用 store.replaceState(targetState) 方法将执行 this.\_vm.state = state 实现。
 
-## axios
-
-### axios 是什么？怎么使用？描述使用它实现登录功能的流程
+## 13、axios
 
 axios 是请求后台资源的模块。 npm i axios -S
 
 如果发送的是跨域请求，需在配置文件中 config/index.js 进行配置
+
+## 14、vue项目结构及各部分的作用
+
+- main.ts: 
+    main.js主要是引入vue框架，根组件及路由设置，并且定义vue实例。
+
+    程序的入口；这里面调用了App这个组件，也就是说App组件对整个项目来说，为最上级的父组件。
+
+- App.vue: 
+    一个vue页面通常由三部分组成:模板(template)、js(script)、样式(style)
+
+    (1) template
+    其中模板只能包含一个父节点，<router-view/>为<router-view></router-view>的简写，是子路由视图，后面的路由页面都显示在此处。
+
+    (2) script
+    vue通常用es6来写，用export default导出，其下面可以包含数据data，生命周期(mounted等)，方法(methods)等。
+
+    (3) style
+    样式通过style标签<style></style>包裹，默认是影响全局的，如需定义作用域只在该组件下起作用，需在标签上加scoped，<style scoped></style>
