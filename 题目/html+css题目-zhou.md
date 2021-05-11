@@ -146,6 +146,11 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
   - flex弹性布局 
   - Grid栅格布局
 
+  animation：用于设置动画属性，他是一个简写的属性，包含6个属性；
+  transition：用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同
+  transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系
+  translate：translate只是transform的一个属性值，即移动，除此之外还有 scale 等；
+
 ### 8、iframe
 
   iframe 元素会创建包含另外一个文档的内联框架（即行内框架）。
@@ -222,3 +227,24 @@ SEO（Search Engine Optimization），搜索引擎优化，是指为了增加网
   阴影
   渐变 - 线性
   渐变 - 放射性
+
+### 11、visibility、display和 opacity 的差别？
+
+- visibility 设置 hidden 会隐藏元素，但是其位置还存在与页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘；
+
+- display 设置了 none 属性会隐藏元素，且其位置也不会被保留下来，所以会触发浏览器渲染引擎的回流和重绘。
+
+- opacity 会将元素设置为透明，但是其位置也在页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘。
+
+
+### 12、position属性？
+
+static：无特殊定位，对象遵循正常文档流。top，right，bottom，left等属性不会被应用。
+
+relative：对象遵循正常文档流，但将依据top，right，bottom，left等属性在正常文档流中偏移位置。而其层叠通过z-index属性定义。
+
+absolute：对象脱离正常文档流，使用top，right，bottom，left等属性进行绝对定位。而其层叠通过z-index属性定义。
+
+fixed：对象脱离正常文档流，使用top，right，bottom，left等属性以窗口为参考点进行定位，当出现滚动条时，对象不会随着滚动。而其层叠通过z-index属性定义。
+
+sticky：具体是类似 relative 和 fixed，在 viewport 视口滚动到阈值之前应用 relative，滚动到阈值之后应用 fixed 布局，由 top 决定。
