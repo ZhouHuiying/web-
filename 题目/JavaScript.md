@@ -3308,7 +3308,7 @@ mixins 应该是我们最常使用的扩展组件的方式了。如果多个组�
 
 详细资料可以参考：
 [《常用的几种 Content-Type》](https://honglu.me/2015/07/13/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%A0%E7%A7%8DContent-Type/)
-
+ 
 #### 158. 如何封装一个 javascript 的类型判断函数？
 
 ```js
