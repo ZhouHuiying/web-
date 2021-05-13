@@ -1,5 +1,7 @@
 ### 定义
 
+vue 框架中状态管理。在 main.js 引入 store，注入。新建了一个目录 store，….. export 。场景有：单页应用中，组件之间的状态。音乐播放、登录状态、加入购物车
+
 vuex:可以集中管理共享的数据；可以高效实现组件之间的数据共享；
 存储在vuex中的数据都是响应式的，能够实时保持数据与页面的同步
 
@@ -7,6 +9,20 @@ vuex:可以集中管理共享的数据；可以高效实现组件之间的数据
 组件中的私有数据，依旧存储在自身的data即可。
 
 ### 基本使用
+
+```js
+// 新建 store.js
+import vue from 'vue'
+import vuex form 'vuex'
+vue.use(vuex)
+export default new vuex.store({
+	//...code
+})
+
+//main.js
+import store from './store'
+...
+```
 
 1）安装vuex
 

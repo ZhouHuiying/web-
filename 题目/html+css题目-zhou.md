@@ -230,6 +230,8 @@ SEO（Search Engine Optimization），搜索引擎优化，是指为了增加网
 
 ### 11、visibility、display和 opacity 的差别？
 
+区别： (/image/display-visibility-opacity.jpg)
+
 - visibility 设置 hidden 会隐藏元素，但是其位置还存在与页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘；
 
 - display 设置了 none 属性会隐藏元素，且其位置也不会被保留下来，所以会触发浏览器渲染引擎的回流和重绘。
