@@ -95,7 +95,7 @@ console.log(JSON.stringify(son1));
 {"myName":"千古壹号","myAge":28}
 ```
 
-## apply() 方法
+## apply() 方法 
 
 ### apply() 方法的作用
 

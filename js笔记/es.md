@@ -112,11 +112,41 @@
 
 ### ES6:
 (1)ES6解构赋值交换变量的值:
+    - 数组的解构赋值：
         let x = 1;
         let y = 2;
         [x, y] = [y, x];
         console.log(x);//2
         console.log(y);//1
+    
+    - 对象的解构赋值：
+        let { foo, bar } = { foo: 'aaa', bar: 'bbb' };
+        foo // "aaa"
+        bar // "bbb"
+
+    对象的解构与数组有一个重要的不同。数组的元素是按次序排列的，变量的取值由它的位置决定；而对象的属性没有次序，变量必须与属性同名，才能取到正确的值。
+
+    - 字符串解构赋值：字符串也可以解构赋值。这是因为此时，字符串被转换成了一个类似数组的对象。
+        const [a, b, c, d, e] = 'hello';
+        a // "h"
+        b // "e"
+        c // "l"
+        d // "l"
+        e // "o"
+
+    - 数值和布尔值的解构赋值：解构赋值时，如果等号右边是数值和布尔值，则会先转为对象。
+    let {toString: s} = 123;
+    s === Number.prototype.toString // true
+
+    let {toString: s} = true;
+    s === Boolean.prototype.toString // true
+
+    - 函数参数的解构赋值
+    function add([x, y]){
+        return x + y;
+    }
+
+    add([1, 2]); // 3
 
 (2)set map
     set:

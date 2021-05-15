@@ -567,13 +567,6 @@ ES5 继承和 ES6 继承的区别、ES6 中的继承有什么好处、js 为什�
 
 （6）第六种方式是寄生式组合继承，组合继承的缺点就是使用超类型的实例做为子类型的原型，导致添加了不必要的原型属性。寄生式组合继承的方式是使用超类型的原型的副本来作为子类型的原型，这样就避免了创建不必要的属性。
 
-#### call() apply() bind()
-  允许一个对象调用另一个对象的方法；
-  apply 、 call 、bind 三者都是用来改变函数的this对象的指向的；
-  apply 、 call 、bind 三者第一个参数都是this要指向的对象，也就是想指定的上下文；
-  apply 、 call 、bind 三者都可以利用后续参数传参；
-  bind是返回对应函数，便于稍后调用；apply、call则是立即调用 。
-
 ### 深拷贝和浅拷贝
 
 #### 概念
@@ -1104,3 +1097,73 @@ H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中
 - async：中文意思是异步，这个属性与defer类似，都用于改变处理脚本的行为。同样与defer类似，async只适用于外部脚本文件，并告诉浏览器立即下载文件。
 但与defer不同的是，标记为async的脚本并不保证按照它们的先后顺序执行。
 指定async属性的目的是不让页面等待两个脚本下载和执行，从而异步加载页面其他内容,这使用于之间互不依赖的各脚本。
+
+
+### call() apply() bind()
+
+#### 共同点
+  允许一个对象调用另一个对象的方法；
+  apply 、 call 、bind 三者都是用来改变函数的this对象的指向的；
+  apply 、 call 、bind 三者第一个参数都是this要指向的对象，也就是想指定的上下文；
+  apply 、 call 、bind 三者都可以利用后续参数传参；
+
+#### 不同点
+  bind是返回对应函数，便于稍后调用；apply、call则是立即调用 。
+  call 立即调用，需要把参数按顺序传递进去。
+  apply 立即调用，把参数放在数组里。例如：func.apply(this, [arg1, arg2])。
+
+区别是，当你希望改变上下文环境之后并非立即执行，而是回调执行的时候，使用 bind() 方法。而 apply/call 则会立即执行函数。
+
+#### bind
+
+```
+  this.height = '155';    // 在浏览器中，this 指向全局的 "window" 对象
+
+  let user = {
+    height: '170',
+    getHeight: function() { return this.height; }
+  };
+
+  // 自身调用
+  user.getHeight(); //user调用getX，此时getX里的this指的是user
+  console.log(user.getHeight()); // '170'
+
+
+  // 赋值调用
+  let tianZhen = user.getHeight; //  相当于  tianZhen = function() { return this.height; }
+  tianZhen(); // tianZhen函数是在全局作用域中调用的，相当于window.tianZhen()，此时tianZhen = function() { return this.height; }里的this指window
+  console.log(tianZhen()); // '155'
+
+  // 赋值绑定调用
+  let bindGetH = tianZhen.bind(user); // 把 'this' 绑定到 user 对象，此时bindGetH未立即执行。相当于 tianZhen = function() { return user.height; }
+  bindGetH(); //  即使在全局作用域直接调用，window.tianZhen()。function() { return user.height; }，得到user里的height
+  console.log(bindGetH()); // '170'
+
+```
+
+- bind的连续调用
+
+在Javascript中，多次 bind() 是无效的。
+
+```
+let foo = { x: 3 };
+let sed = { x: 4 };
+let fiv = { x: 5 };
+let bar = function(){
+   console.log(this.x);
+}
+bar(); // undefined
+
+let func = bar.bind(foo);  //这里我们创建了一个新的函数 func，当使用 bind() 创建一个绑定函数之后，它被执行的时候，它的 this 会被设置成 foo ， 而不是像我们调用 bar() 时的全局作用域。
+func(); // 3
+
+let func1 = bar.bind(foo).bind(sed);  
+func(); // 3
+
+let func2 = bar.bind(foo).bind(sed).bind(fiv);
+func2(); // 3
+
+```
+
+#### call apply
+ call 和 apply 是为了动态改变 this 而出现的，当一个 object 没有某个方法，但是其他的有，我们可以借助call或apply用其它对象的方法来操作。

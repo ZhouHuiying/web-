@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./reset.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="container">
+    <ul style="--top: 0px" class="animation">
+      <li class="item">滚动轮播图1</li>
+      <li class="item">滚动轮播图2</li>
+      <li class="item">滚动轮播图3</li>
+      <li class="item">滚动轮播图4</li>
+      <li class="item">滚动轮播图5</li>
+      <li class="item">滚动轮播图1</li>
+    </ul>
+  </div>
+</body>
+  <script>
+    let ul = document.getElementsByTagName('ul')[0]
+    const LEN = document.getElementsByTagName('li').length
+    let distance = 0
+    const HEIGHT = 50
+    
+    setInterval(() => {
+      if (distance < (LEN - 1) * HEIGHT) {
+        distance += HEIGHT
+        ul.setAttribute('class', 'animation')
+      } else {
+        distance = 0
+        ul.removeAttribute('class', 'animation')
+      }
+      ul.style.setProperty('--top', `${-distance}px`)
+    }, 2000)
+  </script>
+</html>
