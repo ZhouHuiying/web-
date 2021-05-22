@@ -1,25 +1,29 @@
-### VUE:
+## VUE
 
+### new Vue
 el:挂载点  建议使用ID选择器 可以使用其他标签 不要使用HTML
 data:数据对象 
 
 示例：
     <div id="app">     
-        </div>
+    </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+    var app = new Vue({
+        el: '#app',  
+        data: {},
+        methods:{}
+    })  
+    </script>
 
-        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-        <script>
-        var app = new Vue({
-            el: '#app',  
-            data: {
-            },
-            methods:{
-
-            }
-            })  
-        </script>
+    const vm = new Vue({
+        router,  
+        render: (h) => h(App),
+    });
+    // 可用于延迟加载
+    vm.$mount('#app');
+    //构造函数 Vue,new Vue() 后会返回一个vue实例对象，用变量等于该对象 const vm = new Vue()，传递一个配置对象{} – > const vm = new Vue({});
 
 ### Vue指令：
     v-text:设置文本
