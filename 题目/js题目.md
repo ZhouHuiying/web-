@@ -168,8 +168,14 @@ eg.
   优点：可以利用 then 方法，进行链式写法；(可以把原本的多层嵌套调用改进为链式调用**)可以书写错误时的回调函数；可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数。此外，Promise 对象提供统一的接口，使得控制异步操作更加容易。
   缺点：编写和理解，相对比较难
 
-#### Generator 函数:
+#### Generator 函数
+
+##### 介紹
   generator（生成器）是ES6标准引入的新的数据类型。一个generator看上去像一个函数，但可以返回多次。
+
+   Generator函数是ES6提供的一种 异步编程解决方案,Generator函数是分段执行的，**yield**表达式是**暂停执行**的标记，而**next方法**可以**恢复执行**
+
+   Generator函数是一个状态机，封装了多个内部状态。执行Generator 函数会返回一个遍历器对象，可以依次遍历Generator函数内部的每个状态。
   eg.
     function* fib(max) {
       var
@@ -186,6 +192,33 @@ eg.
     }
   优点：函数体内外的数据交换、错误处理机制
   缺点：流程管理不方便
+
+##### Generator与普通函数的区别
+
+- 【不执行】调用Generator函数后，该函数并不执行;
+- 【返回指针】返回的是一个指向内部状态的指针对象，而不是函数运行结果（遍历器对象 Iterator Object）;
+- 【继续运行】必须调用遍历器对象的next方法，使得指针移向下一个状态，每次调用next方法，就继续执行，直到遇到下一个yield表达式(或return语句）为止。
+
+Generator API：
+- next():  返回一个由yield 表达式生成的值  
+- return():  返回给定的值并结束生成器 
+- throw():  向生成器抛出一个错误
+
+eg.
+  ```js
+  function* helloWorldGenerator(){
+    yield 'hello';   //遇到yield 暂停执行
+    yield 'world';
+    return 'ending';
+  }
+
+  let hw = helloWorldGenerator();  //调用不执行函数，只是返回一个遍历器对象
+  hw.next();  //{value:'hello',done:false}  调用next方法继续执行，直到遇到yield或return表达式
+  hw.next(); //{value:'world',done:false}
+  hw.next(); //{value:'ending',done:true}
+  hw.next(); //{value:undefind,donw:true}  
+
+  ```
 
 #### async 函数
   async 函数，使得异步操作变得更加方便。
@@ -236,10 +269,28 @@ js 中的异步机制可以分为以下几种：
 
 ### es6新特性
 
-- set map
-- async await
-- 箭头函数
-- 模板字符串
+- let,const： 变量，常量
+- 变量的解构赋值：
+- promise：处理异步
+- 字符串扩展： for..of字符串遍历接口，repeat将一个新字符串重量N次，模板字符串$(baseUrl)
+- 数值扩展：math.trunc()去掉小数部分，sign判断一个数是正/负/零，指数运算符**，
+- 函数扩展：箭头函数（不绑定自己的this）
+- 数组扩展：填充数组(fill),复制数据const a2=[...a1]
+- 对象扩展：
+- 正则的扩展：
+- 增加async函数： 对异步的处理
+
+#### ES6模块与CommonJs 模块有什么区别?
+
+- require: 输出的是一个值的浅拷贝对象，import输出的是一个值 的引用（即es6 module 只存只读，不能改变其值，具体点就是指针指向不能变，类似const）
+- require是动态引入，import是静态加载了；动态引入的方式，引入的对象可以是一个变量，或者能通过计算出来的地址
+- require是同步加载模块，import命令是异步加载，require有一个独立的模块依赖的解析阶段
+
+#### AMD和CMD区别
+
+- AMD: 异步, 依赖前置，提前执行（在模块定义的时候就要引入）;
+
+- CMD: 异步, 依赖就近，延迟执行（用到的时候才引入）;
 
 #### set:
   Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没有重复的值
@@ -305,6 +356,25 @@ js 中的异步机制可以分为以下几种：
             map.set(item,map.has(item) ? map.get(item)+1 : 1);
         }
 
+#### map和Objects区别
+
+  - **【key值类型】**
+    - Map：key可以是对象
+    - Objects: key只能是一个string 或是 symbol
+  - **【键的顺序】**
+    - Map: 有序
+    - Objects: 无序
+  - **【size】**
+    - -Map: 增加size属性，直接获取
+    - Objects: 只能依靠手动计算
+  - **【键名冲突】**
+    - Map: 默认不包含任何键，只包含显式插入的键
+    - Object: object都有自己的原型，原型链上的键名有可能和你自己对象上的设置的键名产生冲突 （ES5开始可用Object.create(null)来创建一个没原原型的对象，但这种用法不常见）
+  - **【性能】**
+    - Map: 在频繁增删键值对的场景下表现更好
+    - Object: 在频繁添加/删除键值对的场景下未作出优化
+
+
 #### 模板字符串
 模板字符串（template string）是增强版的字符串，用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
 
@@ -333,6 +403,8 @@ js 中的异步机制可以分为以下几种：
 
   箭头函数可以让函数写起来更简洁优雅。还有一个很大的作用是与 this 的指向有关。
     ES6 的箭头函数中：**箭头函数本身不绑定 this**，this 指向的是**箭头函数定义位置的 this**（也就是说，箭头函数在哪个位置定义的，this 就跟这个位置的 this 指向相同）。
+    
+    不能使用call方法修改里面的this (原因：函数的this可以用call方法来手动指定，而为了减少this的复杂性，箭头函数无法用call方法来指定this)
 
   (!!!)
     所有的引用类型都有__ proto __属性;
@@ -529,7 +601,11 @@ ES5 中只存在两种作用域：全局作用域和函数作用域。在 JavaSc
   函数当做参数传递;
 
 ### 对象
+
 #### js创建对象的几种方式
+
+(字面量，构造函数，Object.create)
+
 我们一般使用字面量的形式直接创建对象，但是这种创建方式对于创建大量相似对象的时候，会产生大量的重复代码。但 js
 和一般的面向对象的语言不同，在 ES6 之前它没有类的概念。但是我们可以使用函数来进行模拟，从而产生出可复用的对象
 创建方式，我了解到的方式有这么几种：
@@ -1167,3 +1243,119 @@ func2(); // 3
 
 #### call apply
  call 和 apply 是为了动态改变 this 而出现的，当一个 object 没有某个方法，但是其他的有，我们可以借助call或apply用其它对象的方法来操作。
+
+
+### 什么是严格模式(use strict)？
+
+#### 特点
+
+- 【严谨】对语法要求更规范，消除js语法的一些不合理、不严谨之处，减少一些怪异行为
+- 【安全】消除代码运行的一些不安全之处
+- 【高效】提高编译器效率，增加运行速度
+- 【扩展性】为未来新版本js做好铺垫
+
+调用方式：在代码最前面添加一行代码（"use strice";）
+- 针对整个脚本文件
+- 针对单个函数
+
+
+改变：
+  - 全局变量显式声明：不能省略 var/const/let 关键词
+  - 静态绑定：让属性和方法在编译阶段就确定指向哪个对象
+    - 禁止使用with语句
+    - 创设eval作用域
+  - 增强字全措施：
+    - 禁止this 指向全局对象
+    - 禁止在函数内部遍历调用栈
+  - 禁止删除变量（除非configurable 属性为true）
+  - 显式报错：
+    - 只读属性赋值
+    - 对禁止扩展的对象添加新属性: 
+    - 删除一个不可删除的属性： delete  object.prototype
+  - 重名错误
+  - 对象不能重名的属性（之前是覆盖）
+  - 函数不能有重名的参数
+  - 禁止八进制表示法
+  - arguments对象的限制：arguments是函数的参数，对它的使用做了限制
+    - 不允许对arguments赋值
+    - arguments 不再追踪参数的变化
+    - 禁止使用arguments.callee:  无法在匿名函数内部调用自身
+  - 函数必须声明在顶层：不允许在非函数的代码块内声明函数（比如if,for），只允许在全局作用域或函数作用域的顶层声明函数
+  - 保留字：新增了一些保留字，向将来js新版本过渡
+    - let ,private,public,static ,package,yield,interface,protected,implements
+
+### js的装饰器
+
+#### 介绍
+
+> Decorator 就是一种动态地往一个类中添加新的行为的设计模式，它可以在类时，扩展一个类的功能，并且 去修改类本身的属性和方法，使其可以在不同类之间更灵活的共用一些属性和方法；
+
+> 修饰模式（Decortaor），是面向对象编程领域中，一种动态地往一个类中添加新的行为的设计模式。修饰模式相比生成子类更加灵活，这样可以给某个对象而不是整个类添加一些功能；
+
+#### 用法
+
+(1) 装饰类
+
+```js
+@FooDecorator
+class Foo {
+
+}
+
+function FooDecorator(target){
+    // target 就是这个 class 的原型对象
+}
+```
+
+(2) 装饰属性
+
+```js
+//给MyClass 所有实例的  getType 属性设置为仅为可读不可更改的属性 readonly
+class MyClass {
+	constructor(){
+		this.type="myClass"
+	}
+	@readonly
+	getType(){
+		return this.type
+	}
+}
+
+function readonly(target, key, discriptor){
+	discriptor.writable = false
+	return discriptor
+}
+```
+
+(3)多个装饰器
+
+```js
+class MyClass {
+	constructor(){
+		this.type="myClass"
+	}
+	@readonly
+	@logHello
+	getType(){
+		return this.type
+	}
+}
+
+//装饰器让类的getType方法不可更改
+function readonly(target, key, discriptor){
+	discriptor.writable = false
+	return discriptor
+}
+
+//让每次调用类中的getType方法会在控制台输出 hello
+function logHello(target, key, discriptor){
+	const oldFn = target[key]
+    target[key] = function(...rest){
+        console.log('Hello')
+        return oldFn.call(this,...rest)
+    }
+    return target
+}
+```
+
+

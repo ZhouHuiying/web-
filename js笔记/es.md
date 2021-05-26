@@ -207,6 +207,7 @@
                 map.forEach(function(value, key, map) {
                    console.log("Key: %s, Value: %s", key, value);
                 });
+                
         eg. 遍历数组，将数组中每个元素出现的次数存储在map的value中。
             let map = new Map();
             for(item of deck){
