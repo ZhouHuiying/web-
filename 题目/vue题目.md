@@ -92,6 +92,15 @@ renderTriggered	 onRenderTriggered
   
   deactivated keep-alive 专属，组件被销毁时调用
 
+#### 谈谈你对 keep-alive 的了解？
+
+keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，避免重新渲染 ，其有以下特性：
+
+- 一般结合路由和动态组件一起使用，用于缓存组件；
+- 提供 include 和 exclude 属性，两者都支持字符串或正则表达式， include 表示只有名称匹配的组件会被缓存，exclude 表示任何名称匹配的组件都不会被缓存 ，其中 exclude 的优先级比 include 高；
+- 对应两个钩子函数 activated 和 deactivated ，当组件被激活时，触发钩子函数 activated，当组件被移除时，触发钩子函数 deactivated。
+
+
 #### 异步请求在哪一步发起？
   可以在钩子函数 created、beforeMount、mounted 中进行异步请求，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
 
@@ -121,6 +130,7 @@ renderTriggered	 onRenderTriggered
 
 - 销毁过程
   父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
+
 ### 3、双向绑定原理（响应式数据的原理）
 
 vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Object.defineProperty()来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
@@ -156,9 +166,31 @@ vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Ob
     2.实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。
     3.实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。
 
-#### Vue 如何检测数组变化？
   数组考虑性能原因没有用 defineProperty 对数组的每一项进行拦截，而是选择对 7 种数组（push,shift,pop,splice,unshift,sort,reverse）方法进行重写(AOP 切片思想)
   所以在 Vue 中修改数组的索引和长度是无法监控到的。需要通过以上 7 种变异方法修改数组才会触发数组对应的 watcher 进行更新
+
+#### Vue 框架怎么实现对象和数组的监听？
+
+如果被问到 Vue 怎么实现数据双向绑定，大家肯定都会回答 通过 Object.defineProperty() 对数据进行劫持，但是  Object.defineProperty() 只能对属性进行数据劫持，不能对整个对象进行劫持，同理无法对数组进行劫持，但是我们在使用 Vue 框架中都知道，Vue 能检测到对象和数组（部分方法的操作）的变化，那它是怎么实现的呢？我们查看相关代码如下：
+
+```
+  /**
+   * Observe a list of Array items.
+   */
+  observeArray (items: Array<any>) {
+    for (let i = 0, l = items.length; i < l; i++) {
+      observe(items[i])  // observe 功能为监测数据的变化
+    }
+  }
+
+  /**
+   * 对属性进行递归遍历
+   */
+  let childOb = !shallow && observe(val) // observe 功能为监测数据的变化
+
+```
+通过以上 Vue 源码部分查看，我们就能知道 Vue 框架是通过遍历数组 和递归遍历对象，从而达到利用  Object.defineProperty() 也能对对象和数组（部分方法的操作）进行监听。
+
 
 #### vue3.xx：
 
@@ -543,3 +575,6 @@ const Foo = {
 ### 20、Vue3
 
 vue-composition 提供了类似 React Hook 的能力，将 Vue 的抽象层级从「组件级（Component）」降低为「函数级（Function）」。
+
+
+
