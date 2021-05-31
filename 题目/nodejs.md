@@ -197,3 +197,73 @@ Electron 框架就是基于 Node.js 的。也可以说：Electron 是 Node.js �
     依赖就近，延迟执行：require(./a) 直接引入。或者Require.async 异步引入。   //依赖就近：执行到这一部分的时候，再去加载对应的文件。
 
     define 定义模块， export 导出：define(function(require, export, module){});
+
+#### ES6
+
+暴露模块的方式：
+
+（1）采用分别暴露的方式
+  ```javascript
+  //暴露模块：采用分别暴露的方式
+
+  export function foo1() {
+      console.log('我是 module1 中的 foo1');
+  }
+
+  export function foo2() {
+      console.log('我是 module2 中的 foo2');
+  }
+
+  export let arr = [1, 2, 3, 4, 5];
+  ```
+
+（2）采用统一暴露的方式
+  ```javascript
+  //暴露模块：采用统一暴露的方式
+
+  function fn1() {
+      console.log('我是 module2 中的 fn1');
+  }
+
+  function fn2() {
+      console.log('我是 module2 中的 fn2');
+  }
+
+  //统一暴露
+  export { fn1, fn2 };
+  ```
+
+（3）采用默认暴露的方式
+```javascript
+//暴露模块：采用默认暴露的方式。
+//默认暴露的方式可以暴露任意数据类型，暴露的是什么数据，接收到的就是什么数据
+
+//语法格式：export default value;
+export default () => {
+    console.log('我是 module3 中 default 方式暴露的函数');
+};
+```
+
+```javascript
+//暴露模块：采用默认暴露的方式。
+//默认暴露的方式可以暴露任意数据类型，暴露的是什么数据，接收到的就是什么数据
+
+//语法格式：export default value;
+export default {
+    name: '我是 module4 中 default 方式暴露的属性 name',
+    foo() {
+        console.log('我是 module4 中 default 方式暴露的函数 foo');
+    }
+}
+```
+default:只能写一次 default，也就是说，只能进行一次默认暴露。
+
+### express
+
+mdn:https://developer.mozilla.org/zh-CN/docs/Learn/Server-side/Express_Nodejs/Introduction
+
+Express 应用的结构 (路由处理器、中间件、错误处理和模板代码)
+
+安装 Express 应用生成器：
+  npm install express-generator -g
+  express helloworld 
