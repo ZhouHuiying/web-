@@ -144,7 +144,7 @@
    ```
    块级元素占据其父元素（容器）的整个宽度，因此创建了一个“块”。
 
-   常见的块级元素有  div ul ol li dl dt dd h1 h2 h3 h4 h5 h6 p 
+   常见的块级元素有 比较有代表性的是div 其余有p h1 h2 h3 h4 h5 h6 table ul li ol header section aside footer dl dd dt form hr pre tbody tfoot th thead tr
    ```
 
 
@@ -556,7 +556,7 @@
     （7）提高网站速度：网站速度是搜索引擎排序的一个重要指标
    ```
 
-   - 突出重要内容：
+- 突出重要内容：
   - 合理的title、description和keywords;
   - 语义化书写HTML代码，符合W3C标准;
   - 利用布局，把重要内容HTML代码放在最前;
@@ -663,7 +663,7 @@
 
 #### 36. 请描述一下 cookies，sessionStorage 和 localStorage 的区别？
 
-   相关资料：
+相关资料：
    ```
     SessionStorage， LocalStorage， Cookie 这三者都可以被用来在浏览器端存储数据，而且都是字符串类型的键值对。区别
     在于前两者属于 HTML5 WebStorage，创建它们的目的便于客户端存储数据。而 cookie 是网站为了标示用户身份而储存在用户
@@ -709,7 +709,7 @@
    [《请描述一下 cookies，sessionStorage 和 localStorage 的区别？》](https://segmentfault.com/a/1190000017423117)
    [《浏览器数据库 IndexedDB 入门教程》](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)
 
-#### webstorage （cookie localStorage sessionStorage）
+##### webstorage
 webstorage是本地存储，存储在客户端，包括localStorage和sessionStorage;
 
 ##### localStorage 本地存储
@@ -753,25 +753,15 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
   key (index) —— 获取某个索引的key
 
 ##### cookie
-构成：名称：name； 值:value(通过URL编码:encodeURIComponent)； 域； 路径； 失效时间:一般默认是浏览器关闭失效,可以自己设置失效时间； 安全标志:设置安全标志后只有SSL连接的时候才发送到服务器；
+构成：
+   名称：name； 
+   值:value(通过URL编码:encodeURIComponent)； 
+   域； 
+   路径； 
+   失效时间:一般默认是浏览器关闭失效,可以自己设置失效时间； 
+   安全标志:设置安全标志后只有SSL连接的时候才发送到服务器；
 
 作用：主要用于保存登录信息；
-
-##### cookies，sessionStorage 和 localStorage 的区别？
-浏览器端常用的存储技术是 cookie 、localStorage 和 sessionStorage。
-
-cookie 其实最开始是服务器端用于记录用户状态的一种方式，由服务器设置，在客户端存储，然后每次发起同源请求时，发送给服
-务器端。cookie 最多能存储 4 k 数据，它的生存时间由 expires 属性指定，并且 cookie 只能被同源的页面访问共享。
-
-sessionStorage 是 html5 提供的一种浏览器本地存储的方法，它借鉴了服务器端 session 的概念，代表的是一次会话中所保
-存的数据。它一般能够存储 5M 或者更大的数据，它在当前窗口关闭后就失效了，并且 sessionStorage 只能被同一个窗口的同源
-页面所访问共享。
-
-localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一般也能够存储 5M 或者更大的数据。它和 sessionStorage 
-不同的是，除非手动删除它，否则它不会失效，并且 localStorage 也只能被同源页面所访问共享。
-
-上面几种方式都是存储少量数据的时候的存储方式，当我们需要在本地存储大量数据的时候，我们可以使用浏览器的 indexDB 这是浏
-览器提供的一种本地的数据库存储机制。它不是关系型数据库，它内部采用对象仓库的形式存储数据，它更接近 NoSQL 数据库。
 
 
 #### 37. iframe 有那些缺点？
@@ -803,7 +793,7 @@ localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一
     <input type=“text“ name="Name" id="Name"/>
    ```
 
-#### 39. HTML5 的 form 的自动完成功能是什么？
+#### 39. HTML5 的 form 的 自动完成autocomplete 功能是什么？
    ```
     autocomplete 属性规定输入字段是否应该启用自动完成功能。默认为启用，设置为 autocomplete=off 可以关闭该功能。
 
@@ -934,7 +924,9 @@ localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一
 #### 50. attribute 和 property 的区别是什么？
    ```
     attribute 是 dom 元素在文档中作为 html 标签拥有的属性；
+
     property 就是 dom 元素在 js 中作为对象拥有的属性。
+
     对于 html 的标准属性来说，attribute 和 property 是同步的，是会自动更新的，
     但是对于自定义的属性来说，他们是不同步的。
    ```
@@ -1090,7 +1082,7 @@ localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一
    [《关于CSS Reset 那些事（一）之 历史演变与 Normalize.css》](https://segmentfault.com/a/1190000003021766#articleHeader0)
    [《Normalize.css 和 Reset CSS 有什么本质区别没？》](https://segmentfault.com/q/1010000000117189)
 
-#### 58. 用于预格式化文本的标签是？
+#### 58. 用于预格式化文本<pre> 的标签是？
    ```
     预格式化就是保留文字在源码中的格式 最后显示出来样式与源码中的样式一致 所见即所得。
 
@@ -1246,7 +1238,3 @@ localStorage 也是 html5 提供的一种浏览器本地存储的方法，它一
    详细资料可以参考：
    [《协议相对 URL》](https://www.ludou.org/the-protocol-relative-url.html)
    [《Why you need protocol-relative URLs *now*》](https://www.tuicool.com/articles/nEjU7b)
-
-#### 70、html行内元素和块级元素有哪些：
-  行内元素：最常用的是span，其他还有a abbr b big br em i label
-  块级元素：比较有代表性的是div 其余有p h1 h2 h3 h4 h5 h6 table ul li ol header section aside footer dl dd dt form hr pre tbody tfoot th thead tr

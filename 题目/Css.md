@@ -120,9 +120,9 @@
 
 IE盒模型和W3C标准盒模型的区别：
 
-（1）W3C标准盒模型：属性width，height只包含内容content，不包含border和padding
-（2）IE盒模型：属性width，height包含content、border和padding，指的是content
+（1）IE盒模型：属性width，height包含content、border和padding，指的是content
 +padding+border。
+（2）W3C标准盒模型：属性width，height只包含内容content，不包含border和padding
 
 在ie8+浏览器中使用哪个盒模型可以由box-sizing（CSS新增的属性）控制，默认值为content-box，即标准盒模型；
 如果将box-sizing设为border-box则用的是IE盒模型。如果在ie6，7，8中DOCTYPE缺失会将盒子模型解释为IE
@@ -248,7 +248,7 @@ visibility
 （7）还有一些不常用的；speak，page，设置嵌套引用的引号类型quotes等属性
 
 
-注意：当一个属性不是继承属性时，可以使用inherit关键字指定一个属性应从父元素继承它的值，inherit关键字用于显式地
+注意：当一个属性不是继承属性时，可以使用 inherit 关键字指定一个属性应从父元素继承它的值，inherit关键字用于显式地
 指定继承性，可用于任何继承性/非继承性属性。
 ```
 
@@ -447,14 +447,15 @@ div {
 -水平垂直居中一
 
 ```css
-/*确定容器的宽高宽500高300的层设置层的外边距div{*/
-position: absolute;/*绝对定位*/
-width: 500px;
-height: 300px;
-top: 50%;
-left: 50%;
-margin: -150px00-250px;/*外边距为自身宽高的一半*/
-background-color: pink;/*方便看效果*/
+/*确定容器的宽高宽500高300的层设置层的外边距*/
+div{
+  position: absolute;/*绝对定位*/
+  width: 500px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  margin: -150px 0 0 -250px;/*外边距为自身宽高的一半*/
+  background-color: pink;/*方便看效果*/
 }
 ```
 
@@ -550,14 +551,19 @@ div {
 #### 10.display 有哪些值？说明他们的作用。
 
 ```
-block	块类型。默认宽度为父元素宽度，可设置宽高，换行显示。
-none	元素不显示，并从文档流中移除。
-inline	行内元素类型。默认宽度为内容宽度，不可设置宽高，同行显示。
-inline-block 默认宽度为内容宽度，可以设置宽高，同行显示。
-list-item	像块类型元素一样显示，并添加样式列表标记。
-table	此元素会作为块级表格来显示。
-inherit	规定应该从父元素继承display属性的值。
+  block	块类型。默认宽度为父元素宽度，可设置宽高，换行显示。
+  none	元素不显示，并从文档流中移除。
+  inline	行内元素类型。默认宽度为内容宽度，不可设置宽高，同行显示。
+  inline-block 默认宽度为内容宽度，可以设置宽高，同行显示。
+  list-item	像块类型元素一样显示，并添加样式列表标记。
+  table	此元素会作为块级表格来显示。
+  inherit	规定应该从父元素继承display属性的值。
 ```
+
+ inline是内联元素，block是块级元素，inline-block是内联块元素; 
+  (1)块级元素会独占一行，而内联元素和内联块元素则会在一行内显示。
+  (2)块级元素和内联块元素可以设置 width、height 属性，而内联元素设置无效。
+  (3)块级元素的 width 默认为 100%，而内联元素则是根据其自身的内容或子元素来决定其宽度。
 
 详细资料可以参考：
 [《CSS display 属性》](http://www.w3school.com.cn/css/pr_class_display.asp)
@@ -567,47 +573,50 @@ inherit	规定应该从父元素继承display属性的值。
 相关知识点：
 
 ```
-absolute
-生成绝对定位的元素，相对于值不为static的第一个父元素的padding box进行定位，也可以理解为离自己这一级元素最近的
+absolute: 生成绝对定位的元素，相对于值不为static的第一个父元素的padding box进行定位，也可以理解为离自己这一级元素最近的
 一级position设置为absolute或者relative的父元素的padding box的左上角为原点的。
 
-fixed（老IE不支持）
-生成绝对定位的元素，相对于浏览器窗口进行定位。
+fixed（老IE不支持）: 生成绝对定位的元素，相对于浏览器窗口进行定位。
 
-relative
-生成相对定位的元素，相对于其元素本身所在正常位置进行定位。
+relative: 生成相对定位的元素，相对于其元素本身所在正常位置进行定位。
 
-static
-默认值。没有定位，元素出现在正常的流中（忽略top,bottom,left,right,z-index声明）。
+static: 默认值。没有定位，元素出现在正常的流中（忽略top,bottom,left,right,z-index声明）。
 
-inherit
-规定从父元素继承position属性的值。
+inherit: 规定从父元素继承position属性的值。
 ```
 
 回答：
 
 ```
-relative定位的元素，是相对于元素本身的正常位置来进行定位的。
+  relative定位的元素，是相对于元素本身的正常位置来进行定位的。
 
-absolute定位的元素，是相对于它的第一个position值不为static的祖先元素的padding box来进行定位的。这句话
-我们可以这样来理解，我们首先需要找到绝对定位元素的一个position的值不为static的祖先元素，然后相对于这个祖先元
-素的padding box来定位，也就是说在计算定位距离的时候，padding的值也要算进去。
+  absolute定位的元素，是相对于它的第一个position值不为static的祖先元素的padding box来进行定位的。
+
+  这句话我们可以这样来理解，我们首先需要找到绝对定位元素的一个position的值不为static的祖先元素，然后相对于这个祖先元
+  素的padding box来定位，也就是说在计算定位距离的时候，padding的值也要算进去。
 ```
 
-#### 12.CSS3 有哪些新特性？（根据项目回答）
+#### 12.CSS3 有哪些新特性？
 
-```
-新增各种CSS选择器	（:not(.input)：所有class不是“input”的节点）
-圆角		（border-radius:8px）
-多列布局	（multi-column layout）
-阴影和反射	（Shadow\Reflect）
-文字特效		（text-shadow）
-文字渲染		（Text-decoration）
-线性渐变		（gradient）
-旋转			（transform）
-缩放，定位，倾斜，动画，多背景
-例如：transform:\scale(0.85,0.90)\translate(0px,-30px)\skew(-9deg,0deg)\Animation:
-```
+css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最新标准。
+
+  - 新增了一些选择器；（:not(.input)：所有class不是“input”的节点）
+  - 新样式：
+      边框：border-radius; box-shadow; border-image;
+      背景：background-clip; background-origin; background-size; background-break;
+      文字 ：word-wrap; text-overflow; 文字特效text-shadow; 文字渲染 text-decoration;
+      颜色：rgba; hsla;
+  - transition 过渡
+  - transform 转换: 旋转，缩放，倾斜或平移给定元素;
+  - animation 动画:
+  - 渐变：linear-gradient; radial-gradient;
+  - flex弹性布局 
+  - Grid栅格布局
+
+  animation：用于设置动画属性，他是一个简写的属性，包含6个属性；
+  transition：用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同
+  transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系
+  translate：translate只是transform的一个属性值，即移动，除此之外还有 scale 等；
 
 #### 13.请解释一下 CSS3 的 Flex box（弹性盒布局模型），以及适用场景？
 
@@ -639,6 +648,13 @@ align-items属性定义项目在交叉轴上如何对齐。
 
 align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
 
+display: flex; 
+flex-direction: row | row-reverse | column | column-reverse;
+flex-wrap: nowrap | wrap | wrap-reverse;
+flex-flow: <flex-direction> || <flex-wrap>; //是flex-direction和flex-flow的缩写；
+justify-content: flex-start | flex-end | center | space-between | space-around; //定义项目在主轴上的对齐方式；
+align-items: flex-start | flex-end | center | baseline | stretch;  //定义项目在交叉轴上的对齐方式；
+align-content: flex-start | flex-end | center | space-between | space-around | stretch; //定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用;
 
 以下6个属性设置在项目上。
 
@@ -656,6 +672,12 @@ flex属性是flex-grow，flex-shrink和flex-basis的简写，默认值为0 1 aut
 align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父
 元素的align-items属性，如果没有父元素，则等同于stretch。
 ```
+  order: <integer>; //定义项目的排列顺序。数值越小，排列越靠前，默认为0;
+  flex-grow: <number>; //定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+  flex-shrink: <number>; //定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+  flex-basis: <length> | auto; //定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+  flex:是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto;
+  align-self: auto | flex-start | flex-end | center | baseline | stretch; //允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
 回答：
 
@@ -671,18 +693,62 @@ flex布局是CSS3新增的一种布局方式，我们可以通过将一个元素
 项目的放大比例。还可以使用flex-shrink来指定当排列空间不足时，项目的缩小比例。
 ```
 
+  (https://www.zhangxinxu.com/wordpress/2019/12/css-flex-deep/)
+  (http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
+
 详细资料可以参考：
 [《Flex 布局教程：语法篇》](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
 [《Flex 布局教程：实例篇》](http://www.ruanyifeng.com/blog/2015/07/flex-examples.html)
 
+##### flex: 0 1 auto 表示什么意思
+
+flex CSS 属性设置的是，flex 元素如何根据其在 flex 容器中的所剩空间来动态拉伸或收缩，它是 flex-grow、flex-shrink、flex-basis 这三个属性的简化版;
+
+语法格式有单值、双值、三值三种语法格式;
+  单值语法：值必须是以下之一：数值 number，那么解释为 flex: number 1 0、none、auto、initial；
+
+  双值语法：第一个值必须是 number，它会被解释为 flex-grow 属性，
+           第二个值必须是以下之一：
+            数值 number，会被解释为 flex-shrink 属性
+            一个可以描述宽度的值，例如 10em、30%、min-content，会被解释为 flex-basis 属性
+
+  三值语法：第一个 number 表示 flex-grow
+           第二个 number 表示 flex-shrink
+           第三个描述宽度的值表示 flex-basis
+
+flex属性经常使用的值：
+  flex: 0 auto
+    flex: 0 auto 等同于 flex: initial，也是 flex: 0 1 auto 的简写表达。它根据元素自身的 width 或 height 属性来调节元素大小。
+    当还剩余一些空闲空间时，它使 flex 元素呈现的是固定大小的样式；当没有足够的空间时，它容许它收缩到最小。auto 边距可用于根据主轴来对齐元素。
+  flex: auto
+    flex: auto 等同于 flex: 1 1 auto，它根据元素的 width 或 height 属性调整元素的大小，可是其很是灵活，以便让它们吸取沿主轴的任何额外空间。
+  flex: none
+    flex: none 等同于 flex: 0 0 auto。它根据 width 和 height 来调节元素大小，不灵活。
+
+##### display：flex 下水平垂直居中怎么实现
+  水平居中： 
+    .box{
+      display: flex;
+      justify-content:center;
+    }
+  垂直居中：
+    .box{
+      displsy: flex;
+      align-items: center;
+    }
+  都居中：
+    .box{
+      displsy: flex;
+      justify-content:center;
+      align-items: center;
+    }
+
 #### 14.用纯 CSS 创建一个三角形的原理是什么？
+  采用的是相邻边框连接处的均分原理。
+  将元素的宽高设为0，只设置border，把任意三条边隐藏掉（颜色设为transparent），剩下的就是一个三角形。
 
 ```css
-采用的是相邻边框连接处的均分原理。
-  将元素的宽高设为0，只设置
-  border
-  ，把任意三条边隐藏掉（颜色设为
-  transparent），剩下的就是一个三角形。
   #demo {
     width: 0;
     height: 0;
@@ -2638,20 +2704,15 @@ body {
 
 [《自适应正方形 demo 展示》](http://cavszhouyou.top/Demo-Display/AdaptiveSquare/index.html)
 
-#### 103.实现一个三角形
+#### 103、visibility、display和 opacity 的差别？
 
-```css
-/*三角形的实现原理是利用了元素边框连接处的等分原理。*/
-.triangle {
-  width: 0;
-  height: 0;
-  border-width: 100px;
-  border-style: solid;
-  border-color: tomatotransparenttransparenttransparent;
-}
-```
+区别： (/image/display-visibility-opacity.jpg)
 
-[《三角形 demo 展示》](http://cavszhouyou.top/Demo-Display/Triangle/index.html)
+- visibility 设置 hidden 会隐藏元素，但是其位置还存在与页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘；
+
+- display 设置了 none 属性会隐藏元素，且其位置也不会被保留下来，所以会触发浏览器渲染引擎的回流和重绘。
+
+- opacity 会将元素设置为透明，但是其位置也在页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘。
 
 #### 104.一个自适应矩形，水平垂直居中，且宽高比为 2:1
 
@@ -2691,93 +2752,8 @@ body {
 元素的 font-size，基准为父元素字体
 ```
 
-<!-- ------ -->
 
-#### 1、block、inline 和 inline-block 的元素有什么差别
-  inline是内联元素，block是块级元素，inline-block是内联块元素; 
-  (1)块级元素会独占一行，而内联元素和内联块元素则会在一行内显示。
-  (2)块级元素和内联块元素可以设置 width、height 属性，而内联元素设置无效。
-  (3)块级元素的 width 默认为 100%，而内联元素则是根据其自身的内容或子元素来决定其宽度。
-
-#### 2、display：flex 下水平垂直居中怎么实现
-  水平居中： 
-    .box{
-        display: flex;
-        justify-content:center;
-        }
-  垂直居中：
-    .box{
-      displsy: flex;
-      align-items: center;
-    }
-    都居中：justify-content:center; align-items: center;
-
-#### 3、flex布局（弹性布局） 
-  (https://www.zhangxinxu.com/wordpress/2019/12/css-flex-deep/)
-  (http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
-
-  采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
-  
-  设置在容器上的属性： 
-    display: flex; 
-    flex-direction: row | row-reverse | column | column-reverse;
-    flex-wrap: nowrap | wrap | wrap-reverse;
-    flex-flow: <flex-direction> || <flex-wrap>; //是flex-direction和flex-flow的缩写；
-    justify-content: flex-start | flex-end | center | space-between | space-around; //定义项目在主轴上的对齐方式；
-    align-items: flex-start | flex-end | center | baseline | stretch;  //定义项目在交叉轴上的对齐方式；
-    align-content: flex-start | flex-end | center | space-between | space-around | stretch; //定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用;
-  
-  设置在项目上的属性：
-    order: <integer>; //定义项目的排列顺序。数值越小，排列越靠前，默认为0;
-    flex-grow: <number>; //定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
-    flex-shrink: <number>; //定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
-    flex-basis: <length> | auto; //定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
-    flex:是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto;
-    align-self: auto | flex-start | flex-end | center | baseline | stretch; //允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
-
-#### 4、flex: 0 1 auto 表示什么意思
-flex CSS 属性设置的是，flex 元素如何根据其在 flex 容器中的所剩空间来动态拉伸或收缩，它是 flex-grow、flex-shrink、flex-basis 这三个属性的简化版;
-语法格式有单值、双值、三值三种语法格式;
-  单值语法：值必须是以下之一：数值 number，那么解释为 flex: number 1 0、none、auto、initial；
-  双值语法：第一个值必须是 number，它会被解释为 flex-grow 属性，
-          第二个值必须是以下之一：
-            数值 number，会被解释为 flex-shrink 属性
-            一个可以描述宽度的值，例如 10em、30%、min-content，会被解释为 flex-basis 属性
-  三值语法：第一个 number 表示 flex-grow
-          第二个 number 表示 flex-shrink
-          第三个描述宽度的值表示 flex-basis
-
-flex属性经常使用的值：
-  flex: 0 auto
-    flex: 0 auto 等同于 flex: initial，也是 flex: 0 1 auto 的简写表达。它根据元素自身的 width 或 height 属性来调节元素大小。
-    当还剩余一些空闲空间时，它使 flex 元素呈现的是固定大小的样式；当没有足够的空间时，它容许它收缩到最小。auto 边距可用于根据主轴来对齐元素。
-  flex: auto
-    flex: auto 等同于 flex: 1 1 auto，它根据元素的 width 或 height 属性调整元素的大小，可是其很是灵活，以便让它们吸取沿主轴的任何额外空间。
-  flex: none
-    flex: none 等同于 flex: 0 0 auto。它根据 width 和 height 来调节元素大小，不灵活。
-  
-#### 7、CSS3 新增了哪些特性？
-css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最新标准。
-
-  - 新增了一些选择器；
-  - 新样式：
-      边框：border-radius; box-shadow; border-image;\
-      背景：background-clip; background-origin; background-size; background-break;
-      文字：word-wrap; text-overflow; text-shadow; text-decoration;
-      颜色：rgba; hsla;
-  - transition 过渡
-  - transform 转换: 旋转，缩放，倾斜或平移给定元素;
-  - animation 动画:
-  - 渐变：linear-gradient; radial-gradient;
-  - flex弹性布局 
-  - Grid栅格布局
-
-  animation：用于设置动画属性，他是一个简写的属性，包含6个属性；
-  transition：用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同
-  transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系
-  translate：translate只是transform的一个属性值，即移动，除此之外还有 scale 等；
-
-#### 8、svg图中的元素
+#### 106、svg图中的元素
 
   矩形 <rect>
   圆形 <circle>
@@ -2793,31 +2769,6 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
   阴影
   渐变 - 线性
   渐变 - 放射性
-
-#### 9、visibility、display和 opacity 的差别？
-
-区别： (/image/display-visibility-opacity.jpg)
-
-- visibility 设置 hidden 会隐藏元素，但是其位置还存在与页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘；
-
-- display 设置了 none 属性会隐藏元素，且其位置也不会被保留下来，所以会触发浏览器渲染引擎的回流和重绘。
-
-- opacity 会将元素设置为透明，但是其位置也在页面文档流中，不会被删除，所以会触发浏览器渲染引擎的重绘。
-
-#### 10、position属性？
-
-static：无特殊定位，对象遵循正常文档流。top，right，bottom，left等属性不会被应用。
-
-relative：对象遵循正常文档流，但将依据top，right，bottom，left等属性在正常文档流中偏移位置。而其层叠通过z-index属性定义。
-
-absolute：对象脱离正常文档流，使用top，right，bottom，left等属性进行绝对定位。而其层叠通过z-index属性定义。
-
-fixed：对象脱离正常文档流，使用top，right，bottom，left等属性以窗口为参考点进行定位，当出现滚动条时，对象不会随着滚动。而其层叠通过z-index属性定义。
-
-sticky：具体是类似 relative 和 fixed，在 viewport 视口滚动到阈值之前应用 relative，滚动到阈值之后应用 fixed 布局，由 top 决定。
-
-
-
 
 
 
