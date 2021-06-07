@@ -1,19 +1,3 @@
-### js 基本数据类型:
-  Undefined:
-    使用var声明变量但未对其进行初始化，这个变量的值就是undefined。
-  Null：
-    表示一个空对象指针，使用typeof操作符检测null会返回object
-  Boolean：
-    true false
-  Number:
-    十进制、八进制0、十六进制0x NaN:非数值 
-    将非数值转换为数值：Number()-可以用于任何数据类型；parseInt() parseFloat() -专门用于把字符串转换成数值；
-  String
-  Object：
-    var o = new Object()
-  symbol（ES6 新增的）
-  BigInt（ES2020）
-
 #### 0.1 + 0.2 === 0.3 嘛？为什么？
 不等于，在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。
 精度丢失可能出现在进制转换和对阶运算中；
