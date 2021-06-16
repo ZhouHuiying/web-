@@ -665,11 +665,3 @@ Promise 自带的 API 提供了如下对象方法：
   </body>
 </html>
 ```
-
-了解这些内容之后， Promise 的基本用法，你就已经掌握了。
-
-## 参考链接
-
-- [当面试官问你 Promise 的时候，他究竟想听到什么？](https://zhuanlan.zhihu.com/p/29235579)
-
-- [手写一个 Promise/A+,完美通过官方 872 个测试用例](https://www.cnblogs.com/dennisj/p/12660388.html)

@@ -4350,13 +4350,16 @@ for (var i = 0, j = 0; i < 5, j < 9; i++, j++) {
 ES6 引入了一种新的原始数据类型Symbol，表示独一无二的值；
 Symbol 值通过Symbol函数生成。这就是说，对象的属性名现在可以有两种类型，一种是原来就有的字符串，另一种就是新增的 Symbol 类型。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
 let s = Symbol();
+
 Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象;
 Symbol函数的参数只是表示对当前 Symbol 值的描述，因此相同参数的Symbol函数的返回值是不相等的。
 Symbol 值不能与其他类型的值进行运算，会报错。
 
 ##### 用处
 - 可以用来表示一个独一无二的变量防止命名冲突；
+
 - 利用 symbol 不会被常规的方法（除了 Object.getOwnPropertySymbols 外）遍历到，所以可以用来模拟私有变量；
+
 - 主要用来提供遍历接口，布置了 symbol.iterator 的对象才可以使用 for···of 循环，可以统一处理数据结构。调用之后回返回一个遍历器对象，包含有一个 next 方法，使用 next 方法后有两个返回值 value 和 done 分别表示函数当前执行位置的值和是否遍历完毕；
 
 ##### Symbol.prototype.description
