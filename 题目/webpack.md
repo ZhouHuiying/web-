@@ -8,13 +8,13 @@
 
 **Output**：告诉webpack如何命名输出的文件以及输出的目录
 
-**Module**: 模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
-
-**Chunk**：`coding split`的产物，我们可以对一些代码打包成一个单独的`chunk`，比如某些公共模块，去重，更好的利用缓存。或者按需加载某些功能模块，优化加载时间。在`webpack3`及以前我们都利用`CommonsChunkPlugin`将一些公共代码分割成一个`chunk`，实现单独加载。在`webpack4` 中`CommonsChunkPlugin`被废弃，使用`SplitChunksPlugin`
-
 **Loader**：模块转换器，用于把模块原内容按照需求转换成新内容。
 
 **Plugin**：扩展插件，在 Webpack 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情。
+
+**Module**: 模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
+
+**Chunk**：`coding split`的产物，我们可以对一些代码打包成一个单独的`chunk`，比如某些公共模块，去重，更好的利用缓存。或者按需加载某些功能模块，优化加载时间。在`webpack3`及以前我们都利用`CommonsChunkPlugin`将一些公共代码分割成一个`chunk`，实现单独加载。在`webpack4` 中`CommonsChunkPlugin`被废弃，使用`SplitChunksPlugin`
 
 ```
 我当时使用 webpack 的一个最主要原因是为了简化页面依赖的管理，并且通过将其打包为一个文件来降低页面加载时请求的资源
@@ -132,7 +132,6 @@ require('antd/lib/button/style/css');
 ReactDOM.render(<_button>xxxx</_button>);
 
 ```
-
 
 ### webpack如何提高打包速度？
 
@@ -252,7 +251,7 @@ webpack-dev-server  --contentbase src  --inline --hot
 
 除了常规我们引用的各种file loader,plugin,babel配置主要还有三方面的优化：
 
-一、加快打包速度方面（见专题回答）
+一、 包速度方面
 
 二、优化开发体验
 
@@ -267,8 +266,6 @@ webpack-dev-server  --contentbase src  --inline --hot
 - 多页面应用提取页面间公共组件
 - 区分生产/测试环境
 
-## Babel
-
 ### 什么是babel？
 
 babel是一个广泛的转码器，可以把es6/7等最新的语法转换成es5的语法，让浏览器能够兼容；
@@ -278,7 +275,7 @@ babel的配置文件 .babelrc 主要有两个配置：
 - 转码规则 presets
 - 插件 plugins
 
-### babel是如何把 es6代码转换成 es5代码的？
+#### babel是如何把 es6代码转换成 es5代码的？
 
 babel将es6代码转换成es5，主要有三个阶段；
 
@@ -290,7 +287,7 @@ babel将es6代码转换成es5，主要有三个阶段；
 
 - Array.from,generator,set,maps,proxy,symbol...
 
-### 如何写一个babel插件?
+#### 如何写一个babel插件?
 
 实现流程
 1. babel解析成AST

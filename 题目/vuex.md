@@ -19,7 +19,7 @@ export default new vuex.store({
 	//...code
 })
 
-//main.js
+//main.js 
 import store from './store'
 ...
 ```
@@ -53,6 +53,9 @@ vuex的主要核心概念如下：State Mutation Action Getter
 #### State
 State提供唯一的公共数据源，所有共享的数据都要统一放到Store的State中进行存储
 
+state 里面存放的数据是响应式的，vue 组件从 store 读取数据，若是 store 中的数据发生改变，依赖这相数据的组件也会发生更新
+
+- 它通过 mapState 把全局的 state 和 getters 映射到当前组件的 computed 计算属性
 - 组件访问State中数据的第一种方式：
     this.$store.state.全局数据名称
 
@@ -106,14 +109,6 @@ Getter用于对Store中的数据进行加工处理形成新的数据。
 - 虽然在组件内也可以做计算属性，但是 getters 可以在多给件之间复用
 - 如果一个状态只在一个组件内使用，是可以不用 getters
 
-#### vuex 的 state 特性是什么
-
-- vuex 就是一个仓库，仓库里放了很多对象。其中 state 就是数据源存放地，对应于一般 vue 对象里面的 data
-
-- state 里面存放的数据是响应式的，vue 组件从 store 读取数据，若是 store 中的数据发生改变，依赖这相数据的组件也会发生更新
-- 它通过 mapState 把全局的 state 和 getters 映射到当前组件的 computed 计算属性
-
-
 #### vue 中 ajax 请求代码应该写在组件的 methods 中还是 vuex 的 action 中
 
 如果请求来的数据不是要被其他组件公用，仅仅在请求的组件内使用，就不需要放入 vuex 的 state 里
@@ -131,6 +126,16 @@ Getter用于对Store中的数据进行加工处理形成新的数据。
 vuex 仅仅是作为 vue 的一个插件而存在，不像 Redux,MobX 等库可以应用于所有框架，vuex 只能使用在 vue 上，很大的程度是因为其高度依赖于 vue 的 computed 依赖检测系统以及其插件系统，
 
 vuex 整体思想诞生于 flux,可其的实现方式完完全全的使用了 vue 自身的响应式设计，依赖监听、依赖收集都属于 vue 对对象 Property set get 方法的代理劫持。最后一句话结束 vuex 工作原理，vuex 中的 store 本质就是没有 template 的隐藏着的 vue 组件；
+
+#### Vuex 为什么要分模块并且加命名空间
+
+- 模块:由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。
+  为了解决以上问题，Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块。
+
+- 命名空间：默认情况下，模块内部的 action、mutation 和 getter 是注册在全局命名空间的——这样使得多个模块能够对同一 mutation 或 action 作出响应。
+  如果希望你的模块具有更高的封装度和复用性，你可以通过添加 namespaced: true 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。
+
+### ？？？ 
 
 #### 使用 Vuex 只需执行 Vue.use(Vuex)，并在 Vue 的配置中传入一个 store 对象的示例，store 是如何实现注入的？[美团](https://tech.meituan.com/vuex_code_analysis.html)
 
@@ -152,10 +157,4 @@ Vuex 中修改 state 的唯一渠道就是执行 commit('xx', payload) 方法，
 
 devtoolPlugin 中提供了此功能。因为 dev 模式下所有的 state change 都会被记录下来，'时空穿梭' 功能其实就是将当前的 state 替换为记录中某个时刻的 state 状态，利用 store.replaceState(targetState) 方法将执行 this.\_vm.state = state 实现。
 
-#### Vuex 为什么要分模块并且加命名空间
 
-- 模块:由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿。
-  为了解决以上问题，Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块。
-
-- 命名空间：默认情况下，模块内部的 action、mutation 和 getter 是注册在全局命名空间的——这样使得多个模块能够对同一 mutation 或 action 作出响应。
-  如果希望你的模块具有更高的封装度和复用性，你可以通过添加 namespaced: true 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。

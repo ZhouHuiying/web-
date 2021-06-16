@@ -49,14 +49,14 @@ https://juejin.cn/post/6961222829979697165
     用法：
       ref 加在普通的元素上，用this.$refs.（ref值） 获取到的是dom元素；
       
-      ref 加在子组件上，用this.$refs.（ref值） 获取到的是组件实例，可以使用组件的所有方法。在使用方法的时候直接this.$refs.（ref值）.方法（） 就可以使用了；
+      ref 加在子组件上，用this.$refs.（ref值） 获取到的是组件实例，可以使用组件的所有方法。在使用方法的时候直接this.$refs.（ref值）.方法() 就可以使用了；
 
 　　  利用 v-for 和 ref 获取一组数组或者dom 节点；
 
 
 ### 2、Vue 生命周期
 
-#### Vue2 - Vue3
+#### Vue2 -> Vue3
 beforeCreate	   Not needed*
 created	         Not needed*
 beforeMount	     onBeforeMount
@@ -72,6 +72,7 @@ renderTriggered	 onRenderTriggered
 - 因为 setup 是围绕 beforeCreate 和 created 生命周期钩子运行的，所以不需要显式地定义它们。换句话说，在这些钩子中编写的任何代码都应该直接在 setup 函数中编写。
 
 #### Vue2生命周期
+
   beforeCreate 在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。在当前阶段 data、methods、computed 以及 watch 上的数据和方法都不能被访问;
 
   created 实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算， watch/event 事件回调。这里没有$el,如果非要想与 Dom 进行交互，可以通过 vm.$nextTick 来访问 Dom;
@@ -102,7 +103,6 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 - 提供 include 和 exclude 属性，两者都支持字符串或正则表达式， include 表示只有名称匹配的组件会被缓存，exclude 表示任何名称匹配的组件都不会被缓存 ，其中 exclude 的优先级比 include 高；
 - 对应两个钩子函数 activated 和 deactivated ，当组件被激活时，触发钩子函数 activated，当组件被移除时，触发钩子函数 deactivated。
 
-
 #### 异步请求在哪一步发起？
   可以在钩子函数 created、beforeMount、mounted 中进行异步请求，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
 
@@ -114,10 +114,10 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
   SSR 也就是服务端渲染，也就是将 Vue 在客户端把标签渲染成 HTML 的工作放在服务端完成，然后再把 html 直接返回给客户端。
  
   优点：
-    SSR 有着更好的 SEO、并且首屏加载速度更快
+    SSR 有着更好的 SEO、并且首屏加载速度更快。
   缺点：
     开发条件会受到限制，服务器端渲染只支持 beforeCreate 和 created 两个钩子，当我们需要一些外部扩展库时需要特殊处理，服务端渲染应用程序也需要处于 Node.js 的运行环境。
-    服务器会有更大的负载需求
+    服务器会有更大的负载需求。
 
 #### Vue 的父子组件生命周期钩子函数执行顺序
 
@@ -171,24 +171,6 @@ vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Ob
   数组考虑性能原因没有用 defineProperty 对数组的每一项进行拦截，而是选择对 7 种数组（push,shift,pop,splice,unshift,sort,reverse）方法进行重写(AOP 切片思想)
   所以在 Vue 中修改数组的索引和长度是无法监控到的。需要通过以上 7 种变异方法修改数组才会触发数组对应的 watcher 进行更新
 
-#### 109. vue 双向数据绑定原理？
-
-```
-vue 通过使用双向数据绑定，来实现了 View 和 Model 的同步更新。vue 的双向数据绑定主要是通过使用数据劫持和发布订阅者模式来实现的。
-
-首先我们通过 Object.defineProperty() 方法来对 Model 数据各个属性添加访问器属性，以此来实现数据的劫持，因此当 Model 中的数据发生变化的时候，我们可以通过配置的 setter 和 getter 方法来实现对 View 层数据更新的通知。
-
-数据在 html 模板中一共有两种绑定情况，一种是使用 v-model 来对 value 值进行绑定，一种是作为文本绑定，在对模板引擎进行解析的过程中。
-
-如果遇到元素节点，并且属性值包含 v-model 的话，我们就从 Model 中去获取 v-model 所对应的属性的值，并赋值给元素的 value 值。然后给这个元素设置一个监听事件，当 View 中元素的数据发生变化的时候触发该事件，通知 Model 中的对应的属性的值进行更新。
-
-如果遇到了绑定的文本节点，我们使用 Model 中对应的属性的值来替换这个文本。对于文本节点的更新，我们使用了发布订阅者模式，属性作为一个主题，我们为这个节点设置一个订阅者对象，将这个订阅者对象加入这个属性主题的订阅者列表中。当 Model 层数据发生改变的时候，Model 作为发布者向主题发出通知，主题收到通知再向它的所有订阅者推送，订阅者收到通知后更改自己的数
-据。
-```
-
-详细资料可以参考：
-[《Vue.js 双向绑定的实现原理》](http://www.cnblogs.com/kidney/p/6052935.html?utm_source=gold_browser_extension)
-
 #### Object.defineProperty 介绍？
 
 ```
@@ -196,9 +178,6 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
 
 一个属性的描述符有四个属性，分别是 value 属性的值，writable 属性是否可写，enumerable 属性是否可枚举，configurable 属性是否可配置修改。
 ```
-
-详细资料可以参考：
-[《Object.defineProperty()》](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 
 #### 使用 Object.defineProperty() 来进行数据劫持有什么缺点？
 
@@ -228,7 +207,6 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
 ```
 通过以上 Vue 源码部分查看，我们就能知道 Vue 框架是通过遍历数组 和递归遍历对象，从而达到利用  Object.defineProperty() 也能对对象和数组（部分方法的操作）进行监听。
 
-
 #### vue3.xx：
 
   vue3.xx中使用 **Proxy** 实现数据双向绑定；
@@ -250,7 +228,6 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
 - 可重用性。你可以把一些视图逻辑放在一个 ViewModel 里面，让很多 view 重用这段视图逻辑。
 - 独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计，使用 Expression Blend 可以很容易设计界面并生成 xml 代码。
 - 可测试。界面素来是比较难于测试的，而现在测试可以针对 ViewModel 来写。
-
 
 ### 5、嵌套路由怎么定义？
 
@@ -279,25 +256,24 @@ import game from "./game.vue"
 const routes = [
     { path: "/", redirect: "/home" },//重定向,指向了home组件
     {
-        path: "/home", component: home,
-        children: [
-            { path: "/home/game", component: game }
-        ]
+      path: "/home", component: home,
+      children: [
+          { path: "/home/game", component: game }
+      ]
     }
 ]
 //创建路由实例
 const router = new VueRouter({routes})
 
 new Vue({
-    el: '#app',
-    data: {
-    },
-    methods: {
-    },
-    router
+  el: '#app',
+  data: {
+  },
+  methods: {
+  },
+  router
 })
 ```
-
 home.vue，点击显示就会将子路由显示在出来，子路由的出口必须在父路由里面，否则子路由无法显示。
 
 ### 6、路由之间跳转？
@@ -305,7 +281,7 @@ home.vue，点击显示就会将子路由显示在出来，子路由的出口必
 - 声明式（标签跳转） `<router-link :to="index">`
 - 编程式（ js 跳转） `router.push('index')`
 
-### 7、懒加载（按需加载路由）（常考）
+### 7、懒加载（按需加载路由）
 
 webpack 中提供了 require.ensure()来实现按需加载。以前引入路由是通过 import 这样的方式引入，改为 const 定义的方式进行引入。
 
@@ -336,12 +312,10 @@ const  home = r => require.ensure( [], () => r (require('../../common/home.vue')
     - $on、$emit 是基于发布订阅模式的，维护一个事件中心，on 的时候将事件按名称存在事件中心里，称之为订阅者，然后 emit 将对应的事件进行发布，去执行事件中心里的对应的监听器
 
 (2)$refs 获取组件实例  (父组件访问子组件$refs)
-(3)envetBus 兄弟组件数据传递 这种情
-况下可以使用事件总线的方式
+
+(3)envetBus 兄弟组件数据传递 这种情况下可以使用事件总线的方式
+
 (4)vuex 状态管理
-
-
----
 
 (5)父组件中通过 provide 来提供变量，然后在子组件中通过 inject 来注入变量;
 
@@ -353,28 +327,11 @@ const  home = r => require.ensure( [], () => r (require('../../common/home.vue')
   子组件访问父组件：使用$parent;
   子组件访问根组件：$root
   
-
 (7)$attrs 和$listeners A->B->C。Vue 2.4 开始提供了$attrs 和$listeners 来解决这个问题
   https://www.jb51.net/article/132371.htm
   $attrs: 包含了父作用域中不被认为 (且不预期为) props 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 props 时，
   这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=”$attrs” 传入内部组件——在创建更高层次的组件时非常有用。
   $listeners: 包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=”$listeners” 传入内部组件——在创建更高层次的组件时非常有用。
-
-
-### 9、vue-router 有哪几种导航钩子?
-
-三种.
-
-- 全局导航钩子
-  - router.beforeEach(to, from, next),
-  - router.beforeResolve(to, from, next),
-  - router.afterEach(to, from ,next)
-- 组件内钩子
-  - beforeRouteEnter,
-  - beforeRouteUpdate,
-  - beforeRouteLeave
-- 单独路由独享组件
-  - beforeEnter
 
 ### 10、自定义指令(v-check, v-focus) 的方法有哪些? 它有哪些钩子函数? 还有哪些钩子函数参数
 
@@ -387,8 +344,6 @@ const  home = r => require.ensure( [], () => r (require('../../common/home.vue')
 
 (image/vue内置指令.png)
 
-v-if(判断是否隐藏)、v-for(把数据遍历出来)、v-bind(绑定属性)、v-model(实现双向绑定)
-
 #### v-model
   实现数据双向绑定；
 
@@ -399,8 +354,6 @@ v-if(判断是否隐藏)、v-for(把数据遍历出来)、v-bind(绑定属性)�
     text 和 textarea 元素使用 value property 和 input 事件；
     checkbox 和 radio 使用 checked property 和 change 事件；
     select 字段将 value 作为 prop 并将 change 作为事件。
-
-#### v-for
 
 #### key值的作用
 
@@ -414,7 +367,8 @@ vue 中 key 值的作用可以分为两种情况来考虑。
 第一种情况是 v-if 中使用 key。由于 Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。因此当我们使用 v-if 来实现元素切换的时候，如果切换前后含有相同类型的元素，那么这个元素就会被复用。如果是相同的 input 元素，那么切换前后用户的输入不会被清除掉，这样是不符合需求的。因此我们可以通过使用 key 来唯一的标识一个元素，这个情况下，使用 key 的元素不会被复用。这个时候 key 的作用是用来标识一个独立的元素。
 
 第二种情况是 v-for 中使用 key。用 v-for 更新已渲染过的元素列表时，它默认使用“就地复用”的策略。如果数据项的顺序发生了改变，Vue 不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处的每个元素。因此通过为每个列表项提供一个 key 值，来以便 Vue 跟踪元素的身份，从而高效的实现复用。这个时候 key 的作用是为了高效的更新渲染虚拟 DOM。
-##### diff算法
+
+### 12.diff算法
 
   怎么实现 两颗新旧DOM树的对比 呢？这里就涉及到了 diff算法。常见的 diff算法如下：
 
@@ -425,16 +379,6 @@ vue 中 key 值的作用可以分为两种情况来考虑。
  - element diff：在组件中，每个元素之间也要进行对比，那么，元素级别的对比，叫做 element diff。
 
  - key：key这个属性，可以把 页面上的 DOM节点 和 虚拟DOM中的对象，做一层关联关系。
-
-### 12、vuex 相关
-
-vuex.md
-
-### 13、axios
-
-axios 是请求后台资源的模块。 npm i axios -S
-
-如果发送的是跨域请求，需在配置文件中 config/index.js 进行配置
 
 ### 14、vue项目结构及各部分的作用
 
@@ -456,6 +400,7 @@ axios 是请求后台资源的模块。 npm i axios -S
     样式通过style标签<style></style>包裹，默认是影响全局的，如需定义作用域只在该组件下起作用，需在标签上加scoped，<style scoped></style>
 
 ### 15、为什么data是一个函数？
+
   组件中的 data 写成一个函数，数据以函数返回值形式定义，这样每复用一次组件，就会返回一份新的 data，
   类似于给每个组件实例创建一个私有的数据空间，让各个组件实例维护各自的数据。
   而单纯的写成对象形式，就使得所有组件实例共用了一份 data，就会造成一个变了全都会变的结果。
@@ -491,7 +436,6 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 
 （3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
 
-
 ### 18、虚拟 DOM 是什么 有什么优缺点？
 
 由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
@@ -524,11 +468,6 @@ Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。Virtual DOM 本质�
 我认为 Virtual DOM 这种方法对于我们需要有大量的 DOM 操作的时候，能够很好的提高我们的操作效率，通过在操作前确定需要做的最小修改，尽可能的减少 DOM 操作带来的重流和重绘的影响。其实 Virtual DOM 并不一定比我们真实的操作 DOM 要快，这种方法的目的是为了提高我们开发时的可维护性，在任意的情况下，都能保证一个尽量小的性能消耗去进行操作。
 ```
 
-详细资料可以参考：
-[《Virtual DOM》](https://juejin.im/book/5bdc715fe51d454e755f75ef/section/5bdc72e6e51d45054f664dbf)
-[《理解 Virtual DOM》](https://github.com/y8n/blog/issues/5)
-[《深度剖析：如何实现一个 Virtual DOM 算法》](https://github.com/livoras/blog/issues/13)
-[《网上都说操作真实 DOM 慢，但测试结果却比 React 更快，为什么？》](https://www.zhihu.com/question/31809713/answer/53544875)
 
 #### 如何比较两个 DOM 树的差异？
 
@@ -550,14 +489,6 @@ Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。Virtual DOM 本质�
 
 beforeEach 有三个参数，to 代表要进入的路由对象，from 代表离开的路由对象。next 是一个必须要执行的函数，如果不传参数，那就执行下一个钩子函数，如果传入 false，则终止跳转，如果传入一个路径，则导航到对应的路由，如果传入 error ，则导航终止，error 传入错误的监听函数。
 
-（2）单个路由独享的钩子函数 beforeEnter，它是在路由配置上直接进行定义的。
-
-（3）组件内的导航钩子主要有这三种：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave。它们是直接在路由组
-件内部直接进行定义的。
-```
-
-
-- 全局钩子：
 ```
   const router = new VueRouter({ ... })
 
@@ -570,8 +501,7 @@ beforeEach 有三个参数，to 代表要进入的路由对象，from 代表离�
   });
 
 ```
-
-- 单个路由钩子
+（2）单个路由独享的钩子函数 beforeEnter，它是在路由配置上直接进行定义的。
 ```
   const router = new VueRouter({
     routes: [{
@@ -583,7 +513,8 @@ beforeEach 有三个参数，to 代表要进入的路由对象，from 代表离�
   });
 ```
 
-- 组件
+（3）组件内的导航钩子主要有这三种：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave。它们是直接在路由组
+件内部直接进行定义的。
 ```
 const Foo = {
   template: `...`,
@@ -611,7 +542,6 @@ const Foo = {
         // 通过 `vm` 访问组件实例
       })
     }
-```
 
 #### 应用场景
 
@@ -666,14 +596,18 @@ const Foo = {
 ### 20、Vue3
 
 vue-composition 提供了类似 React Hook 的能力，将 Vue 的抽象层级从「组件级（Component）」降低为「函数级（Function）」。
+
 ### 21、$route 和 $router 的区别？
 ```
 $route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。而 $router 是“路由实例”对象包括了路由的跳转方法，钩子函数等。
 ```
+
 ### 22、 vue 常用的修饰符？
 
 ```
-.prevent: 提交事件不再重载页面；.stop: 阻止单击事件冒泡；.self: 当事件发生在该元素本身而不是子元素的时候会触发；
+  .prevent: 提交事件不再重载页面；
+  .stop: 阻止单击事件冒泡；
+  .self: 当事件发生在该元素本身而不是子元素的时候会触发；
 ```
 
 ### 23、 vue 中 mixin 和 mixins 区别？
@@ -681,6 +615,6 @@ $route 是“路由信息对象”，包括 path，params，hash，query，fullP
 ```
 mixin 用于全局混入，会影响到每个组件实例。
 
-mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并
+mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
 ```
 
