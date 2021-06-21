@@ -1238,3 +1238,39 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
    详细资料可以参考：
    [《协议相对 URL》](https://www.ludou.org/the-protocol-relative-url.html)
    [《Why you need protocol-relative URLs *now*》](https://www.tuicool.com/articles/nEjU7b)
+
+#### 70. HTML事件
+https://www.w3school.com.cn/tags/html_ref_eventattributes.asp
+
+Window事件属性：针对 window 对象触发的事件
+   onload: 页面结束加载之后触发;
+   onresize: 当浏览器窗口被调整大小时触发;
+   onunload:一旦页面已下载时触发（或者浏览器窗口已被关闭）;
+
+Form事件：由 HTML 表单内的动作触发的事件（应用到几乎所有 HTML 元素，但最常用在 form 元素中）
+   onblur: 元素失去焦点时运行的脚本；
+   onchange: 在元素值被改变时运行的脚本;
+   onfocus: 当元素获得焦点时运行的脚本;
+   onformchange:在表单改变时运行的脚本;
+   onforminput: 当表单获得用户输入时运行的脚本;
+   oninput: 当元素获得用户输入时运行的脚本;
+   onselect: 在元素中文本被选中后触发;
+   onsubmit: 在提交表单时触发;
+
+Keyboard 事件:
+   onkeydown: 在用户按下按键时触发;
+   onkeypress:在用户敲击按钮时触发;
+   onkeyup: 当用户释放按键时触发;
+
+Mouse 事件:由鼠标或类似用户动作触发的事件;
+   onclick
+   ondbclick
+   onmousedown
+   onmousemove
+   onmouseout
+   onmouseover
+   onmouseup
+   onmousewheel
+   onscroll
+
+Media 事件:由媒介（比如视频、图像和音频）触发的事件（适用于所有 HTML 元素，但常见于媒介元素中，比如 <audio>、<embed>、<img>、<object> 以及 <video>）
