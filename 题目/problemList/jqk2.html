@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        #father {
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        #son {
+            height: 10000px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li style="margin: auto;width: auto;">text1</li>
+        <li>text2</li>
+    </ul>
+</body>
+
+<script>
+    //es6允许字面量定义对象时，将表达式放在括号内
+    let a = 'asd';
+    let obj = {
+        [a]: true,
+        ['a' + 'bc']: 123
+    }
+    console.log(obj)
+    console.log(obj[a]) //true
+    console.log(obj['asd']) //true
+    console.log(obj['abc']) //123
+
+    class Point {
+        constructor(x, y) {
+            Object.assign(this, {
+                x,
+                y
+            })
+        }
+    }
+    let p = new Point(1, 2);
+    console.log(p.x) //1
+    console.log(p.y) //2
+    const dom = document.getElementById('father')
+
+    function scroll(e) {
+        console.log(e.target.scrollTop)
+    }
+
+    //防抖
+    function debounce(fn, delay) {
+        let timer = null
+        return function(...args) {
+            if (timer) clearInterval(timer)
+            timer = setTimeout(() => {
+                timer = null
+
+                fn.apply(this, args)
+            }, delay || 400)
+        }
+    }
+
+    //节流
+    function throttle(fn, delay) {
+        let timer = null
+        return function(...args) {
+            if (timer) return
+            timer = setTimeout(() => {
+                timer = null
+                fn.apply(this, args)
+            }, delay || 400)
+        }
+    }
+
+    function fn() {
+        console.log('resize')
+    }
+    window.addEventListener('resize', throttle(fn, 1000))
+
+    //当其选项卡的内容变得可见或被隐藏时，会在文档上触发 visibilitychange (能见度更改)事件。
+    document.addEventListener('visibilitychange', () => {
+        console.log(111)
+    })
+
+    const debounceScroll = debounce(scroll)
+    const throttleScroll = throttle(scroll)
+    dom.addEventListener('scroll', debounceScroll)
+        // dom.addEventListener('scroll', throttleScroll)
+
+    //给date对象添加一个nextDay方法
+    Date.prototype.nextDay = function() {
+        return new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    }
+</script>
+
+</html>

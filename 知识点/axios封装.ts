@@ -56,7 +56,7 @@ const errHandle = (e: AxiosError, url: string, config: any) => {
     message: msg,
     code: e.code,
     result: data ? data.result || 0 : 0,
-  };
+  }; 
 };
 
 /**

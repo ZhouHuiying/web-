@@ -2612,6 +2612,7 @@ function debounce(fn, wait) {
   };
 }
 
+
 // 函数节流的实现;
 function throttle(fn, delay) {
   var preTime = Date.now();
