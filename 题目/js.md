@@ -1781,6 +1781,7 @@ js 的加载、解析和执行会阻塞页面的渲染过程，因此我们希�
 - async：中文意思是异步，这个属性与defer类似，都用于改变处理脚本的行为。同样与defer类似，async只适用于外部脚本文件，并告诉浏览器立即下载文件。
 但与defer不同的是，标记为async的脚本并不保证按照它们的先后顺序执行。
 指定async属性的目的是不让页面等待两个脚本下载和执行，从而异步加载页面其他内容,这使用于之间互不依赖的各脚本。
+
 #### 55. Ajax 是什么? 如何创建一个 Ajax？
 
 相关知识点：
@@ -1892,6 +1893,52 @@ function getJSON(url) {
 [《从 ajax 到 fetch、axios》](https://juejin.im/post/5acde23c5188255cb32e7e76)
 [《Fetch 入门》](https://juejin.im/post/5c160937f265da61180199b2)
 [《传统 Ajax 已死，Fetch 永生》](https://segmentfault.com/a/1190000003810652)
+
+##### ajax 和 axios 
+
+ajax - jQuery ajax - axios - fetch
+
+- axios 是一个基于Promise 用于浏览器和 nodejs 的 HTTP 客户端，本质上也是对原生XHR的封装，只不过它是Promise的实现版本，符合最新的ES规范，它本身具有以下特征：
+  1.从浏览器中创建 XMLHttpRequest
+  2.支持 Promise API
+  3.客户端支持防止CSRF
+  4.提供了一些并发请求的接口（重要，方便了很多的操作）
+  5.从 node.js 创建 http 请求
+  6.拦截请求和响应
+  7.转换请求和响应数据
+  8.取消请求
+  9.自动转换JSON数据
+  PS:防止CSRF:就是让你的每个请求都带一个从cookie中拿到的key, 根据浏览器同源策略，假冒的网站是拿不到你cookie中得key的，这样，后台就可以轻松辨别出这个请求是否是用户在假冒网站上的误导输入，从而采取正确的策略。
+  ```javascript
+    axios({
+        method: 'post',
+        url: '/user/12345',
+        data: {
+            firstName: 'Fred',
+            lastName: 'Flintstone'
+        }
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  ```
+- fetch
+  fetch号称是AJAX的替代品，是在ES6出现的，使用了ES6中的promise对象。Fetch是基于promise设计的。Fetch的代码结构比起ajax简单多了，参数有点像jQuery ajax。但是，一定记住fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。
+  fetch的优点：
+  1.符合关注分离，没有将输入、输出和用事件来跟踪的状态混杂在一个对象里
+  2.更好更方便的写法
+  ```javascript
+    try {
+      let response = await fetch(url);
+      let data = response.json();
+      console.log(data);
+    } catch(e) {
+      console.log("Oops, error", e);
+    }
+  ```
 
 #### 56. 谈一谈浏览器的缓存机制？
 
@@ -2021,9 +2068,6 @@ script 脚本请求都不会有跨域的限制，这是因为这些操作都不�
 （3）使用 window.name 的方法，主要是基于同一个窗口中设置了 window.name 后不同源的页面也可以访问，所以不同源的子页面可以首先在 window.name 中写入数据，然后跳转到一个和父级同源的页面。这个时候级页面就可以访问同源的子页面中 window.name 中的数据了，这种方式的好处是可以传输的数据量大。
 
 （4）使用 postMessage 来解决的方法，这是一个 h5 中新增的一个 api。通过它我们可以实现多窗口间的信息传递，通过获取到指定窗口的引用，然后调用 postMessage 来发送信息，在窗口中我们通过对 message 信息的监听来接收信息，以此来实现不同源间的信息交换。
-
-
-
 
 如果是像解决 ajax 无法提交跨域请求的问题，我们可以使用 jsonp、cors、websocket 协议、服务器代理来解决问题。
 
@@ -2326,7 +2370,6 @@ call 传入的参数数量不固定，跟 apply 相同的是，第一个参数�
 详细资料可以参考：
 [《apply、call 的区别和用途》](https://juejin.im/entry/58d0a7b22f301e007e5a15ae)
 
-
 #### call() apply() bind() 共同点
   允许一个对象调用另一个对象的方法；
   apply 、 call 、bind 三者都是用来改变函数的this对象的指向的；
@@ -2343,7 +2386,7 @@ call 传入的参数数量不固定，跟 apply 相同的是，第一个参数�
 
 #### bind
 
-```
+```javascript
   this.height = '155';    // 在浏览器中，this 指向全局的 "window" 对象
 
   let user = {
@@ -2354,7 +2397,6 @@ call 传入的参数数量不固定，跟 apply 相同的是，第一个参数�
   // 自身调用
   user.getHeight(); //user调用getX，此时getX里的this指的是user
   console.log(user.getHeight()); // '170'
-
 
   // 赋值调用
   let tianZhen = user.getHeight; //  相当于  tianZhen = function() { return this.height; }
@@ -2389,12 +2431,9 @@ func(); // 3
 
 let func2 = bar.bind(foo).bind(sed).bind(fiv);
 func2(); // 3
-
 ```
-
 #### call apply
  call 和 apply 是为了动态改变 this 而出现的，当一个 object 没有某个方法，但是其他的有，我们可以借助call或apply用其它对象的方法来操作。
-
 
 #### 74. JavaScript 类数组对象的定义？
 
@@ -2441,6 +2480,7 @@ Array.from(arrayLike);
 在javascript中所有的函数内部都包含了一个隐藏的变量叫arguments;它存放着所有传递到这个函数中的参数；
 ```javascript
   (function fn(){
+    //arguments接收外面传进来的参数变为数组
   console.log(arguments)
   })(1,2,3,4)    //[1,2,3,4]
 ```
@@ -4718,3 +4758,103 @@ function logHello(target, key, discriptor){
     return target
 }
 ```
+
+#### 179. CORS Cross-origin resource sharing 跨域资源共享
+http://www.ruanyifeng.com/blog/2016/04/cors.html
+
+它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。
+
+- 简介
+
+CORS需要浏览器和服务器同时支持。
+
+整个CORS通信过程，都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
+
+因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信
+
+- 两种请求：简单请求和非简单请求
+
+简单请求：只要同时满足以下两大条件，就属于简单请求。
+  (1) 请求方法是以下三种方法之一：
+    HEAD
+    GET
+    POST
+  (2) HTTP的头信息不超出以下几种字段：
+    Accept
+    Accept-Language
+    Content-Language
+    Last-Event-ID
+    Content-Type：只限于三个值application/x-www-form-urlencoded、multipart/form-data、text/plain
+
+- 简单请求
+对于简单请求，浏览器直接发出CORS请求。具体来说，就是在头信息之中，增加一个Origin字段。
+头信息中的Origin字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。
+如果Origin指定的源，不在许可范围内，服务器会返回一个正常的HTTP回应。浏览器发现，这个回应的头信息没有包含Access-Control-Allow-Origin字段，就知道出错了，从而抛出一个错误，被XMLHttpRequest的onerror回调函数捕获。注意，这种错误无法通过状态码识别，因为HTTP回应的状态码有可能是200。
+
+如果Origin指定的域名在许可范围内，服务器返回的响应，会多出几个头信息字段。
+  Access-Control-Allow-Origin: http://api.bob.com
+  Access-Control-Allow-Credentials: true
+  Access-Control-Expose-Headers: FooBar
+
+  Access-Control-Allow-Origin：该字段是必须的。它的值要么是请求时Origin字段的值，要么是一个*，表示接受任意域名的请求。
+
+  Access-Control-Allow-Credentials：该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，Cookie可以包含在请求中，一起发给服务器。这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段即可。
+
+  Access-Control-Expose-Headers：该字段可选。CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma。如果想拿到其他字段，就必须在Access-Control-Expose-Headers里面指定。上面的例子指定，getResponseHeader('FooBar')可以返回FooBar字段的值
+
+withCredentials 属性: 要发送cookie时，服务器：Access-Control-Allow-Credentials: true，客户端：var xhr = new XMLHttpRequest(); xhr.withCredentials = true;
+
+- 非简单请求：非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。
+
+预检请求：
+  非简单请求的CORS请求，会在正式通信之前，增加一次HTTP查询请求，称为"预检"请求（preflight）。
+  浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错。
+  服务器收到"预检"请求以后，检查了Origin、Access-Control-Request-Method和Access-Control-Request-Headers字段以后，确认允许跨源请求，就可以做出回应。
+  如果服务器否定了"预检"请求，会返回一个正常的HTTP回应，但是没有任何CORS相关的头信息字段。这时，浏览器就会认定，服务器不同意预检请求，因此触发一个错误，被XMLHttpRequest对象的onerror回调函数捕获。控制台会打印出报错信息。一旦服务器通过了"预检"请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。
+
+  Access-Control-Request-Method：该字段是必须的，用来列出浏览器的CORS请求会用到哪些HTTP方法。
+  Access-Control-Request-Headers：该字段是一个逗号分隔的字符串，指定浏览器CORS请求会额外发送的头信息字段。
+
+- 与JSONP的比较：
+  CORS与JSONP的使用目的相同，但是比JSONP更强大。
+
+  JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+
+#### 180. WebSocket
+http://www.ruanyifeng.com/blog/2017/05/websocket.html
+
+- 简介：它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。
+
+- 客户端示例：
+```javascript
+  //执行该语句，客户端就会与服务器进行连接。
+  var ws = new WebSocket("wss://echo.websocket.org");
+
+  ws.onopen = function(evt) { 
+    console.log("Connection open ..."); 
+    ws.send("Hello WebSockets!");
+  };
+
+  ws.onmessage = function(evt) {
+    console.log( "Received Message: " + evt.data);
+    ws.close();
+  };
+
+  ws.onclose = function(evt) {
+    console.log("Connection closed.");
+  };      
+```
+
+- 客户端的 API
+(1) WebSocket 构造函数: WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
+(2) webSocket.readyState: readyState属性返回实例对象的当前状态，共有四种;
+  CONNECTING：值为0，表示正在连接。
+  OPEN：值为1，表示连接成功，可以通信了。
+  CLOSING：值为2，表示连接正在关闭。
+  CLOSED：值为3，表示连接已经关闭，或者打开连接失败。
+(3)webSocket.onopen: 实例对象的onopen属性，用于指定连接成功后的回调函数。
+(4)webSocket.onclose: 实例对象的onclose属性，用于指定连接关闭后的回调函数。
+(5)webSocket.onmessage: 实例对象的onmessage属性，用于指定收到服务器数据后的回调函数。
+(6)webSocket.send(): 实例对象的send()方法用于向服务器发送数据。
+(7)webSocket.bufferedAmount: 实例对象的bufferedAmount属性，表示还有多少字节的二进制数据没有发送出去。它可以用来判断发送是否结束。
+(8)webSocket.onerror:实例对象的onerror属性，用于指定报错时的回调函数。
