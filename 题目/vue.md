@@ -279,6 +279,7 @@ home.vue，点击显示就会将子路由显示在出来，子路由的出口必
 ### 6、路由之间跳转？
 
 - 声明式（标签跳转） `<router-link :to="index">`
+
 - 编程式（ js 跳转） `router.push('index')`
 
 ### 7、懒加载（按需加载路由）
@@ -369,6 +370,7 @@ vue 中 key 值的作用可以分为两种情况来考虑。
 第二种情况是 v-for 中使用 key。用 v-for 更新已渲染过的元素列表时，它默认使用“就地复用”的策略。如果数据项的顺序发生了改变，Vue 不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处的每个元素。因此通过为每个列表项提供一个 key 值，来以便 Vue 跟踪元素的身份，从而高效的实现复用。这个时候 key 的作用是为了高效的更新渲染虚拟 DOM。
 
 ### 12.diff算法
+  diff 是发生在虚拟 DOM 上的：新虚拟 DOM 和老虚拟 DOM 进行 diff （精细化比较），算出应该如何最小量更新，最后反映到真实的 DOM 上。
 
   怎么实现 两颗新旧DOM树的对比 呢？这里就涉及到了 diff算法。常见的 diff算法如下：
 
@@ -381,6 +383,24 @@ vue 中 key 值的作用可以分为两种情况来考虑。
  - element diff：在组件中，每个元素之间也要进行对比，那么，元素级别的对比，叫做 element diff。
 
  - key：key这个属性，可以把 页面上的 DOM节点 和 虚拟DOM中的对象，做一层关联关系。
+
+#### h函数
+  h 函数用来产生虚拟节点（vnode），可以嵌套使用
+
+  h('a', { props: { href: 'http://www.atguigu.com' } }, '尚硅谷')
+  得到： { "sel": "a", "data": { "props": { "href": "http://www.atguigu.com" } }, "text": "尚硅谷" }
+  它表示的真正的 DOM 节点：<a href="http://www.atguigu.com">尚硅谷</a>
+
+  一个虚拟节点有哪些属性？
+    {
+      children: undefined, // 子节点，undefined表示没有子节点
+      data: {}, // 属性样式等
+      elm: undefined, // 该元素对应的真正的DOM节点，undefined表示它还没有上树
+      key: undefined, // 节点唯一标识
+      sel: 'div', // selector选择器 节点类型（现在它是一个div）
+      text: '我是一个盒子' // 文字
+    }
+
 
 ### 14、vue项目结构及各部分的作用
 
@@ -441,7 +461,8 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 ### 18、虚拟 DOM 是什么 有什么优缺点？
 
 由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
-Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。Virtual DOM 本质就是用一个原生的 JS 对象去描述一个 DOM 节点，是对真实 DOM 的一层抽象。
+Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。
+虚拟 DOM 本质就是用一个原生的 JS 对象去描述一个 DOM 节点，是对真实 DOM 的一层抽象。DOM 中的一切属性都在虚拟 DOM 中有对应的属性。
 
 优点：
   保证性能下限： 框架的虚拟 DOM 需要适配任何上层 API 可能产生的操作，它的一些 DOM 操作的实现必须是普适的，所以它的性能并不是最优的；但是比起粗暴的 DOM 操作性能要好很多，因此框架的虚拟 DOM 至少可以保证在你不需要手动优化的情况下，依然可以提供还不错的性能，即保证性能的下限；
@@ -450,13 +471,12 @@ Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。Virtual DOM 本质�
 
   跨平台： 虚拟 DOM 本质上是 JavaScript 对象,而 DOM 与平台强相关，相比之下虚拟 DOM 可以进行更方便地跨平台操作，例如服务器渲染、weex 开发等等。
 
-
 缺点:
   无法进行极致优化： 虽然虚拟 DOM + 合理的优化，足以应对绝大部分应用的性能需求，但在一些性能要求极高的应用中虚拟 DOM 无法进行针对性的极致优化。
 
   首次渲染大量 DOM 时，由于多了一层虚拟 DOM 的计算，会比 innerHTML 插入慢。
 
-#### 什么是 Virtual DOM？为什么 Virtual DOM 比原生 DOM 快？
+#### 什么是 Virtual DOM？ 为什么 Virtual DOM 比原生 DOM 快？
 
 ```
 我对 Virtual DOM 的理解是，
@@ -467,9 +487,9 @@ Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。Virtual DOM 本质�
 
 最后将记录的有差异的地方应用到真正的 DOM 树中去，这样视图就更新了。
 
-我认为 Virtual DOM 这种方法对于我们需要有大量的 DOM 操作的时候，能够很好的提高我们的操作效率，通过在操作前确定需要做的最小修改，尽可能的减少 DOM 操作带来的重流和重绘的影响。其实 Virtual DOM 并不一定比我们真实的操作 DOM 要快，这种方法的目的是为了提高我们开发时的可维护性，在任意的情况下，都能保证一个尽量小的性能消耗去进行操作。
+我认为 Virtual DOM 这种方法对于我们需要有大量的 DOM 操作的时候，能够很好的提高我们的操作效率，通过在操作前确定需要做的最小修改，尽可能的减少 DOM 操作带来的重流和重绘的影响。
+其实 Virtual DOM 并不一定比我们真实的操作 DOM 要快，这种方法的目的是为了提高我们开发时的可维护性，在任意的情况下，都能保证一个尽量小的性能消耗去进行操作。
 ```
-
 
 #### 如何比较两个 DOM 树的差异？
 
@@ -601,7 +621,9 @@ vue-composition 提供了类似 React Hook 的能力，将 Vue 的抽象层级�
 
 ### 21、$route 和 $router 的区别？
 ```
-$route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。而 $router 是“路由实例”对象包括了路由的跳转方法，钩子函数等。
+$route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
+
+$router 是“路由实例”对象包括了路由的跳转方法，钩子函数等。
 ```
 
 ### 22、 vue 常用的修饰符？
