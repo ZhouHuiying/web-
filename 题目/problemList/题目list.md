@@ -68,6 +68,7 @@
 
   数据请求用的什么？axios 
   ajax是什么？ 问了ajax如何封装（写一个ajax）
+  不同浏览器如何封装？第一次请求和之后的请求？
 
   HTTP请求的协议：get post等..  get post 的区别  post把数据放在哪里
 
