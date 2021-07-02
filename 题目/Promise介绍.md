@@ -109,7 +109,7 @@ Promise 对象, 可以**用同步的表现形式来书写异步代码**（也就
 ### Promise 封装 Ajax 请求
 
 写法1：
-
+ 
 ```js
 const request = require('request');
 

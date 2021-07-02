@@ -515,6 +515,7 @@ ES5 中只存在两种作用域：全局作用域和函数作用域。在 JavaSc
 因此，我们可以看出，闭包的主要作用就是：延伸了变量的作用范围。
 
 #### 构造函数是什么
+
   构造函数：是一种特殊的函数，主要用来创建和初始化对象，也就是为对象的成员变量赋初始值。它与 `new` 一起使用才有意义。
 
   new方法实现了什么？
@@ -524,9 +525,11 @@ ES5 中只存在两种作用域：全局作用域和函数作用域。在 JavaSc
     (4) 返回新对象。
 
 #### 构造函数和普通函数的区别
+
   (1) 调用方式不一样。作用也不一样（构造函数用来新建实例对象）;
     普通函数的调用方式：直接调用 person();
     构造函数的调用方式：需要使用new关键字来调用 new Person();内部用this 来构造属性和方法;
+
   (2) this 的指向也有所不同：
   -   1.以函数的形式调用时，this 永远都是 window。比如`fun();`相当于`window.fun();`
   -   2.以方法的形式调用时，this 是调用方法的那个对象
@@ -2541,13 +2544,19 @@ Array.from(arrayLike);
 
 数组尾部操作的方法 pop() 和 push()，push 方法可以传入多个参数。
 
-数组首部操作的方法 shift() 和 unshift() 重排序的方法 reverse() 和 sort()，sort() 方法可以传入一个函数来进行比较，传入前后两个值，如果返回值为正数，则交换两个参数的位置。
+数组首部操作的方法 shift() 和 unshift() 
+
+重排序的方法 reverse() 和 sort()，sort() 方法可以传入一个函数来进行比较，传入前后两个值，如果返回值为正数，则交换两个参数的位置。
 
 数组连接的方法 concat() ，返回的是拼接好的数组，不影响原数组。
 
 数组截取办法 slice()，用于截取数组中的一部分返回，不影响原数组。
 
-数组插入方法 splice()，影响原数组查找特定项的索引的方法，indexOf() 和 lastIndexOf() 迭代方法 every()、some()、filter()、map() 和 forEach() 方法
+数组插入方法 splice()，影响原数组查找特定项的索引的方法
+
+indexOf() 和 lastIndexOf() 
+
+迭代方法 every()、some()、filter()、map() 和 forEach() 方法
 
 数组归并方法 reduce() 和 reduceRight() 方法
 ```
@@ -2997,13 +3006,7 @@ UTF-8 是一种对 Unicode 的编码方式，它是一种变长的编码方式�
 
 宏任务包括了 script 脚本的执行、setTimeout ，setInterval ，setImmediate 一类的定时事件，还有如 I/O 操作、UI 渲
 染等。
-```
-
-详细资料可以参考：
-[《浏览器事件循环机制（event loop）》](https://juejin.im/post/5afbc62151882542af04112d)
-[《详解 JavaScript 中的 Event Loop（事件循环）机制》](https://zhuanlan.zhihu.com/p/33058983)
-[《什么是 Event Loop？》](http://www.ruanyifeng.com/blog/2013/10/event_loop.html)
-[《这一次，彻底弄懂 JavaScript 执行机制》](https://juejin.im/post/59e85eebf265da430d571f89)
+```                                       
 
 #### JS同步和异步 事件循环的定义
   同步：前一个任务结束后再执行后一个任务，程序的执行顺序和任务的排列顺序是一致的、同步的。
@@ -3029,20 +3032,22 @@ UTF-8 是一种对 Unicode 的编码方式，它是一种变长的编码方式�
 
 异步任务可以分为微任务和宏任务；
 (/image/宏任务微任务.jpg)
+
 微任务：
   一个需要异步执行的函数，执行时机是在主函数执行结束之后、当前宏任务结束之前。
-常见的微任务：
-  Promise.then
-  MutaionObserver
-  process.nextTick
+  常见的微任务：
+    Promise.then
+    MutaionObserver
+    process.nextTick
+
 宏任务：
   宏任务的时间粒度比较大，执行的时间间隔是不能精确控制的，对一些高实时性的需求就不太符合
-常见的宏任务： 
-  script(外层同步代码)
-  setTimeout/setInterval
-  UI rendering/UI事件
-  postMessage、MessageChannel
-  setImmediate、I/O（Node.js）
+  常见的宏任务： 
+    script(外层同步代码)
+    setTimeout/setInterval
+    UI rendering/UI事件
+    postMessage、MessageChannel
+    setImmediate、I/O（Node.js）
 宏任务微任务执行过程：
   执行一个宏任务，如果遇到微任务就将它放到微任务的事件队列中当前宏任务执行完成后，会查看微任务的事件队列，然后将里面的所有微任务依次执行完。
 
