@@ -433,6 +433,7 @@ null：主动释放一个变量引用的对象，表示一个变量不再指向�
 个属性，因为它不是规范中规定的。ES5 中新增了一个 Object.getPrototypeOf() 方法，我们可以通过这个方法来获取对
 象的原型。
 
+
 当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又
 会有自己的原型，于是就这样一直找下去，也就是原型链的概念。原型链的尽头一般来说都是 Object.prototype 所以这就
 是我们新建的对象为什么能够使用 toString() 等方法的原因。
@@ -456,6 +457,12 @@ JavaScript 对象是通过引用来传递的，我们创建的每个新对象实
   构造函数；
 
 一般的对象它们的原型链的顶点是Object.prototype。
+
+原型链的顶端是null;
+typeof null  // 'object'
+为什么？
+  一方面，你没法访问null的属性，所以起到了终止原型链的作用；
+  另一方面，null在某种意义上也是一种对象，即空对象，因为null一开始就是为表示一个“空”的对象存在的。这样一来，就不会违反“原型链上只能有对象”的约定；
 
 重写 Person 原型的toString方法。针对 Person 的所有实例生效：
   function Person(name, age, gender) {
@@ -653,7 +660,7 @@ Number() 的存储空间：Math.pow(2, 53) ，53 为有效数字；如果后台�
 来判断。
 ```
 
-#### 14. typeof NaN 的结果是什么？
+#### 14. typeof NaN / typeof null的结果是什么？
 
 ```
 NaN 意指“不是一个数字”（not a number），NaN 是一个“警戒值”（sentinel value，有特殊用途的常规值），用于指出
@@ -664,6 +671,9 @@ typeof NaN === 'number'
 
 NaN 是一个特殊值，它和自身不相等，是唯一一个非自反（自反，reflexive，即 x === x 不成立）的值。而 NaN != NaN
 为 true。
+
+typeof null // 'object'
+
 ```
 
 #### 15. isNaN 和 Number.isNaN 函数的区别？
@@ -2561,9 +2571,53 @@ indexOf() 和 lastIndexOf()
 数组归并方法 reduce() 和 reduceRight() 方法
 ```
 
-详细资料可以参考：
-[《JavaScript 深入理解之 Array 类型详解》](http://cavszhouyou.top/JavaScript%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E4%B9%8BArray%E8%AF%A6%E8%A7%A3.html)
+- filter:
+  let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  let res = nums.filter((num) => {
+    return num > 5;
+  });
+
+  console.log(res);  // [6, 7, 8, 9, 10]
+
+- reduce: 
+  array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
+    total	必需。初始值, 或者计算结束后的返回值。
+    currentValue	必需。当前元素
+    currentIndex	可选。当前元素的索引
+    arr	可选。当前元素所属的数组对象。
+    initialValue	可选。传递给函数的初始值
+#### 使用 reduce 方法实现 forEach、map、filter 
+   ```js
+
+    // forEach
+    function forEachUseReduce(array, handler) {
+      array.reduce(function (pre, item, index) {
+        handler(item, index);
+      });
+    }
+    
+    // map
+    function mapUseReduce(array, handler) {
+      let result = [];
+      array.reduce(function (pre, item, index) {
+        let mapItem = handler(item, index);
+        result.push(mapItem);
+      });
+      return result;
+    }
+    
+    // filter
+    function filterUseReduce(array, handler) {
+      let result = [];
+      array.reduce(function (pre, item, index) {
+        if (handler(item, index)) {
+          result.push(item);
+        }
+      });
+      return result;
+    }
+   ```
 #### 76. 数组的 fill 方法？
 
 ```
@@ -3197,7 +3251,6 @@ function deepCopy(newObj, oldObj) {
     }
 }
 ```
-
 ##### JSON 来深拷贝
 
 ```javascript

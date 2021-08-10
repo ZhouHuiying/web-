@@ -709,7 +709,7 @@
    [《请描述一下 cookies，sessionStorage 和 localStorage 的区别？》](https://segmentfault.com/a/1190000017423117)
    [《浏览器数据库 IndexedDB 入门教程》](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)
 
-##### webstorage
+#### webstorage
 webstorage是本地存储，存储在客户端，包括localStorage和sessionStorage;
 
 ##### localStorage 本地存储
@@ -751,8 +751,7 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
   removeItem (key) —— 删除单个数据，根据键值移除对应的信息。
   clear () —— 删除所有的数据
   key (index) —— 获取某个索引的key
-
-##### cookie
+#### cookie
 构成：
    名称：name； 
    值:value(通过URL编码:encodeURIComponent)； 
@@ -763,6 +762,15 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
 
 作用：主要用于保存登录信息；
 
+#### session
+
+Session：记录一系列状态
+
+session是另一种记录客户状态的机制，不同的是cookie保存在客户端浏览器中，而session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上，这就是session。客户端浏览器再次访问时只需要从该session中查找该客户的状态就可以了。session相当于程序在服务器上建立的一份用户的档案，用户来访的时候只需要查询用户档案表就可以了。
+
+什么时候创建session ？ 在你的服务器端发现没有该客户端的session，那么创建;
+
+什么时候销毁？  1、关闭客户端的时候  2、手动销毁  3、过期
 
 #### 37. iframe 有那些缺点？
    ```
