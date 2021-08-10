@@ -191,18 +191,18 @@ BigInt 是一种数字类型的数据，它可以表示任意精度格式的整�
 
 Undefined:
     使用var声明变量但未对其进行初始化，这个变量的值就是undefined。
-  Null：
-    表示一个空对象指针，使用typeof操作符检测null会返回object
-  Boolean：
-    true false
-  Number:
-    十进制、八进制0、十六进制0x NaN:非数值 
-    将非数值转换为数值：Number()-可以用于任何数据类型；parseInt() parseFloat() -专门用于把字符串转换成数值；
-  String
-  Object：
-    var o = new Object()
-  symbol（ES6 新增的）
-  BigInt（ES2020）
+Null：
+  表示一个空对象指针，使用typeof操作符检测null会返回object
+Boolean：
+  true false
+Number:
+  十进制、八进制0、十六进制0x NaN:非数值 
+  将非数值转换为数值：Number()-可以用于任何数据类型；parseInt() parseFloat() -专门用于把字符串转换成数值；
+String
+Object：
+  var o = new Object()
+symbol（ES6 新增的）
+BigInt（ES2020）
 
 ```
 
@@ -3361,7 +3361,9 @@ function curry(fn, ...args) {
 [《JavaScript 专题之函数柯里化》](https://github.com/mqyqingfeng/Blog/issues/42)
 
 #### 函数柯里化
+
 含义：把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数而且返回结果的新函数的技术。
+
 eg.
   ```javascript
     // 普通的add函数
