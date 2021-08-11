@@ -2,8 +2,10 @@
 
 vue 框架中状态管理。在 main.js 引入 store，注入。新建了一个目录 store，….. export 。场景有：单页应用中，组件之间的状态。音乐播放、登录状态、加入购物车
 
-vuex:可以集中管理共享的数据；可以高效实现组件之间的数据共享；
-存储在vuex中的数据都是响应式的，能够实时保持数据与页面的同步
+vuex:
+  可以集中管理共享的数据；
+  可以高效实现组件之间的数据共享；
+  存储在vuex中的数据都是响应式的，能够实时保持数据与页面的同步；
 
 一般情况下，只有组件之间共享的数据，才有必要存储在vuex中；
 组件中的私有数据，依旧存储在自身的data即可。
@@ -106,8 +108,8 @@ this.$store.dispatch("addNAsync",5)是触发actions的第一种方式
 Getter用于对Store中的数据进行加工处理形成新的数据。
 
 - getter 可以对 state 进行计算操作，它就是 store 的计算属性
-- 虽然在组件内也可以做计算属性，但是 getters 可以在多给件之间复用
-- 如果一个状态只在一个组件内使用，是可以不用 getters
+- 虽然在组件内也可以做计算属性，但是 getters 可以在多组件之间复用
+- 如果一个状态只在一个组件内使用，可以不用 getters
 
 #### vue 中 ajax 请求代码应该写在组件的 methods 中还是 vuex 的 action 中
 
@@ -135,7 +137,7 @@ vuex 整体思想诞生于 flux,可其的实现方式完完全全的使用了 vu
 - 命名空间：默认情况下，模块内部的 action、mutation 和 getter 是注册在全局命名空间的——这样使得多个模块能够对同一 mutation 或 action 作出响应。
   如果希望你的模块具有更高的封装度和复用性，你可以通过添加 namespaced: true 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。
 
-### ？？？ 
+### 其他
 
 #### 使用 Vuex 只需执行 Vue.use(Vuex)，并在 Vue 的配置中传入一个 store 对象的示例，store 是如何实现注入的？[美团](https://tech.meituan.com/vuex_code_analysis.html)
 

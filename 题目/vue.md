@@ -623,7 +623,7 @@ vue-composition 提供了类似 React Hook 的能力，将 Vue 的抽象层级�
 ```
 $route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
 
-$router 是“路由实例”对象包括了路由的跳转方法，钩子函数等。
+$router 是“路由实例”对象，包括了路由的跳转方法，钩子函数等。
 ```
 
 ### 22、 vue 常用的修饰符？

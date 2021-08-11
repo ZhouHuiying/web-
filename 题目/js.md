@@ -1636,8 +1636,8 @@ use strict 指的是严格运行模式，在这种模式对 js 的使用添加�
 
 ```js
 // instanceof 运算符用于判断构造函数的 prototype 属性是否出现在对象的原型链中的任何位置。
-// 实现：
 
+// 实现：
 function myInstanceof(left, right) {
   let proto = Object.getPrototypeOf(left), // 获取对象的原型
     prototype = right.prototype; // 获取构造函数的 prototype 对象
@@ -1652,14 +1652,13 @@ function myInstanceof(left, right) {
 }
 ```
 
-详细资料可以参考：
-[《instanceof》](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof)
-
 #### typeof 和 instanceof 区别
 
 js是一个弱类型的语言，所以一般想知道当前变量是哪一种类型必须判断类型，都知道判断类型的两种方式：typeof、 instanceof
+
 它们各有缺点：
   typeof适用于基础数据类型判断，引用类型判断都是object。 
+
   instanceof的用途是判断一个对象是否在某个对象原型链上。或者说判断一个对象是某个对象的实例。    
     a instanceof b：判断a是否为b的实例，可以用于继承关系中。
 
