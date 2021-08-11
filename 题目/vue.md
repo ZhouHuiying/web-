@@ -642,3 +642,17 @@ mixin 用于全局混入，会影响到每个组件实例。
 mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
 ```
 
+### 24、vue单页应用 SPA
+
+vue 单页应用（spa）前端路由实现原理：
+  - window.history：
+      history.pushState
+      history.replaceState
+      popstate
+  - location.hash
+      window 对象中有一个事件是 onhashchange，以下几种情况都会触发这个事件：
+        直接更改浏览器地址，在最后面增加或改变#hash；
+        通过改变location.href或location.hash的值；
+        通过触发点击带锚点的链接；
+        浏览器前进后退可能导致hash的变化，前提是两个网页地址中的hash值不同；
+      
