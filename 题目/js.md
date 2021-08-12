@@ -1965,6 +1965,7 @@ ajax - jQuery ajax - axios - fetch
     });
   ```
 - fetch
+
   fetch号称是AJAX的替代品，是在ES6出现的，使用了ES6中的promise对象。Fetch是基于promise设计的。Fetch的代码结构比起ajax简单多了，参数有点像jQuery ajax。但是，一定记住fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。
   fetch的优点：
   1.符合关注分离，没有将输入、输出和用事件来跟踪的状态混杂在一个对象里
@@ -1978,6 +1979,28 @@ ajax - jQuery ajax - axios - fetch
       console.log("Oops, error", e);
     }
   ```
+
+  fetch 是一个比较新的API，用来实现CORS通信。用法如下：
+    ```javascript
+          // url（必选），options（可选）
+          fetch('/some/url/', {
+              method: 'get',
+          }).then(function (response) {  //类似于 ES6中的promise
+
+          }).catch(function (err) {
+            // 出错了，等价于 then 的第二个参数，但这样更好用更直观
+          });
+    ```
+  当接收到一个代表错误的 HTTP 状态码时，从 fetch()返回的 Promise 不会被标记为 reject， 即使该 HTTP 响应的状态码是 404 或 500。相反，它会将 Promise 状态标记为 resolve （但是会将 resolve 的返回值的 ok 属性设置为 false ），仅当网络故障时或请求被阻止时，才会标记为 reject。
+  默认情况下，fetch 不会从服务端发送或接收任何 cookies, 如果站点依赖于用户 session，则会导致未经认证的请求（要发送 cookies，必须设置 credentials 选项）。
+
+  - fetch示例
+
+  export const getReport = (reportKey: string) => {
+    return fetch(`/api/report?reportKey=${reportKey}`)
+      .then(response => response.json())
+      .then(data => data.res);
+  }
 
 #### 56. 谈一谈浏览器的缓存机制？
 
@@ -2108,6 +2131,8 @@ script 脚本请求都不会有跨域的限制，这是因为这些操作都不�
 
 （4）使用 postMessage 来解决的方法，这是一个 h5 中新增的一个 api。通过它我们可以实现多窗口间的信息传递，通过获取到指定窗口的引用，然后调用 postMessage 来发送信息，在窗口中我们通过对 message 信息的监听来接收信息，以此来实现不同源间的信息交换。
 
+-------
+
 如果是像解决 ajax 无法提交跨域请求的问题，我们可以使用 jsonp、cors、websocket 协议、服务器代理来解决问题。
 
 （5）使用 jsonp 来实现跨域请求，它的主要原理是通过动态构建 script  标签来实现跨域请求，因为浏览器对 script 标签的引入没有跨域的访问限制 。通过在请求的 url 后指定一个回调函数，然后服务器在返回数据的时候，构建一个 json 数据的包装，这个包装就是回调函数，然后返回给前端，前端接收到数据后，因为请求的是脚本文件，所以会直接执行，这样我们先前定义好的回调函数就可以被调用，从而实现了跨域请求的处理。这种方式只能用于 get 请求。
@@ -2184,7 +2209,7 @@ script 脚本请求都不会有跨域的限制，这是因为这些操作都不�
 
 非简单请求，浏览器会先发出一次预检请求，来判断该域名是否在服务器的白名单中，如果收到肯定回复后才会发起请求。
 
-CORS 可以理解成是**既可以同步、也可以异步**的Ajax。
+CORS 可以理解成是**既可以同步、也可以异步**的Ajax。  -- 题目179
 
 （7）使用 websocket 协议，这个协议没有同源限制。
 
@@ -2588,6 +2613,7 @@ indexOf() 和 lastIndexOf()
     currentIndex	可选。当前元素的索引
     arr	可选。当前元素所属的数组对象。
     initialValue	可选。传递给函数的初始值
+    
 #### 使用 reduce 方法实现 forEach、map、filter 
    ```js
 
@@ -4182,6 +4208,10 @@ rest 参数（形式为...变量名），用于获取函数的多余参数。
 - 5.Symbol.for 接受一个字符串作为参数，然后搜索有没有以该参数作为名称的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建并返回一个以该字符串为名称的 Symbol 值。
 - 6.Symbol.keyFor 方法返回一个已登记的 Symbol 类型值的 key。
 
+131/132 --> es.md
+set weakset
+map weakmap
+
 #### 131. Set 和 WeakSet 结构？
 
 - 1.ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
@@ -4630,6 +4660,14 @@ for (var i = 0, j = 0; i < 5, j < 9; i++, j++) {
 #### 隐式类型转换（特殊）
 - 逻辑运算符：`&&`、`||`、`！` 。非布尔值进行**与或**运算时，会先将其转换为布尔值，然后再运算，但运算结果是**原值**。
 - 关系运算符：`<`、`>` `<=` `>=`等。关系运算符，得到的运算结果都是布尔值：要么是true，要么是false。
+
+#### ！！
+两个叹号会把0转换成false
+如果是字符串的话，两个叹号会把空的字符串转换成false, 把非空的字符串转换成true;
+!! 0    //false
+!0      //true
+!!''    //false
+!!'ss'  //true
 
 #### 176. Symbol
 
@@ -5089,3 +5127,25 @@ for...in 语句以任意顺序迭代对象的可枚举属性。
 
 for...of 语句遍历可迭代对象定义要迭代的数据。
 
+#### 184. window.postMessage()实现跨域消息传递
+
+window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），
+端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window .postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全.
+
+otherWindow.postMessage(message, targetOrigin, [transfer]);
+
+otherWindow:其他窗口的一个引用，比如iframe的contentWindow属性、执行window.open返回的窗口对象、或者是命名过或数值索引的window.frames。
+  Window.open
+  Window.opener
+  HTMLIFrameElement.contentWindow(父窗体向子窗体发送消息)
+  Window.parent(子窗体向父窗体发送消息)
+  Window.frames +索引值
+ 
+message:
+  将要发送到其他window的数据。它将会被结构化克隆算法序列化。这意味着你可以不受什么限制的将数据对象安全的传送给目标窗口而无需自己序列化。
+
+targetOrigin:
+  通过窗口的origin属性来指定哪些窗口能接收到消息事件，其值可以是字符串"*"（表示无限制）或者一个URI。在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的任意一项不匹配targetOrigin提供的值，那么消息就不会被发送；只有三者完全匹配，消息才会被发送。这个机制用来控制消息可以发送到哪些窗口；例如，当用postMessage传送密码时，这个参数就显得尤为重要，必须保证它的值与这条包含密码的信息的预期接受者的origin属性完全一致，来防止密码被恶意的第三方截获。如果你明确的知道消息应该发送到哪个窗口，那么请始终提供一个有确切值的targetOrigin，而不是*。不提供确切的目标将导致数据泄露到任何对数据感兴趣的恶意站点。
+
+transfer :
+  可选,是一串和message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。

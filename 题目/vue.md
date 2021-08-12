@@ -276,11 +276,23 @@ new Vue({
 ```
 home.vue，点击显示就会将子路由显示在出来，子路由的出口必须在父路由里面，否则子路由无法显示。
 
-### 6、路由之间跳转？
+### 6、路由之间跳转？跳转时传递参数？
+
+1. 路由跳转的方式
 
 - 声明式（标签跳转） `<router-link :to="index">`
-
 - 编程式（ js 跳转） `router.push('index')`
+
+2. 传递参数的两种方式
+
+- params
+  this.$router.push({ name: 'news', params: { userId: 123 }})
+- query 查询参数
+  <router-link :to="{ path: '/news', query: { userId: 1111}}">click to news page</router-link>
+
+总结：
+  1. 命名路由搭配params，刷新页面参数会丢失
+  2. 查询参数搭配query，刷新页面数据不会丢失
 
 ### 7、懒加载（按需加载路由）
 
@@ -434,6 +446,7 @@ v-if 在编译过程中会被转化成三元表达式,条件不满足时不渲�
 v-show 会被编译成指令，条件不满足时控制样式将对应节点隐藏 （display:none）。
 
 使用场景：
+
   v-if 适用于在运行时很少改变条件，不需要频繁切换条件的场景
 
   v-show 适用于需要非常频繁切换条件的场景
@@ -655,4 +668,6 @@ vue 单页应用（spa）前端路由实现原理：
         通过改变location.href或location.hash的值；
         通过触发点击带锚点的链接；
         浏览器前进后退可能导致hash的变化，前提是两个网页地址中的hash值不同；
-      
+  
+vue router两种方式： hash history
+

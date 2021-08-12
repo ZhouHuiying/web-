@@ -614,10 +614,42 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
   - Grid栅格布局
 
   animation：用于设置动画属性，他是一个简写的属性，包含6个属性；
-  transition：用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同
-  transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系
+  transition：用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同；
+  transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系；
   translate：translate只是transform的一个属性值，即移动，除此之外还有 scale 等；
 
+- transform : 从字面上就能看出，Transform 是 "变型 的意思，值主要包括
+
+    旋转rotate：rotateX(angle) X轴旋转，rotateY(angle) Y轴旋转，rotateZ(angle) Z轴旋转；
+
+    扭曲skew
+
+    缩放scale
+
+    移动translate
+
+    矩阵变形matrix
+
+ - animation ： animation属性比transition属性多包含keyframes规则显式控制当前帧的属性；
+  
+  keyframes
+    常见属性：
+      animation-name:'name';/*动画属性名，也就是我们前面keyframes定义的动画名*/
+      animation-duration: 2s;/*动画持续时间*/
+      animation-timing-function: linear;
+        /*
+          动画频率，有匀速，先快后慢    
+          linear：动画以匀速运动
+          ease：默认值，开始慢，中间快，结束慢，不对称
+          ease-in：开始慢，后面快
+          ease-out：开始快，后面慢
+          ease-in-out：开始慢，中间快，结束慢，对称（注意与ease的区别）
+          cubic-bezier(n,n,n,n)：可以使用cubic-bezier自定义速度，n的取值从0到1
+        */
+      animation-delay: 2s;/*动画延迟时间*/
+      animation-iteration-count: 1;/*定义循环资料，infinite为无限次*/
+      animation-direction: alternate;/*定义动画方式， normal 动画仅正向播放。 alternate 动画正向播放奇数次迭代，并反向播放偶数次迭代。在反向播放周期中，与 animation-timing-function 关联的值也会反转。*/
+      
 #### 13.请解释一下 CSS3 的 Flex box（弹性盒布局模型），以及适用场景？
 
 相关知识点：

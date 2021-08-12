@@ -83,6 +83,8 @@
 
    <!DOCTYPE>声明位于 HTML 文档中的第一行，处于 <html> 标签之前。告知浏览器的解析器用什么文档标准解析这个文档。
 
+   <!DOCTYPE> 声明位于文档中的最前面的位置，处于 <html> 标签之前。此标签可告知浏览器文档使用哪种 HTML 或 XHTML 规范。
+
    DOCTYPE 不存在或格式不正确会导致文档以兼容模式呈现。
    ```
 
@@ -670,7 +672,6 @@
     本地终端上的数据（通常经过加密）。cookie 数据始终在同源（协议、主机、端口相同）的 http 请求中携带（即使不需要），会
     在浏览器和服务器间来回传递。
     
-    
     存储大小：
       	cookie 数据大小不能超过4 k 。
       	sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。
@@ -737,6 +738,7 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
 这里需要注意的是，页面及标签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
 
 ##### webstorage 优点
+
 - 存储空间更大：cookie为4KB，而WebStorage是5MB；
 
 - 节省网络流量：WebStorage不会传送到服务器，存储在本地的数据可以直接获取，也不会像cookie一样每次请求都会传送到服务器，所以减少了客户端和服务器端的交互，节省了网络流量；对于那种只需要在用户浏览一组页面 期间保存而关闭浏览器后就可以丢弃的数据，sessionStorage会非常方便
@@ -751,7 +753,9 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
   removeItem (key) —— 删除单个数据，根据键值移除对应的信息。
   clear () —— 删除所有的数据
   key (index) —— 获取某个索引的key
+
 #### cookie
+
 构成：
    名称：name； 
    值:value(通过URL编码:encodeURIComponent)； 

@@ -137,7 +137,7 @@
   v-for 中key的作用
   v-if 和 v-show 区别
 
-### 8.10 阿里
+### 8.10 ali
 自我介绍，讲一下项目
 接口怎么调用的
 数组的filter和reduce使用

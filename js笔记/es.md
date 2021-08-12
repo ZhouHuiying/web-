@@ -1,6 +1,8 @@
-## ECMAScript (js基础及es6)
+## ECMAScript 
+    (js基础及es6)
 
 ### 基础
+
     输入输出：
         alert()
         console.log()
@@ -110,7 +112,8 @@
 
     预解析：把js里面的var和function提升到当前作用域的最前面，然后执行代码
 
-### ES6:
+### ES6
+
 (1)ES6解构赋值交换变量的值:
     - 数组的解构赋值：
         let x = 1;
@@ -169,6 +172,20 @@
                 set.add(candies[i]);  //遍历set,将元素添加到set中，里面的元素不重复
             }
 
+    WeakSet:
+        1. WeakSet 的成员只能是对象，而不能是其他类型的值。
+        2. WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。
+        3. WeakSet 适合临时存放一组对象，以及存放跟对象绑定的信息。只要这些对象在外部消失，它在 WeakSet 里面的引用就会自动消失。
+        4. ES6 规定 WeakSet 不可遍历。
+            WeakSet 不能遍历，是因为成员都是弱引用，随时可能消失，遍历机制无法保证成员的存在，很可能刚刚遍历结束，成员就取不到了。WeakSet 的一个用处，是储存 DOM 节点，而不用担心这些节点从文档移除时，会引发内存泄漏。
+
+        const ws = new WeakSet();
+
+        WeakSet方法：
+            WeakSet.prototype.add(value)：向 WeakSet 实例添加一个新成员。
+            WeakSet.prototype.delete(value)：清除 WeakSet 实例的指定成员。
+            WeakSet.prototype.has(value)：返回一个布尔值，表示某个值是否在 WeakSet 实例之中。
+
     map:
         它类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
         也就是说，Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，是一种更完善的 Hash 结构实现。
@@ -214,8 +231,15 @@
                 map.set(item,map.has(item) ? map.get(item)+1 : 1);
             }
         
+    WeakMap:
+        1. WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名.
+        2. WeakMap的键名所指向的对象，不计入垃圾回收机制.
+    
+        用途:
+            WeakMap 应用的典型场合就是 DOM 节点作为键名;
+            WeakMap 的另一个用处是部署私有属性。
         
-(3)map 和 Hashmap ???       
+(3)map 和 Hashmap   
         
 !!!!!注意！！！！
 
@@ -227,12 +251,13 @@
 
 (4) for each、for in、for of的区别
 
-- `foreach`用于遍历数组，是数组的一个方法。不支持 return。
+- `foreach`用于遍历数组，是数组的一个方法。不支持 return continue break。
 
 - `for in`获取对象里属性的键。
 
 - `for of`获取对象里属性的值
 
 ### 模板字符串
+
     模板字面量 是允许嵌入表达式的字符串字面量。你可以使用多行字符串和字符串插值功能。
     模板字符串使用反引号 (` `) 来代替普通字符串中的用双引号和单引号。模板字符串可以包含特定语法（${expression}）的占位符。占位符中的表达式和周围的文本会一起传递给一个默认函数，该函数负责将所有的部分连接起来
