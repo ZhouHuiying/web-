@@ -171,18 +171,18 @@ ReactDOM.render(<_button>xxxx</_button>);
 
 ### 7. webpack常用的babel,loader，plugin有哪些？
 
-**babel： 广泛的转码器,（es6/ts代码转成es5代码）**
+#### babel： 广泛的转码器（es6/ts代码转成es5代码）
 
 - 只转换新的语法（箭头函数）
 - 不转换新的API（promise,proxy,set,symbol） 需要另外安装poliy
+#### loader：加载更类资源文件
 
-**loader：加载更类资源文件**
+- css 类 ----  less-loader,sass-loader, postcss-loader,autoprefixer-loader；
 
-- css 类 ----  less-loader,sass-loader, postcss-loader,autoprefixer-loader
-- 文件类 ---- url-loader，file-loader
+- 文件类 （图片处理）---- url-loader，file-loader
 
-#### **plugin：**插件
-
+- 处理js 将es6或更高级的代码转换成es5的代码  ---- babel-loader
+#### plugin 插件
 ##### 1) webpack-dev-server
 webpack-dev-server是一个小型的express服务器，使用它可以为webpack生成的资源文件提供web服务；
 
@@ -206,9 +206,23 @@ webpack-dev-server  --contentbase src  --inline --hot
 ##### 2）mini-css-extract-plugin
 
 将css单独打包成一个文件的插件，它为每个包含css的js文件都创建一个css文件。它支持css和sourceMaps的按需加载。
-
 ##### 3）HMR
   当对代码进行修改并保存后，webpack 将对代码重新打包，并将新的模块发送到浏览器端，浏览器通过新的模块替换老的模块，这样在不刷新浏览器的前提下就能够对应用进行更新，这就是HMR。
+  webpack 可以通过配置 webpack.HotModuleReplacementPlugin 插件来开启全局的 HMR 能力。
+  开启后 bundle 文件会变大一些，因为它加入了一个小型的 HMR 运行时（runtime），当你的应用在运行的时候，webpack 监听到文件变更并重新打包模块时，HMR 会判断这些模块是否接受 update，若允许，则发信号通知应用进行热替换。
+
+##### 
+  1.ProvidePlugin：自动加载模块，代替require和import
+  2.html-webpack-plugin可以根据模板自动生成html代码，并自动引用css和js文件
+  3.extract-text-webpack-plugin 将js文件中引用的样式单独抽离成css文件
+  4.DefinePlugin 编译时配置全局变量，这对开发模式和发布模式的构建允许不同的行为非常有用。
+  5.HotModuleReplacementPlugin 热更新
+  6.optimize-css-assets-webpack-plugin 不同组件中重复的css可以快速去重
+  7.webpack-bundle-analyzer 一个webpack的bundle文件分析工具，将bundle文件以可交互缩放的treemap的形式展示。
+  8.compression-webpack-plugin 生产环境可采用gzip压缩JS和CSS
+  9.happypack：通过多进程模型，来加速代码构建
+  10.clean-wenpack-plugin 清理每次打包下没有使用的文件
+
 ### 8. 静态页面如何使用，webpack来实现自动更新？
 
 1.创建npm配置文件 package.json
