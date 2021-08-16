@@ -1777,7 +1777,8 @@ JSON 是一种基于文本的轻量级的数据交换格式。它可以被任何
 相关知识点：
 
 ```
-js 延迟加载，也就是等页面加载完成之后再加载 JavaScript 文件。 js 延迟加载有助于提高页面加载速度。
+js 延迟加载，也就是等页面加载完成之后再加载 JavaScript 文件。
+js 延迟加载有助于提高页面加载速度。
 ```
 
 一般有以下几种方式：
@@ -1804,11 +1805,9 @@ js 的加载、解析和执行会阻塞页面的渲染过程，因此我们希�
 第四种方式是动态创建 DOM 标签的方式，我们可以对文档的加载事件进行监听，当文档加载完成后再动态的创建 script 标签来引入 js 脚本。
 ```
 
-详细资料可以参考：
-[《JS 延迟加载的几种方式》](https://blog.csdn.net/meijory/article/details/76389762)
-[《HTML 5 `<script>` `async` 属性》](http://www.w3school.com.cn/html5/att_script_async.asp)
-
-
+文档的加载事件: load()和.ready()
+  .load():为JavaScript的“load”事件绑定一个处理函数。
+  .ready():当DOW准备就绪时，指定一个函数来执行。
 #### defer和async的区别
 
 - defer：
@@ -1970,6 +1969,7 @@ ajax - jQuery ajax - axios - fetch
   fetch的优点：
   1.符合关注分离，没有将输入、输出和用事件来跟踪的状态混杂在一个对象里
   2.更好更方便的写法
+
   ```javascript
     try {
       let response = await fetch(url);
@@ -2235,7 +2235,9 @@ H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中
 ```
 我的理解是 cookie 是服务器提供的一种用于维护会话状态信息的数据，通过服务器发送到浏览器，浏览器保存在本地，当下一次有同源的请求时，将保存的 cookie 值添加到请求头部，发送给服务端。这可以用来实现记录用户登录状态等功能。cookie 一般可以存储 4k 大小的数据，并且只能够被同源的网页所共享访问。
 
-服务器端可以使用 Set-Cookie 的响应头部来配置 cookie 信息。一条cookie 包括了5个属性值 expires、domain、path、secure、HttpOnly。其中 expires 指定了 cookie 失效的时间，domain 是域名、path是路径，domain 和 path 一起限制了 cookie 能够被哪些 url 访问。secure 规定了 cookie 只能在确保安全的情况下传输，HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚本访问。
+服务器端可以使用 Set-Cookie 的响应头部来配置 cookie 信息。
+一条cookie 包括了5个属性值 expires、domain、path、secure、HttpOnly。
+其中 expires 指定了 cookie 失效的时间，domain 是域名、path是路径，domain 和 path 一起限制了 cookie 能够被哪些 url 访问。secure 规定了 cookie 只能在确保安全的情况下传输，HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚本访问。
 
 在发生 xhr 的跨域请求的时候，即使是同源下的 cookie，也不会被自动添加到请求头部，除非显示地规定。
 ```
@@ -5149,3 +5151,24 @@ targetOrigin:
 
 transfer :
   可选,是一串和message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。
+
+#### 185. 可选链
+
+可选链操作符( ?. )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。?. 操作符的功能类似于 . 链式操作符，不同之处在于，在引用为空(nullish ) (null 或者 undefined) 的情况下不会引起错误，该表达式短路返回值是 undefined。与函数调用一起使用时，如果给定的函数不存在，则返回 undefined。
+
+当尝试访问可能不存在的对象属性时，可选链操作符将会使表达式更短、更简明。在探索一个对象的内容时，如果不能确定哪些属性必定存在，可选链操作符也是很有帮助的。
+
+eg.
+  obj?.prop
+  obj?.[expr]
+  arr?.[index]
+  func?.(args)
+
+  let nestedProp = obj.first && obj.first.second;  
+    ->
+  let nestedProp = obj.first?.second;
+
+#### 186. JWT
+
+Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准. 该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。
+
