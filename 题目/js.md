@@ -1817,6 +1817,7 @@ js 的加载、解析和执行会阻塞页面的渲染过程，因此我们希�
     HTML5规范要求脚本按照它们出现的先后顺序执行，因此第一个延迟脚本会先于第二个延迟脚本执行,但执行脚本之间存在依赖，需要有执行的先后顺序时，就可以使用defer,延迟执行。
 
 - async：中文意思是异步，这个属性与defer类似，都用于改变处理脚本的行为。同样与defer类似，async只适用于外部脚本文件，并告诉浏览器立即下载文件。
+
 但与defer不同的是，标记为async的脚本并不保证按照它们的先后顺序执行。
 指定async属性的目的是不让页面等待两个脚本下载和执行，从而异步加载页面其他内容,这使用于之间互不依赖的各脚本。
 
@@ -2232,12 +2233,17 @@ H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中
 
 #### 62. 简单谈一下 cookie ？
 
+[https://zhuanlan.zhihu.com/p/395273289?utm_source=com.alibaba.android.rimet&utm_medium=social&utm_oi=626459156618547200]
 ```
 我的理解是 cookie 是服务器提供的一种用于维护会话状态信息的数据，通过服务器发送到浏览器，浏览器保存在本地，当下一次有同源的请求时，将保存的 cookie 值添加到请求头部，发送给服务端。这可以用来实现记录用户登录状态等功能。cookie 一般可以存储 4k 大小的数据，并且只能够被同源的网页所共享访问。
 
 服务器端可以使用 Set-Cookie 的响应头部来配置 cookie 信息。
 一条cookie 包括了5个属性值 expires、domain、path、secure、HttpOnly。
-其中 expires 指定了 cookie 失效的时间，domain 是域名、path是路径，domain 和 path 一起限制了 cookie 能够被哪些 url 访问。secure 规定了 cookie 只能在确保安全的情况下传输，HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚本访问。
+
+expires 指定了 cookie 失效的时间;
+domain 是域名、path是路径，domain 和 path 一起限制了 cookie 能够被哪些 url 访问;
+secure 规定了 cookie 只能在确保安全的情况下传输;
+HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚本访问。
 
 在发生 xhr 的跨域请求的时候，即使是同源下的 cookie，也不会被自动添加到请求头部，除非显示地规定。
 ```
@@ -2246,6 +2252,45 @@ H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中
 [《HTTP cookies》 ](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)
 [《聊一聊 cookie》 ](https://segmentfault.com/a/1190000004556040)
 
+#### session
+
+浏览器登录发送账号密码，服务端查用户库，校验用户
+服务端把用户登录状态存为 Session，生成一个 sessionId
+通过登录接口返回，把 sessionId set 到 cookie 上
+此后浏览器再请求业务接口，sessionId 随 cookie 带上
+服务端查 sessionId 校验 session
+成功后正常做业务处理，返回结果
+
+#### token 
+
+token 的流程是这样的：
+  用户登录，服务端校验账号密码，获得用户信息
+  把用户信息、token 配置编码成 token，通过 cookie set 到浏览器
+  此后用户请求业务接口，通过 cookie 携带 token
+  接口校验 token 有效性，进行正常业务接口处理
+
+session 和 token ?
+session 和 token 都是边界很模糊的概念，就像前面说的，refresh token 也可能以 session 的形式组织维护。
+狭义上，我们通常认为 session 是「种在 cookie 上、数据存在服务端」的认证方案，token 是「客户端存哪都行、数据存在 token 里」的认证方案。对 session 和 token 的对比本质上是「客户端存 cookie / 存别地儿」、「服务端存数据 / 不存数据」的对比。
+#### JWT 
+
+Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准. 该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。
+
+它是一种成熟的 token 字符串生成方案，包含了我们前面提到的数据、签名。
+
+#### 总结
+HTTP 是无状态的，为了维持前后请求，需要前端存储标记；
+
+cookie 是一种完善的标记方式，通过 HTTP 头或 js 操作，有对应的安全策略，是大多数状态管理方案的基石
+
+session 是一种状态管理方案，前端通过 cookie 存储 id，后端存储数据，但后端要处理分布式问题
+
+token 是另一种状态管理方案，相比于 session 不需要后端存储，数据全部存在前端，解放后端，释放灵活性
+token 的编码技术，通常基于 base64，或增加加密算法防篡改，jwt 是一种成熟的编码方案
+
+在复杂系统中，token 可通过 service token、refresh token 的分权，同时满足安全性和用户体验
+session 和 token 的对比就是「用不用cookie」和「后端存不存」的对比
+单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的 SSO 系统记录登录状态、下发 ticket，各业务系统配合存储和认证 ticket
 #### 63. 模块化开发怎么做？
 
 ```
@@ -5167,8 +5212,4 @@ eg.
   let nestedProp = obj.first && obj.first.second;  
     ->
   let nestedProp = obj.first?.second;
-
-#### 186. JWT
-
-Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准. 该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。
 
