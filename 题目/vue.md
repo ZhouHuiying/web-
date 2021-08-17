@@ -52,10 +52,7 @@ https://juejin.cn/post/6961222829979697165
       ref 加在子组件上，用this.$refs.（ref值） 获取到的是组件实例，可以使用组件的所有方法。在使用方法的时候直接this.$refs.（ref值）.方法() 就可以使用了；
 
 　　  利用 v-for 和 ref 获取一组数组或者dom 节点；
-
-
 ### 2、Vue 生命周期
-
 #### Vue2 -> Vue3
 beforeCreate	   Not needed*
 created	         Not needed*
@@ -70,7 +67,6 @@ renderTracked	   onRenderTracked
 renderTriggered	 onRenderTriggered
 
 - 因为 setup 是围绕 beforeCreate 和 created 生命周期钩子运行的，所以不需要显式地定义它们。换句话说，在这些钩子中编写的任何代码都应该直接在 setup 函数中编写。
-
 #### Vue2生命周期
 
   beforeCreate 在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。在当前阶段 data、methods、computed 以及 watch 上的数据和方法都不能被访问;
@@ -470,7 +466,6 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 （2）computed 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 computed 属性，才会计算新的值。而 watch 则是当数据发生变化便会调用执行函数。
 
 （3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
-
 ### 18、虚拟 DOM 是什么 有什么优缺点？
 
 由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
@@ -671,3 +666,7 @@ vue 单页应用（spa）前端路由实现原理：
   
 vue router两种方式： hash history
 
+### 25. 为什么v-for v-if不能一起用？
+    v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
+    把v-for和v-if用到一个元素上，会带来性能的浪费；
+    为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
