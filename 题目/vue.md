@@ -623,10 +623,21 @@ const Foo = {
   - 触发 DOM 更新。
   - 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
 
-### 20、Vue3
+### 20、Vue源码
 
-vue-composition 提供了类似 React Hook 的能力，将 Vue 的抽象层级从「组件级（Component）」降低为「函数级（Function）」。
+https://space.bilibili.com/302417610/search/video?tid=0&page=1&keyword=%E6%BA%90%E7%A0%81&order=pubdate
 
+#### 1) vue源码解析之指令和生命周期
+
+#### 2) vue源码解析之AST抽象语法树
+
+#### 3) vue源码解析之数据响应式原理
+
+#### 4) vue源码解析之虚拟DOM和Diff算法
+
+#### 5) vue源码解析之mustache模板引擎
+
+#### 6）vue router 源码
 ### 21、$route 和 $router 的区别？
 ```
 $route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
