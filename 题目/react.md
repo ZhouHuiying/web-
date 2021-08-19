@@ -146,3 +146,41 @@
     (1). Ref Hook可以在函数组件中存储/查找组件内的标签或任意其它数据
     (2). 语法: const refContainer = useRef()
     (3). 作用:保存标签对象,功能与React.createRef()一样
+
+
+### 4. React 生命周期
+
+旧：
+    1. 初始化阶段: 由ReactDOM.render()触发---初次渲染
+        1.	constructor()
+        2.	componentWillMount()
+        3.	render()
+        4.	componentDidMount() =====> 常用： 一般在这个钩子中做一些初始化的事，例如：开启定时器、发送网络请求、订阅消息
+	
+    2. 更新阶段: 由组件内部this.setSate()或父组件render触发
+        1.	shouldComponentUpdate()
+        2.	componentWillUpdate()
+        3.	render() =====> 必须使用的一个
+        4.	componentDidUpdate()
+	
+    3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
+        1.	componentWillUnmount()  =====> 常用: 一般在这个钩子中做一些收尾的事，例如：关闭定时器、取消订阅消息
+
+新：
+
+    1. 初始化阶段: 由ReactDOM.render()触发---初次渲染
+        1.	constructor()
+        2.	getDerivedStateFromProps
+            若state的值在任何时候都取决于props，那么可以使用getDerivedStateFromProps 
+        3.	render()
+        4.	componentDidMount() =====> 常用： 一般在这个钩子中做一些初始化的事，例如：开启定时器、发送网络请求、订阅消息
+    
+    2. 更新阶段: 由组件内部this.setSate()或父组件重新render触发
+        1.	getDerivedStateFromProps
+        2.	shouldComponentUpdate()
+        3.	render()
+        4.	getSnapshotBeforeUpdate  //在更新之前获取快照
+        5.	componentDidUpdate()
+
+    3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
+        componentWillUnmount()  =====> 常用，一般在这个钩子中做一些收尾的事，例如：关闭定时器、取消订阅消息
