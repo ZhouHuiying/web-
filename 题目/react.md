@@ -131,9 +131,9 @@
             手动更改真实DOM
     (3). 语法和说明: 
             useEffect(() => { 
-            // 在此可以执行任何带副作用操作
-            return () => { // 在组件卸载前执行
-                // 在此做一些收尾工作, 比如清除定时器/取消订阅等
+                // 在此可以执行任何带副作用操作
+                return () => { // 在组件卸载前执行
+                    // 在此做一些收尾工作, 比如清除定时器/取消订阅等
             }
             }, [stateValue]) // 如果指定的是[], 回调函数只会在第一次render()后执行
         
@@ -147,6 +147,40 @@
     (2). 语法: const refContainer = useRef()
     (3). 作用:保存标签对象,功能与React.createRef()一样
 
+#### useContext
+
+useContext可以帮助我们跨越组件层级直接传递变量，实现共享。
+
+eg.
+    import React, { useState , createContext } from 'react';
+    const CountContext = createContext()
+    function Example(){
+        const [ count , setCount ] = useState(0);
+        return (
+            <div>
+                <p>You clicked {count} times</p>
+                <button onClick={()=>{setCount(count+1)}}>click me</button>
+        
+                <CountContext.Provider value={count}>
+                </CountContext.Provider>
+
+            </div>
+        )
+    }
+
+    useContext 接收上下文变量:
+    function Counter(){
+        const count = useContext(CountContext)    //一句话就可以得到count
+        return (<h2>{count}</h2>)
+    }
+#### useMemo useCallback
+
+https://blog.csdn.net/sinat_17775997/article/details/94453167
+
+useCallback和useMemo的参数跟useEffect一致，他们之间最大的区别有是useEffect会用于处理副作用，而前两个hooks不能。
+
+#### 总结
+useEffect、useMemo、useCallback都是自带闭包的。也就是说，每一次组件的渲染，其都会捕获当前组件函数上下文中的状态(state, props)，所以每一次这三种hooks的执行，反映的也都是当前的状态，你无法使用它们来捕获上一次的状态。对于这种情况，我们应该使用ref来访问。
 
 ### 4. React 生命周期
 
@@ -184,3 +218,7 @@
 
     3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
         componentWillUnmount()  =====> 常用，一般在这个钩子中做一些收尾的事，例如：关闭定时器、取消订阅消息
+
+### 5. React 路由
+
+### 6.
