@@ -142,7 +142,8 @@ js和其他语言的区别
 js设计模式了解过吗
 写页面用到哪些css属性
 position：absolute
-跨域是什么 如何解决 这些方法的区别
+同源 跨域是什么 如何解决 这些方法的区别
+http: content-type
 框架的源码？？
 vue router 原理 （源码）
 做过的项目 实习的项目是PC页面 是单页系统吗 
