@@ -633,6 +633,39 @@ https://space.bilibili.com/302417610/search/video?tid=0&page=1&keyword=%E6%BA%90
 
 #### 3) vue源码解析之数据响应式原理
 
+https://juejin.cn/post/6932659815424458760
+
+##### 数据劫持
+侵入式和非侵入式；
+
+- Object.defineProperty(): 数据劫持/数据代理
+let obj = {};
+Object.defineProperty(obj, 'a', {
+  // value: 3,
+  // writable: false, //是否可写
+  // emumable: false, //是否可以被枚举
+  //configurable: true
+  get(){
+    console.log('访问a属性')
+  },
+  set(){
+    console.log('改变a属性')
+  },
+})
+
+- defineReactive
+defineReactive.js
+
+- 递归侦测对象全部属性
+Observer： 将正常obj转化为每个层级都可以被侦测的
+Observer.js
+
+Observe.js
+
+过程： Observe.js -> Observer.js/walk方法  -> defineProperty -> let childObj = Observe(val)
+  继续Observe下一级
+
+##### 收集依赖与派发更新
 #### 4) vue源码解析之虚拟DOM和Diff算法
 
 #### 5) vue源码解析之mustache模板引擎

@@ -178,7 +178,7 @@ eg.
 https://blog.csdn.net/sinat_17775997/article/details/94453167
 
 useCallback和useMemo的参数跟useEffect一致，他们之间最大的区别有是useEffect会用于处理副作用，而前两个hooks不能。
-
+解决自组件更新，而父组件不需要更新的问题；
 #### 总结
 useEffect、useMemo、useCallback都是自带闭包的。也就是说，每一次组件的渲染，其都会捕获当前组件函数上下文中的状态(state, props)，所以每一次这三种hooks的执行，反映的也都是当前的状态，你无法使用它们来捕获上一次的状态。对于这种情况，我们应该使用ref来访问。
 
@@ -221,4 +221,51 @@ useEffect、useMemo、useCallback都是自带闭包的。也就是说，每一�
 
 ### 5. React 路由
 
-### 6.
+react-router-dom  /  react-router
+它们之间的不同之处就是react-router-dom比react-router多出了 <Link> <BrowserRouter> 这样的组件；
+
+react-router最主要的API是给我们提供的一些组件：
+
+    BrowserRouter或HashRouter：
+        Router我们可以把它看做是react路由的一个路由外层盒子，它里面的内容就是我们单页面应用的路由以及路由组件。
+        
+        Router中包含了对路径改变的监听，并且会将相应的路径传递给子组件；
+        BrowserRouter使用history模式；
+        HashRouter使用hash模式；
+
+    Link和NavLink：
+        Link是react路由中的点击切换到哪一个组件的链接；
+
+        通常路径的跳转是使用Link组件，最终会被渲染成a元素；
+        NavLink是在Link基础上增加了一些样式属性；
+        to属性：Link中最重要的属性，用于设置跳转到的路径；
+
+    Route：
+        Route代表了你的路由界面，path代表路径，component代表路径所对应的界面。
+        
+        Route用于路径的匹配；
+        path属性：用于设置匹配到的路径；
+        component属性：设置匹配到路径后，渲染的组件；
+        exact：精准匹配，只有精准匹配到完全一致的路径，才会渲染对应的组件；
+
+路由传递参数有三种方式：
+    动态路由的方式；
+        <NavLink to="/detail/abc123">详情</NavLink>
+        <Route path="/detail/:id" component={detail} />
+    search传递参数；
+        <NavLink to="/detail2?name=boge&age=20">详情2</NavLink>
+    Link中to传入对象；
+        <NavLink to={{ pathname: "/detail2", search:"?name=abc", state: id }}>详情3</NavLink>
+### 6. React组件传值
+
+1. 
+    父传子： props
+    子传父： 通过在父组件引入的子组件中传递一个函数并传参，子组件去触发这个函数更改参数完成数据更新
+
+2. 插件 PubSub
+    PubSub.publish('username', val) 发布
+    pubsub.subscribe('username', (msg, data)) data是要获取的数据
+
+3. redux或者react-redux
+
+4. 通过上下文的形式做组件传值
