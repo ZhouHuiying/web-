@@ -665,7 +665,11 @@ Observe.js
 过程： Observe.js -> Observer.js/walk方法  -> defineProperty -> let childObj = Observe(val)
   继续Observe下一级
 
+对数组进行响应式：
+  改写数组的七个方法，这些方法在Array.prototype上；
+  
 ##### 收集依赖与派发更新
+
 #### 4) vue源码解析之虚拟DOM和Diff算法
 
 #### 5) vue源码解析之mustache模板引擎
