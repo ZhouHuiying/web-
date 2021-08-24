@@ -697,6 +697,32 @@ Observe.js
   
 ##### 收集依赖与派发更新
 
+用到数据的地方称为依赖；
+在getter中收集依赖，在setter中触发依赖；
+
+Dep类和Watcher类：
+  把依赖收集的代码封装成一个Dep类，它专门用来管理依赖，每个Observer的实例，成员中都有一个Dep的实例；
+  Watcher是一个中介，数据发生变化时通过Watcher中转，通知组件；
+
+每个Watcher实例订阅一个或者多个数据，这些数据也被称为wacther的依赖；
+
+过程：
+  new Watcher(obj, 'a.b.c', (val)=>{
+    console.log(val)
+  })
+  实例化一个Watcher类，传入要监测的对象和对象里的值和回调函数；
+  Watcher类的constructor：
+    constructor(target, expression, callback) {
+      console.log('我是Watcher类的构造器');
+      this.id = uid++;
+      this.target = target;
+      this.getter = parsePath(expression);
+      this.callback = callback;
+      this.value = this.get();
+    } 
+    实例化后调用get方法，进入依赖收集阶段；
+  
+  defineReactive方法中，get收集依赖，调用dep的depend()方法添加依赖；set方法通知更新，调用dep的notify方法；
 #### 4) vue源码解析之虚拟DOM和Diff算法
 
 #### 5) vue源码解析之mustache模板引擎
