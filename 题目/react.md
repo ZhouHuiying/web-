@@ -268,9 +268,74 @@ react-router最主要的API是给我们提供的一些组件：
 
 3. redux或者react-redux
 
-4. 通过上下文的形式做组件传值
+4. 通过上下文的形式做组件传值 context
+Context 通过组件树提供了一个传递数据的方法，从而避免了在每一个层级手动的传递 props 属性。
+context api给出三个概念：React.createContext()、Provider、Consumer；
+eg.
+```javascript
+    import React, { Component } from 'react'
+    import './index.css'
 
-### 7. PureComponent  Memo  高阶组件
+    //创建Context对象
+    const MyContext = React.createContext()
+    const {Provider,Consumer} = MyContext
+    export default class A extends Component {
+
+        state = {username:'tom',age:18}
+
+        render() {
+            const {username,age} = this.state
+            return (
+                <div className="parent">
+                    <h3>我是A组件</h3>
+                    <h4>我的用户名是:{username}</h4>
+                    <Provider value={{username,age}}>
+                        <B/>
+                    </Provider>
+                </div>
+            )
+        }
+    }
+
+    class B extends Component {
+        render() {
+            return (
+                <div className="child">
+                    <h3>我是B组件</h3>
+                    <C/>
+                </div>
+            )
+        }
+    }
+
+    /* class C extends Component {
+        //声明接收context
+        static contextType = MyContext
+        render() {
+            const {username,age} = this.context
+            return (
+                <div className="grand">
+                    <h3>我是C组件</h3>
+                    <h4>我从A组件接收到的用户名:{username},年龄是{age}</h4>
+                </div>
+            )
+        }
+    } */
+
+    function C(){
+        return (
+            <div className="grand">
+                <h3>我是C组件</h3>
+                <h4>我从A组件接收到的用户名:
+                <Consumer>
+                    {value => `${value.username},年龄是${value.age}`}
+                </Consumer>
+                </h4>
+            </div>
+        )
+    }
+```
+### 7. PureComponent  Memo  高阶组件 高阶函数 函数柯里化
 
 - PureComponent
 PureComponent自带通过props和state的浅对比来实现 shouldComponentUpate()，而Component没有。
@@ -282,6 +347,7 @@ PureComponent自带通过props和state的浅对比来实现 shouldComponentUpate
 
 Component组件有shouldComponentUpdate(nextProps,nextState)生命周期,可以手动比较是否想要的state或props发生了改变，如果是的话返回true，生命周期继续走，不是的话返回false，生命周期停止不更新。
 
+
 - memo
 React.memo 为高阶组件。它与 React.PureComponent 非常相似，但它适用于函数组件，但不适用于 class 组件。
 
@@ -290,6 +356,7 @@ React.memo 为高阶组件。它与 React.PureComponent 非常相似，但它适
 React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有 useState 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
 
 默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现。
+
 
 - 高阶组件
 https://zhuanlan.zhihu.com/p/28138664
@@ -302,4 +369,20 @@ https://zhuanlan.zhihu.com/p/28138664
     基于反向继承的方式
     组合多个高阶组件
     
+
+- 高阶函数
+如果一个函数符合下面2个规范中的任何一个，那该函数就是高阶函数。
+    1.若A函数，接收的参数是一个函数，那么A就可以称之为高阶函数。
+    2.若A函数，调用的返回值依然是一个函数，那么A就可以称之为高阶函数。
+    常见的高阶函数有：Promise、setTimeout、arr.map()等等
+    
+    
 - 函数柯里化
+通过函数调用继续返回函数的方式，实现多次接收参数最后统一处理的函数编码形式。 
+    function sum(a){
+        return(b)=>{
+            return (c)=>{
+                return a+b+c
+            }
+        }
+    }
