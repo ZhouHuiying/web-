@@ -1,6 +1,6 @@
-TypeScript:
-类：
-1、es5中：
+## TypeScript
+### 1. 类
+#### 1) es5中
     function Person(){
             this.name="张三";
             this.run = function(){
@@ -37,7 +37,7 @@ TypeScript:
                 }
 
                 (2) Web.prototype = Person.prototype
-2、ts中
+#### 2) ts中
 1、 class Person{
         name: string;    //前面省略的public关键词
         constructor(n:string){   //构造函数-实例化类时触发的方法
@@ -179,8 +179,8 @@ class Cat extends Animal{
          var d = new Dog('flower');
          d.eat();
 
-接口：
-（1）属性接口： 对json的约束
+### 2. 接口
+#### （1）属性接口： 对json的约束
     
     function printLabel(label:string):void{
         console.log('printLabel');
@@ -254,7 +254,7 @@ class Cat extends Animal{
             dataType:'json'
         })
 
-（2）函数类型接口：对方法传入的参数及返回值进行约束 批量约束
+#### （2）函数类型接口：对方法传入的参数及返回值进行约束 批量约束
 加密的函数类型接口：
 interface encrypt{
     (key:string,value:string):string;
@@ -264,7 +264,7 @@ var md5:encrypt = function(key:string,value:string):string{
 }
 md5('name','zhangsan' )
 
-（3）可索引接口：对数组、对象的约束（不常用）
+#### （3）可索引接口：对数组、对象的约束（不常用）
     ts中定义数组：var arr:number[]=[1,2,3];
     对数组的约束：
         interface UserArr{
@@ -278,7 +278,7 @@ md5('name','zhangsan' )
         }
         var arr:UserObj={name:'20'}
 
-（4）类类型接口：对类的约束 和抽象类有点类似
+#### （4）类类型接口：对类的约束 和抽象类有点类似
 interface Animal{
     name:string;
     eat(str:string):void;
@@ -295,7 +295,7 @@ class Dog implements Animal{
 var d= new Dog('小黑');
 d.eat();
 
-（5）接口扩展：接口可以继承接口
+#### （5）接口扩展：接口可以继承接口
 interface Animal{
     eat():void;
 }
@@ -325,7 +325,7 @@ class Web extends programmer implements Person{
     }
 }
 
-泛型：
+### 3. 泛型
 通俗理解：泛型就是解决类 接口 方法的复用性以及对不特定数据类型的支持（类型校验）
 T表示泛型，具体什么类型是调用这个方法的时候决定的
 function getData<T>(value:T):T{

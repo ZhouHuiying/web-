@@ -269,3 +269,37 @@ react-router最主要的API是给我们提供的一些组件：
 3. redux或者react-redux
 
 4. 通过上下文的形式做组件传值
+
+### 7. PureComponent  Memo  高阶组件
+
+- PureComponent
+PureComponent自带通过props和state的浅对比来实现 shouldComponentUpate()，而Component没有。
+    浅对比只是用Object.is()对Object的value做了一个基本数据类型的比较。
+
+缺点: 可能会因深层的数据不一致而产生错误的否定判断，从而shouldComponentUpdate结果返回false，界面得不到更新。
+
+优点：不需要开发者自己实现shouldComponentUpdate，就可以进行简单的判断来提升性能；
+
+Component组件有shouldComponentUpdate(nextProps,nextState)生命周期,可以手动比较是否想要的state或props发生了改变，如果是的话返回true，生命周期继续走，不是的话返回false，生命周期停止不更新。
+
+- memo
+React.memo 为高阶组件。它与 React.PureComponent 非常相似，但它适用于函数组件，但不适用于 class 组件。
+
+如果你的函数组件在给定相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着在这种情况下，React 将跳过渲染组件的操作并直接复用最近一次渲染的结果。
+
+React.memo 仅检查 props 变更。如果函数组件被 React.memo 包裹，且其实现中拥有 useState 或 useContext 的 Hook，当 context 发生变化时，它仍会重新渲染。
+
+默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现。
+
+- 高阶组件
+https://zhuanlan.zhihu.com/p/28138664
+高阶组件就是一个函数,且该函数接受一个组件作为参数,并返回一个新的组件；
+更通俗地描述为，高阶组件通过包裹（wrapped）被传入的React组件，经过一系列处理，最终返回一个相对增强（enhanced）的React组件，供其他组件调用。
+
+高阶组件的进阶用法：
+    组件参数
+    基于属性代理的方式
+    基于反向继承的方式
+    组合多个高阶组件
+    
+- 函数柯里化
