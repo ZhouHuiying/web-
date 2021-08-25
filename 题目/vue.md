@@ -656,6 +656,10 @@ https://space.bilibili.com/302417610/search/video?tid=0&page=1&keyword=%E6%BA%90
 
 #### 1) vue源码解析之指令和生命周期
 
+new Vue()
+_initData
+_initWatch
+complie()
 #### 2) vue源码解析之AST抽象语法树
 
 #### 3) vue源码解析之数据响应式原理
@@ -724,7 +728,29 @@ Dep类和Watcher类：
   
   defineReactive方法中，get收集依赖，调用dep的depend()方法添加依赖；set方法通知更新，调用dep的notify方法；
 #### 4) vue源码解析之虚拟DOM和Diff算法
+snabbdom
+虚拟DOM
+h函数
 
+新虚拟DOM和老虚拟DOM进行diff(精细化比较)，算出应该如何最小量更新，最后反映到真实DOM上；
+h函数用来产生虚拟节点；
+虚拟节点的属性：
+  children
+  data  属性样式
+  elm  真实的DOM节点，undefine表示该节点还没上树
+  key
+  sel  selector
+  text
+
+const myvNode1 = h('a',
+  props:{
+    href:'www.baidu.com',
+    target:'_blank',
+  },
+  '尚硅谷'
+)
+patch函数；让虚拟节点上树 
+  patch(container, myvNode1)
 #### 5) vue源码解析之mustache模板引擎
 
 #### 6）vue router 源码
