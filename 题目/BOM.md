@@ -88,6 +88,9 @@
 ### navigator
     navigator 对象主要用来获取浏览器的属性，区分浏览器类型。属性较多，且兼容性比较复杂;
 
+    navigator.userAgent -- 返回用户代理头的字符串表示(就是包括浏览器版本信息等的字符串)
+    navigator.cookieEnabled -- 返回浏览器是否支持(启用)cookie
+
 ### screen
 
 ### history

@@ -618,22 +618,15 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
   transform：用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系；
   translate：translate只是transform的一个属性值，即移动，除此之外还有 scale 等；
 
-- transform : 从字面上就能看出，Transform 是 "变型 的意思，值主要包括
-
+- transform : 从字面上就能看出，Transform 是 "变型“ 的意思，值主要包括
     旋转rotate：rotateX(angle) X轴旋转，rotateY(angle) Y轴旋转，rotateZ(angle) Z轴旋转；
-
     扭曲skew
-
     缩放scale
-
     移动translate
-
     矩阵变形matrix
 
  - animation ： animation属性比transition属性多包含keyframes规则显式控制当前帧的属性；
-  
-  keyframes
-    常见属性：
+    keyframes  常见属性：
       animation-name:'name';/*动画属性名，也就是我们前面keyframes定义的动画名*/
       animation-duration: 2s;/*动画持续时间*/
       animation-timing-function: linear;

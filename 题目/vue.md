@@ -732,25 +732,38 @@ snabbdom
 虚拟DOM
 h函数
 
-新虚拟DOM和老虚拟DOM进行diff(精细化比较)，算出应该如何最小量更新，最后反映到真实DOM上；
-h函数用来产生虚拟节点；
-虚拟节点的属性：
-  children
-  data  属性样式
-  elm  真实的DOM节点，undefine表示该节点还没上树
-  key
-  sel  selector
-  text
+1. 
+  新虚拟DOM和老虚拟DOM进行diff(精细化比较)，算出应该如何最小量更新，最后反映到真实DOM上；
+  h函数用来产生虚拟节点；
+  虚拟节点的属性：
+    children
+    data  属性样式
+    elm  真实的DOM节点，undefine表示该节点还没上树
+    key
+    sel  selector
+    text
 
-const myvNode1 = h('a',
-  props:{
-    href:'www.baidu.com',
-    target:'_blank',
-  },
-  '尚硅谷'
-)
-patch函数；让虚拟节点上树 
-  patch(container, myvNode1)
+  const myvNode1 = h('a',
+    props:{
+      href:'www.baidu.com',
+      target:'_blank',
+    },
+    '尚硅谷'
+  )
+  patch函数；让虚拟节点上树 
+    patch(container, myvNode1)
+
+2. h函数
+  在这里引用了一个vnode函数，vnode函数返回 { sel, data, elm, text, children},
+  在index.js文件中引用h函数传入想要生成的元素，h函数进行判断传入的格式，之后调用vnode函数，最后返回虚拟节点结构的元素；
+  之后通过patch函数上树；
+
+3. patch函数
+  最小量更新 
+  加key，key是这个虚拟节点的唯一标识；
+  只有同一个虚拟节点（选择器和key相同），才进行虚拟化比较，否则就是暴力删除旧的创建新的；
+  只会进行同层比较，不会进行跨层比较；
+
 #### 5) vue源码解析之mustache模板引擎
 
 #### 6）vue router 源码

@@ -146,9 +146,10 @@
    ```
    块级元素占据其父元素（容器）的整个宽度，因此创建了一个“块”。
 
-   常见的块级元素有 比较有代表性的是div 其余有p h1 h2 h3 h4 h5 h6 table ul li ol header section aside footer dl dd dt form hr pre tbody tfoot th thead tr
+   常见的块级元素有：
+      比较有代表性的是div 
+      其余有p h1 h2 h3 h4 h5 h6 table ul li ol header section aside footer dl dd dt form hr pre tbody tfoot th thead tr
    ```
-
 
 #### 8. 行内元素与块级元素的区别？
    ```
@@ -456,27 +457,51 @@
 
 
 #### 28. HTML5 有哪些新特性、移除了那些元素？
+
+https://www.cnblogs.com/binguo666/p/10928907.html
+
    ```
     HTML5 现在已经不是 SGML 的子集，主要是关于图像，位置，存储，多任务等功能的增加。
 
-    新增的有：
+    - 新增的有：
      
       绘画 canvas;
 
       用于媒介回放的 video 和 audio 元素;
 
-      本地离线存储 localStorage 长期存储数据，浏览器关闭后数据不丢失;
-      sessionStorage 的数据在浏览器关闭后自动删除;
+      语义化更好的内容元素，比如 article、footer、header、nav、section aside dialog 
 
-      语意化更好的内容元素，比如 article、footer、header、nav、section;
-
-      表单控件，calendar、date、time、email、url、search;
+      表单控件：
+         html5修改一些新的input输入特性，改善更好的输入控制和验证:
+            calendar、date、time、email、url、search color month week number range;
+         html5新增了五个表单元素:
+            datalist progress meter keygen output 
+         html5新增表单属性:
+            placehoder	输入框默认提示文字
+            required	要求输入的内容是否可为空
+            pattern	描述一个正则表达式验证输入的值
+            min/max	设置元素最小/最大值
+            step	为输入域规定合法的数字间隔
+            height/wdith	用于image类型<input>标签图像高度/宽度
+            autofocus	规定在页面加载时，域自动获得焦点
+            multiple	规定<input>元素中可选择多个值
       
-      新的技术 webworker, websocket;
+      新的技术 webworker, websocket; 
+         Web Worker可以通过加载一个脚本文件，进而创建一个独立工作的线程，在主线程之外运行。
+          Web Worker的基本原理就是在当前javascript的主线程中，使用Worker类加载一个javascript文件来开辟一个新的线程，起到互不阻塞执行的效果，并且提供主线程和新县城之间数据交换的接口：postMessage、onmessage。
+
+      webStorage:
+         本地离线存储 localStorage 长期存储数据，浏览器关闭后数据不丢失;
+         sessionStorage 的数据在浏览器关闭后自动删除;
       
       新的文档属性 document.visibilityState
 
-    移除的元素有：
+      地理定位  getCurrentPosition()方法
+
+      拖放API
+      
+
+   - 移除的元素有：
 
       纯表现的元素：basefont，big，center，font, s，strike，tt，u;
       对可用性产生负面影响的元素：frame，frameset，noframes；
@@ -710,6 +735,33 @@
    [《请描述一下 cookies，sessionStorage 和 localStorage 的区别？》](https://segmentfault.com/a/1190000017423117)
    [《浏览器数据库 IndexedDB 入门教程》](http://www.ruanyifeng.com/blog/2018/07/indexeddb.html)
 
+#### cookie
+
+构成：
+   名称: name； 
+   值: value(通过URL编码:encodeURIComponent)； 
+   域: domain
+   路径: path
+   失效时间: 一般默认是浏览器关闭失效,可以自己设置失效时间； 
+   安全标志: 设置安全标志后只有SSL连接的时候才发送到服务器；
+
+作用：
+   保存用户登录状态。
+      例如将用户id存储于一个cookie内，这样当用户下次访问该页面时就不需要重新登录了，现在很多论坛和社区都提供这样的功能。 cookie还可以设置过期时间，当超过时间期限后，cookie就会自动消失。因此，系统往往可以提示用户保持登录状态的时间：常见选项有一个月、三个 月、一年等。
+   跟踪用户行为。
+      例如一个天气预报网站，能够根据用户选择的地区显示当地的天气情况。如果每次都需要选择所在地是烦琐的，当利用了cookie后就会显得很人性化了，系统能够记住上一次访问的地区，当下次再打开该页面时，它就会自动显示上次用户所在地区的天气情况。因为一切都是在后 台完成，所以这样的页面就像为某个用户所定制的一样，使用起来非常方便定制页面。如果网站提供了换肤或更换布局的功能，那么可以使用cookie来记录用户的选项，例如：背景色、分辨率等。当用户下次访问时，仍然可以保存上一次访问的界面风格。
+
+#### session
+
+Session：记录一系列状态
+
+session是另一种记录客户状态的机制，不同的是cookie保存在客户端浏览器中，而session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上，这就是session。客户端浏览器再次访问时只需要从该session中查找该客户的状态就可以了。session相当于程序在服务器上建立的一份用户的档案，用户来访的时候只需要查询用户档案表就可以了。
+
+什么时候创建session ？ 在你的服务器端发现没有该客户端的session，那么创建;
+
+什么时候销毁？  1、关闭客户端的时候  2、手动销毁  3、过期
+
+
 #### webstorage
 webstorage是本地存储，存储在客户端，包括localStorage和sessionStorage;
 
@@ -753,29 +805,6 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
   removeItem (key) —— 删除单个数据，根据键值移除对应的信息。
   clear () —— 删除所有的数据
   key (index) —— 获取某个索引的key
-
-#### cookie
-
-构成：
-   名称：name； 
-   值:value(通过URL编码:encodeURIComponent)； 
-   域； 
-   路径； 
-   失效时间:一般默认是浏览器关闭失效,可以自己设置失效时间； 
-   安全标志:设置安全标志后只有SSL连接的时候才发送到服务器；
-
-作用：主要用于保存登录信息；
-
-#### session
-
-Session：记录一系列状态
-
-session是另一种记录客户状态的机制，不同的是cookie保存在客户端浏览器中，而session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上，这就是session。客户端浏览器再次访问时只需要从该session中查找该客户的状态就可以了。session相当于程序在服务器上建立的一份用户的档案，用户来访的时候只需要查询用户档案表就可以了。
-
-什么时候创建session ？ 在你的服务器端发现没有该客户端的session，那么创建;
-
-什么时候销毁？  1、关闭客户端的时候  2、手动销毁  3、过期
-
 #### 37. iframe 有那些缺点？
    ```
     iframe 元素会创建包含另外一个文档的内联框架（即行内框架）。
@@ -1005,6 +1034,7 @@ session是另一种记录客户状态的机制，不同的是cookie保存在客�
    ```
 
 #### 56. 常用的 meta 标签
+
    ```
     <meta> 元素可提供有关页面的元信息（meta-information），比如针对搜索引擎和更新频度的描述和关键词。
     <meta> 标签位于文档的头部，不包含任何内容。<meta> 标签的属性定义了与文档相关联的名称/值对。
@@ -1044,6 +1074,12 @@ session是另一种记录客户状态的机制，不同的是cookie保存在客�
    ```
    详细资料可以参考：
    [《Meta 标签用法大全》](http://www.cnblogs.com/qiumohanyu/p/5431859.html)
+
+#### meta 作用
+   可以声明文档使用的字符编码；
+   页面描述，关键词
+   页面的缩放比
+   页面是否要进行缓存 content=”no-cache”
 
 #### 57. css reset 和 normalize.css 有什么区别？
     

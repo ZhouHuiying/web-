@@ -15,13 +15,7 @@ router.afterEach(() => {
   NProgress.done()
 })
 
-#### VueMeta
-HTML <meta> 标签:
-  <meta> 元素可提供有关页面的元信息（meta-information），比如针对搜索引擎和更新频度的描述和关键词。
-
-  <meta> 标签位于文档的头部，不包含任何内容。<meta> 标签的属性定义了与文档相关联的名称/值对。
-
-#### Vue.use和Vue.prototype.$
+#### Vue.use 和 Vue.prototype.$
 https://segmentfault.com/a/1190000019611146
 Vue.prototype.$ELEMENT = { size };
 

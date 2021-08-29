@@ -91,6 +91,21 @@
 
     ```
 
+- constructor
+    class ColorPoint extends Point {
+    }
+
+    // 等同于 
+    class ColorPoint extends Point {
+        constructor(...args) {
+            super(...args);
+        }
+    }
+    // 可见没有写constructor，在执行过程中会自动补上
+
+    ES6的继承机制，实质是先创建父类的实例对象this，所以必须调用super方法，然后再用子类的构造函数修改this;
+    如果子类没有添加constructor方法，这个方法会被默认添加；
+    
 ### 2. 组件实例属性 
 
 #### ref

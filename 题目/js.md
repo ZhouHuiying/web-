@@ -277,6 +277,24 @@ class Class2 {
 Object.prototype.toString.call(new Class2()); // "[object Class2]"
 ```
 
+- Object.prototype.toString.call
+在JavaScript里使用typeof判断数据类型，只能区分基本类型，即：number、string、undefined、boolean、object。
+对于null、array、function、object来说，使用typeof都会统一返回object字符串。
+要想区分对象、数组、函数、单纯使用typeof是不行的。在JS中，可以通过Object.prototype.toString方法，判断某个对象之属于哪种内置类型。
+
+将前面的this指向后面的元素，改变this指向；
+
+  Object.prototype.toString.call('aaa')
+  "[object String]"
+  Object.prototype.toString.call(1)
+  "[object Number]"
+  Object.prototype.toString.call(null)
+  "[object Null]"
+  Object.prototype.toString.call({})
+  "[object Object]"
+  Object.prototype.toString.call(true)
+  "[object Boolean]"
+
 #### 5. 介绍 js 有哪些内置对象？
 
 涉及知识点：
@@ -670,7 +688,9 @@ NaN 是一个特殊值，它和自身不相等，是唯一一个非自反（自�
 typeof null // 'object'
 
 ```
-
+- 
+  NaN === NaN  Not a Number, 不是数字的情况有很多种   // false
+  {} === {}  //  false
 #### 15. isNaN 和 Number.isNaN 函数的区别？
 
 ``` 
@@ -1966,7 +1986,8 @@ ajax - jQuery ajax - axios - fetch
   ```
 - fetch
 
-  fetch号称是AJAX的替代品，是在ES6出现的，使用了ES6中的promise对象。Fetch是基于promise设计的。Fetch的代码结构比起ajax简单多了，参数有点像jQuery ajax。但是，一定记住fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。
+  fetch号称是AJAX的替代品，是在ES6出现的，使用了ES6中的promise对象。Fetch的代码结构比起ajax简单多了，参数有点像jQuery ajax。但是，一定记住fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。fetch 是一个比较新的API，用来实现CORS通信。
+
   fetch的优点：
   1.符合关注分离，没有将输入、输出和用事件来跟踪的状态混杂在一个对象里
   2.更好更方便的写法
@@ -1981,7 +2002,7 @@ ajax - jQuery ajax - axios - fetch
     }
   ```
 
-  fetch 是一个比较新的API，用来实现CORS通信。用法如下：
+  用法如下：
     ```javascript
           // url（必选），options（可选）
           fetch('/some/url/', {
@@ -1997,11 +2018,15 @@ ajax - jQuery ajax - axios - fetch
 
   - fetch示例
 
-  export const getReport = (reportKey: string) => {
-    return fetch(`/api/report?reportKey=${reportKey}`)
-      .then(response => response.json())
-      .then(data => data.res);
-  }
+    export const getReport = (reportKey: string) => {
+      return fetch(`/api/report?reportKey=${reportKey}`)
+        .then(response => response.json())
+        .then(data => data.res);
+    }
+
+  -  fetch发送2次请求的原因？
+    fetch发送post请求的时候，总是发送2次，第一次状态码是204，第二次才成功？
+    原因很简单，因为你用fetch的post请求的时候，导致fetch 第一次发送了一个Options请求，询问服务器是否支持修改的请求头，如果服务器支持，则在第二次中发送真正的请求。
 
 #### 56. 谈一谈浏览器的缓存机制？
 
@@ -2581,11 +2606,6 @@ Array.prototype.concat.apply([], arrayLike);
 Array.from(arrayLike);
 ```
 
-详细的资料可以参考：
-[《JavaScript 深入之类数组对象与 arguments》](https://github.com/mqyqingfeng/Blog/issues/14)
-[《javascript 类数组》](https://segmentfault.com/a/1190000000415572)
-[《深入理解 JavaScript 类数组》](https://blog.lxxyx.cn/2016/05/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3JavaScript%E7%B1%BB%E6%95%B0%E7%BB%84/)
-
 #### 函数中的arguments是数组吗？
 
 在javascript中所有的函数内部都包含了一个隐藏的变量叫arguments;它存放着所有传递到这个函数中的参数；
@@ -2596,12 +2616,12 @@ Array.from(arrayLike);
   })(1,2,3,4)    //[1,2,3,4]
 ```
 
-#### 类数组转数组的方法了解一下？
+#### 类数组转数组的方法 ？
 
 类数组转化为数组的方法：
 
   - 扩展运算符: ... 运算符 
-      var args = [ ...arguments]; 
+      var args = [ ...arguments ]; 
       要注意是否是 iterable object;
 
   - Array.from:
@@ -3176,6 +3196,7 @@ UTF-8 是一种对 Unicode 的编码方式，它是一种变长的编码方式�
     UI rendering/UI事件
     postMessage、MessageChannel
     setImmediate、I/O（Node.js）
+    
 宏任务微任务执行过程：
   执行一个宏任务，如果遇到微任务就将它放到微任务的事件队列中当前宏任务执行完成后，会查看微任务的事件队列，然后将里面的所有微任务依次执行完。
 
@@ -3934,7 +3955,10 @@ generator（生成器）是ES6标准引入的新的数据类型。一个generato
 
 执行 Generator 函数会返回一个遍历器对象，也就是说，Generator 函数除了状态机，还是一个遍历器对象生成函数。返回的遍历器对象，可以依次遍历 Generator 函数内部的每一个状态。
 
-形式上，Generator 函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。
+形式上，Generator 函数是一个普通函数，但是有两个特征。
+  一是，function关键字与函数名之间有一个星号；
+  二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。
+
 Generator函数是ES6提供的一种 异步编程解决方案,Generator函数是分段执行的，**yield**表达式是**暂停执行**的标记，而**next方法**可以**恢复执行**
 
 eg.
@@ -3944,6 +3968,7 @@ eg.
     return 'ending';
   }
   var hw = helloWorldGenerator();
+
 该函数有三个状态，hello world ending ;
 
 调用该函数后，函数并不执行，返回的也不是函数运行结果，而是一个指向内部状态的指针对象—遍历器对象；
@@ -3962,6 +3987,7 @@ eg.
 ##### yield表达式和return语句的相似点和区别
 
   相似点：都能返回紧跟在语句后面的那个表达式的值；
+  
   区别：每次遇到yield，函数暂停执行，下一次再从该位置继续向后执行，而return语句不具备位置记忆的功能。一个函数里面，只能执行一次（或者说一个）return语句，但是可以执行多次（或者说多个）yield表达式。正常函数只能返回一个值，因为只能执行一次return；Generator 函数可以返回一系列的值，因为可以有任意多个yield。从另一个角度看，也可以说 Generator 生成了一系列的值，这也就是它的名称的来历。
 
 ##### Generator与普通函数的区别
@@ -4129,8 +4155,12 @@ post 不同，post 做的一般是修改和删除的工作，所以必须与数�
 #### 124. mouseover 和 mouseenter 的区别？
 
 ```
-当鼠标移动到元素上时就会触发 mouseenter 事件，类似 mouseover，它们两者之间的差别是 mouseenter 不会冒泡。
 
+mouseover：当鼠标移入元素或其子元素都会触发事件，所以有一个重复触发，冒泡的过程。对应的移除事件是mouseout
+mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触发事件，也就是不会冒泡，对应的移除事件是mouseleave
+
+
+当鼠标移动到元素上时就会触发 mouseenter 事件，类似 mouseover，它们两者之间的差别是 mouseenter 不会冒泡。
 由于 mouseenter 不支持事件冒泡，导致在一个元素的子元素上进入或离开的时候会触发其 mouseover 和 mouseout 事件，但是却不会触发 mouseenter 和 mouseleave 事件。
 ```
 
@@ -5015,6 +5045,7 @@ withCredentials 属性: 要发送cookie时，服务器：Access-Control-Allow-Cr
   JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
 
 #### 180. WebSocket
+
 http://www.ruanyifeng.com/blog/2017/05/websocket.html
 
 - 简介：它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。
@@ -5040,18 +5071,19 @@ http://www.ruanyifeng.com/blog/2017/05/websocket.html
 ```
 
 - 客户端的 API
-(1) WebSocket 构造函数: WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
-(2) webSocket.readyState: readyState属性返回实例对象的当前状态，共有四种;
-  CONNECTING：值为0，表示正在连接。
-  OPEN：值为1，表示连接成功，可以通信了。
-  CLOSING：值为2，表示连接正在关闭。
-  CLOSED：值为3，表示连接已经关闭，或者打开连接失败。
-(3)webSocket.onopen: 实例对象的onopen属性，用于指定连接成功后的回调函数。
-(4)webSocket.onclose: 实例对象的onclose属性，用于指定连接关闭后的回调函数。
-(5)webSocket.onmessage: 实例对象的onmessage属性，用于指定收到服务器数据后的回调函数。
-(6)webSocket.send(): 实例对象的send()方法用于向服务器发送数据。
-(7)webSocket.bufferedAmount: 实例对象的bufferedAmount属性，表示还有多少字节的二进制数据没有发送出去。它可以用来判断发送是否结束。
-(8)webSocket.onerror:实例对象的onerror属性，用于指定报错时的回调函数。
+
+  (1) WebSocket 构造函数: WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
+  (2) webSocket.readyState: readyState属性返回实例对象的当前状态，共有四种;
+    CONNECTING：值为0，表示正在连接。
+    OPEN：值为1，表示连接成功，可以通信了。
+    CLOSING：值为2，表示连接正在关闭。
+    CLOSED：值为3，表示连接已经关闭，或者打开连接失败。
+  (3)webSocket.onopen: 实例对象的onopen属性，用于指定连接成功后的回调函数。
+  (4)webSocket.onclose: 实例对象的onclose属性，用于指定连接关闭后的回调函数。
+  (5)webSocket.onmessage: 实例对象的onmessage属性，用于指定收到服务器数据后的回调函数。
+  (6)webSocket.send(): 实例对象的send()方法用于向服务器发送数据。
+  (7)webSocket.bufferedAmount: 实例对象的bufferedAmount属性，表示还有多少字节的二进制数据没有发送出去。它可以用来判断发送是否结束。
+  (8)webSocket.onerror:实例对象的onerror属性，用于指定报错时的回调函数。
 
 #### 181. 内存泄露Memory leak
 
@@ -5209,3 +5241,11 @@ eg.
   let nestedProp = obj.first && obj.first.second;  
     ->
   let nestedProp = obj.first?.second;
+
+#### 186. JS语言的特点
+
+  运行在客户端浏览器上；
+  不用预编译，直接解析执行代码；
+  是弱类型语言，较为灵活；
+  与操作系统无关，跨平台的语言；
+  脚本语言、解释性语言
