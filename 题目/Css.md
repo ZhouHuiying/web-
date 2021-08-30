@@ -659,7 +659,7 @@ ear和vertical-align属性将失效。
 容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis），项目默认沿主轴排列。
 
 
-以下6个属性设置在容器上。
+- 以下6个属性设置在容器上
 
 flex-direction属性决定主轴的方向（即项目的排列方向）。
 
@@ -681,7 +681,7 @@ justify-content: flex-start | flex-end | center | space-between | space-around; 
 align-items: flex-start | flex-end | center | baseline | stretch;  //定义项目在交叉轴上的对齐方式；
 align-content: flex-start | flex-end | center | space-between | space-around | stretch; //定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用;
 
-以下6个属性设置在项目上。
+- 以下6个属性设置在项目上
 
 order属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
 

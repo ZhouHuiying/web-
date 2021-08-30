@@ -84,10 +84,11 @@ renderTriggered	 onRenderTriggered
   beforeDestroy 实例销毁之前调用。在这一步，实例仍然完全可用。我们可以在这时进行善后收尾工作，比如清除计时器。
 
   destroyed Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
-
-  activated keep-alive 专属，组件被激活时调用
   
-  deactivated keep-alive 专属，组件被销毁时调用
+  - keep-alive 专属生命周期
+
+  activated - keep-alive 专属，组件被激活时调用
+  deactivated - keep-alive 专属，组件被销毁时调用
 
 #### 谈谈你对 keep-alive 的了解？
 
