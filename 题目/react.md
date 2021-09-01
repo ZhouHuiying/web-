@@ -401,3 +401,26 @@ https://zhuanlan.zhihu.com/p/28138664
             }
         }
     }
+
+### 8. vue react区别/相似点
+
+- 相似点：
+
+1）Virtual DOM
+    都使用了'Virtual DOM'，虚拟DOM，DOM树的虚拟表现。
+    它的诞生是基于这么一个概念：改变真实的DOM状态远比改变一个JavaScript对象的花销要大得多。 Virtual DOM是一个映射真实DOM的JavaScript对象，如果需要改变任何元素的状态，那么是先在Virtual DOM上进行改变，而不是直接改变真实的DOM。当有变化产生时，一个新的Virtual DOM对象会被创建并计算新旧Virtual DOM之间的差别。之后这些差别会应用在真实的DOM上。
+
+2）组件化
+
+3）props
+    props在组件中是一个特殊的属性，允许父组件往子组件传送数据。
+
+4）构建工具
+    React和Vue都有自己的构建工具，你可以使用它快速搭建开发环境。React可以使用Create React App (CRA)，而Vue对应的则是vue-cli。
+
+- 区别：
+
+1）模板 vs JSX
+
+2）状态管理 vs 对象属性
+state对象在React应用中是不可变的，意味着它不能被直接改变（这也许不一定正确）。在React中你需要使用setState()方法去更新状态。
