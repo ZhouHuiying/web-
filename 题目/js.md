@@ -4648,7 +4648,6 @@ function checkNullObj(obj) {
 详细资料可以参考：
 [《js 判断一个 object 对象是否为空》](https://blog.csdn.net/FungLeo/article/details/78113661)
 
-
 #### 165. 如何确定页面的可用性时间，什么是 Performance API？
 
 ```

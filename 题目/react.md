@@ -92,6 +92,7 @@
     ```
 
 - constructor
+    如果子类没有定义constructor方法，这个方法会默认添加，也就是说，不管有没有显式定义，任何一个子类都有constructor方法。
     class ColorPoint extends Point {
     }
 
@@ -101,10 +102,13 @@
             super(...args);
         }
     }
-    // 可见没有写constructor，在执行过程中会自动补上
 
     ES6的继承机制，实质是先创建父类的实例对象this，所以必须调用super方法，然后再用子类的构造函数修改this;
     如果子类没有添加constructor方法，这个方法会被默认添加；
+
+- 为什么必须在constructor方法中调用super方法？
+    子类必须在constructor方法中调用super方法，否则新建实例时会报错，这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工，如果不调用super方法，子类就得不到this对象；
+
     
 ### 2. 组件实例属性 
 

@@ -458,6 +458,10 @@ return 后面的返回值，有两种情况：
 Promise 自带的 API 提供了如下实例方法：
 
 - promise.then()：获取异步任务的正常结果。
+  Promise.prototype.then()：
+    then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，then方法的第一个参数是resolved状态的回调函数，第二个参数是rejected状态的回调函数，它们都是可选的。
+    
+    then方法返回的是一个新的Promise实例(不是原来那个)，因此可以采用链式写法，then后面再调用另一个then方法；
 
 - promise.catch()：获取异步任务的异常结果。
 
@@ -569,6 +573,38 @@ Promise 自带的 API 提供了如下对象方法：
 
 - Promise.race(): 并发处理多个异步任务，只要有一个任务执行成功，就能得到结果。
 
+Promise.all():
+  用于将多个Promise实例，包装成一个新的Promise实例；
+  const p = Promise.all([p1, p2, p3])
+  p状态由p1, p2, p3共同决定。
+  只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
+  只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
+
+Promise.race():
+  用于将多个Promise实例，包装成一个新的Promise实例；
+  const p = Promise.all([p1, p2, p3])
+  只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
+
+Promise.allSettled():
+  Promise.allSettled()方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是fulfilled还是rejected，包装实例才会结束
+
+Promise.any():
+  该方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例返回。只要参数实例有一个变成fulfilled状态，包装实例就会变成fulfilled状态；如果所有参数实例都变成rejected状态，包装实例就会变成rejected状态。
+  Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
+
+Promise.resolve():
+  将现有对象转为Promise对象；
+  参数可以是： Promise实例/thenable对象/参数不是具有then方法的对象，或者根本不是对象/不带有任何参数
+
+Promise.reject():
+  会返回一个新的Promise实例，实例的状态为rejected。
+
+Promise.try():
+  可以更好地管理异常;
+    Promise.try(() => database.users.get({id: userId}))
+    .then(...)
+    .catch(...)
+
 下面来详细介绍。
 
 ### Promise.all() 代码举例
@@ -665,49 +701,8 @@ Promise 自带的 API 提供了如下对象方法：
 </html>
 ```
 
-## 
-Promise.prototype.then()：
-  then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，then方法的第一个参数是resolved状态的回调函数，第二个参数是rejected状态的回调函数，它们都是可选的。
-
-  then方法返回的是一个新的Promise实例(不是原来那个)，因此可以采用链式写法，then后面再调用另一个then方法；
-
-Promise.prototype.catch()：
-
-Promise.prototype.finally()：
-
-Promise.all():
-  用于将多个Promise实例，包装成一个新的Promise实例；
-  const p = Promise.all([p1, p2, p3])
-  p状态由p1, p2, p3共同决定。
-  只有p1、p2、p3的状态都变成fulfilled，p的状态才会变成fulfilled，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。
-  只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。
-
-Promise.race():
-  用于将多个Promise实例，包装成一个新的Promise实例；
-  const p = Promise.all([p1, p2, p3])
-  只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
-
-Promise.allSettled():
-  Promise.allSettled()方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例。只有等到所有这些参数实例都返回结果，不管是fulfilled还是rejected，包装实例才会结束
-
-Promise.any():
-  该方法接受一组 Promise 实例作为参数，包装成一个新的 Promise 实例返回。只要参数实例有一个变成fulfilled状态，包装实例就会变成fulfilled状态；如果所有参数实例都变成rejected状态，包装实例就会变成rejected状态。
-  Promise.any()跟Promise.race()方法很像，只有一点不同，就是不会因为某个 Promise 变成rejected状态而结束。
-
-Promise.resolve():
-  将现有对象转为Promise对象；
-  参数可以是： Promise实例/thenable对象/参数不是具有then方法的对象，或者根本不是对象/不带有任何参数
-
-Promise.reject():
-  会返回一个新的Promise实例，实例的状态为rejected。
-
-Promise.try():
-  可以更好地管理异常;
-    Promise.try(() => database.users.get({id: userId}))
-    .then(...)
-    .catch(...)
-  
 ## 手写Promise
+
 ```javascript
   function Promise(executor){
     this.status = 'pending';
@@ -769,3 +764,51 @@ Promise.try():
 
   p.then(res => {console.log(res)})
 ```
+
+## 执行顺序问题 （看输出）
+
+```javascript
+1)
+  setTimeout(function () {
+    console.log(3);
+  }, 0);
+
+  Promise.resolve().then(function () {
+    console.log(2);
+  });
+
+  console.log(1);
+  //输出顺序为 1 2 3
+
+2）
+  setTimeout(function(){console.log(1)},0);
+
+  new Promise(function(resolve,reject){
+    console.log(2);
+    resolve();
+  }).then(function(){console.log(3)
+  }).then(function(){console.log(4)});
+
+  process.nextTick(function(){console.log(5)});
+
+  console.log(6);
+  //输出2,6,5,3,4,1
+
+```
+分析：
+
+在Job queue中的队列分为两种类型：macro-task和microTask。我们举例来看执行顺序的规定，我们设
+  macro-task队列包含任务: a1, a2 , a3
+  micro-task队列包含任务: b1, b2 , b3
+执行顺序为，首先执行marco-task队列开头的任务，也就是 a1 任务，执行完毕后，在执行micro-task队列里的所有任务，也就是依次执行b1, b2 , b3，执行完后清空micro-task中的任务，接着执行marco-task中的第二个任务，依次循环。
+
+macro-task队列真实包含任务：
+  script(主程序代码),setTimeout, setInterval, setImmediate, I/O, UI rendering
+
+micro-task队列真实包含任务：
+  process.nextTick, Promises, Object.observe, MutationObserver
+
+由此我们得到的执行顺序应该为：
+  script(主程序代码)—>process.nextTick—>Promises...——>setTimeout——>setInterval——>setImmediate——> I/O——>UI rendering
+
+在ES6中macro-task队列又称为ScriptJobs，而micro-task又称PromiseJobs
