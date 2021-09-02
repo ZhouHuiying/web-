@@ -296,6 +296,7 @@ home.vue，点击显示就会将子路由显示在出来，子路由的出口必
       mode: 'history',
       routes: [...]
     })
+
   1. new VueRouter实例的时候可以传入mode history，根据mode确定history实际的类并实例化；
 
   2. 在初始化对应的history之前，会对mode做一些校验：若浏览器不支持HTML5History方式（通过supportsPushState变量判断），则mode强制设为'hash'；若不是在浏览器环境下运行，则mode强制设为'abstract'；
@@ -326,8 +327,60 @@ History interface是浏览器历史记录栈提供的接口，通过back(), forw
 
 #### 两个组件
 
-  router-view
-  router-link
+1. router-link
+
+该组件支持用户在具有路由功能的应用中(点击)导航,默认渲染成带有正确链接的<a>标签，可以通过tag属性生成别的标签。
+
+  使用方式：`<router-link :to="index">`
+
+  原理：
+    1) router-link 组件接收的参数：
+        to    表示目标路由的链接,当被点击后，内部会立刻把to的值传到router.push(),所以这个值可以是一个字符串或者是描述目标位置的对象
+        tag    router-link组件渲染的标签名，默认为a
+        exact  布尔类型,“是否激活”默认类名的依据是包含匹配
+        append  布尔类型,设置append属性后,则在当前(相对)路劲前添加基路劲
+        replace   布尔类型,设置replace后，当点击时会调用router.replace()而不是router.push(),这样导航后不会留下history记录
+        activeClass  链接激活时使用的CSS类名
+        exactActiveClass 配置当链接被精确匹配的时候应该激活的 class
+        event  声明可以用来触发导航的事件。可以是一个字符串或是一个包含字符串的数组
+
+    2) 组件内部有一个render函数，render函数：return h(this.tag, data, this.$slots.default)；
+
+
+2. router-view
+
+eg.
+```javascript
+  <div id="app">
+    <router-link to="/info/">info页</router-link>     
+    <router-link to="/info/face">page页</router-link>        
+    <hr/>
+    <router-view></router-view>
+  </div>
+  <script>                   
+      const info  = { template:'<div>info Page<router-view><br/></router-view></div>'}             //外层组件
+      const page  = { template:'<div>face Page</div>'}                                             //内层组件
+      const routes = [                                   
+          {
+              path:'/info/',
+              component:info,
+              children:[                         
+                  {path:'face',component:page}        //使用了嵌套路由
+              ]
+          }
+      ]
+      const app = new Vue({                                                     
+          el:'#app',
+          router:new VueRouter({routes})
+      })
+  </script>
+```
+router-view组件渲染时是从VueRouter实例._route.matched属性获取需要渲染的组件，也就是我们在vue内部的this.$route.matched上获取的,
+
+router-view通过判断当前组件的嵌套层次，然后通过这个层次从route.matches数组中获取当前需要渲染的组件，最后调用全局的$createElement来创建对应的VNode完成渲染的。
+
+组件内部有一个render函数，render函数return h(component, data, children)
+component为通过route.matched获取到的需要渲染的组件
 
 #### 两种模式对比
 
@@ -338,9 +391,43 @@ History interface是浏览器历史记录栈提供的接口，通过back(), forw
 
 ### Vue.mixin 混入
 
+- 概念：
+  混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
+
+- eg.
+
+  ```javascript
+    // 定义一个混入对象
+    var myMixin = {
+      created: function () {
+        this.hello()
+      },
+      methods: {
+        hello: function () {
+          console.log('hello from mixin!')
+        }
+      }
+    }
+
+    // 定义一个使用混入对象的组件
+    var Component = Vue.extend({
+      mixins: [myMixin]
+    })
+
+    var component = new Component() // => "hello from mixin!"
+  ```
+
 - vue 中 mixin 和 mixins 区别？
+
   mixin 用于全局混入，会影响到每个组件实例。
   mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
+
+- 选项合并：
+
+  当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。
+  1）比如，数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。
+  2）同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。
+
 
 ### 6、路由之间跳转？跳转时传递参数？
 
