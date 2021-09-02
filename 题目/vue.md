@@ -241,8 +241,10 @@ index.html，只有一个路由出口
 main.js，路由的重定向，就会在页面一加载的时候，就会将 home 组件显示出来，因为重定向指向了 home 组件，redirect 的指向与 path 的必须一致。children 里面是子路由，当然子路由里面还可以继续嵌套子路由。
 
 ```js
+index.js 文件
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 Vue.use(VueRouter)
 
 //引入两个组件
@@ -251,27 +253,94 @@ import home from "./home.vue"
 import game from "./game.vue"
 //定义路由
 const routes = [
-    { path: "/", redirect: "/home" },//重定向,指向了home组件
-    {
-      path: "/home", component: home,
-      children: [
-          { path: "/home/game", component: game }
-      ]
-    }
+  { path: "/", redirect: "/home" },//重定向,指向了home组件
+  {
+    path: "/home", component: home,
+    children: [
+        { path: "/home/game", component: game }
+    ]
+  }
 ]
 //创建路由实例
 const router = new VueRouter({routes})
 
-new Vue({
-  el: '#app',
-  data: {
-  },
-  methods: {
-  },
-  router
-})
+main.js文件：
+  new Vue({
+    el: '#app',
+    data: {
+    },
+    methods: {
+    },
+    router
+  })
 ```
 home.vue，点击显示就会将子路由显示在出来，子路由的出口必须在父路由里面，否则子路由无法显示。
+
+### vue-router
+
+主要文件：
+  index.js
+  install.js
+  util文件夹
+  history文件夹
+    html5.js
+    hash.ja
+    base.js
+    abstract.js
+
+#### index.js文件
+
+- 模式参数
+  在vue-router中是通过mode这一参数控制路由的实现模式的：
+    const router = new VueRouter({
+      mode: 'history',
+      routes: [...]
+    })
+  1. new VueRouter实例的时候可以传入mode history，根据mode确定history实际的类并实例化；
+
+  2. 在初始化对应的history之前，会对mode做一些校验：若浏览器不支持HTML5History方式（通过supportsPushState变量判断），则mode强制设为'hash'；若不是在浏览器环境下运行，则mode强制设为'abstract'；
+
+  3. VueRouter类中的onReady(), push()等方法只是一个代理，实际是调用的具体history对象的对应方法，在init()方法中初始化时，也是根据history对象具体的类别执行不同操作；
+
+  在浏览器环境下的两种方式，分别就是在HTML5History，HashHistory两个类中实现的。他们都定义在src/history文件夹下，继承自同目录下base.js文件中定义的History类。History中定义的是公用和基础的方法
+
+#### HashHistory
+
+push 方法 - push方法中调用this.transitionTo方法，transitionTo()方法是父类中定义的是用来处理路由变化中的基础逻辑的，push()方法最主要的是对window的hash进行了直接赋值；
+
+transitionTo - 当路由变化时，调用了History中的this.cb方法，而this.cb方法是通过History.listen(cb)进行设置的。
+
+#### HTML5History
+
+History interface是浏览器历史记录栈提供的接口，通过back(), forward(), go()等方法，我们可以读取浏览器历史记录栈的信息，进行各种跳转操作。
+
+从HTML5开始，History interface提供了两个新的方法：pushState(), replaceState()使得我们可以对浏览器历史记录栈进行修改：
+  window.history.pushState(stateObject, title, URL)
+  window.history.replaceState(stateObject, title, URL)
+    
+    stateObject：当浏览器跳转到新的状态时，将触发popState事件，该事件将携带这个stateObject参数的副本；
+    title: 所添加记录的标题
+    URL: 所添加记录的URL
+
+  这两个方法有个共同的特点：当调用他们修改浏览器历史记录栈后，虽然当前URL改变了，但浏览器不会立即发送请求该URL，这就为单页应用前端路由“更新视图但不重新请求页面”提供了基础。
+
+#### 两个组件
+
+  router-view
+  router-link
+
+#### 两种模式对比
+
+  pushState设置的新URL可以是与当前URL同源的任意URL；而hash只可修改#后面的部分，故只可设置与当前同文档的URL
+  pushState设置的新URL可以与当前URL一模一样，这样也会把记录添加到栈中；而hash设置的新值必须与原来不一样才会触发记录添加到栈中
+  pushState通过stateObject可以添加任意类型的数据到记录中；而hash只可添加短字符串
+  pushState可额外设置title属性供后续使用
+
+### Vue.mixin 混入
+
+- vue 中 mixin 和 mixins 区别？
+  mixin 用于全局混入，会影响到每个组件实例。
+  mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
 
 ### 6、路由之间跳转？跳转时传递参数？
 
@@ -781,14 +850,6 @@ $router 是“路由实例”对象，包括了路由的跳转方法，钩子函
   .prevent: 提交事件不再重载页面；
   .stop: 阻止单击事件冒泡；
   .self: 当事件发生在该元素本身而不是子元素的时候会触发；
-```
-
-### 23、 vue 中 mixin 和 mixins 区别？
-
-```
-mixin 用于全局混入，会影响到每个组件实例。
-
-mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
 ```
 
 ### 24、vue单页应用 SPA
