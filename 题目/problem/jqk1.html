@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    const arr = [1, 2, 3, 4, 5, 6]
+    const liDom = arr.reduce((total, pre) => {
+        return total + `<li>li${pre}</li>`
+    }, '')
+    console.log(liDom)
+
+
+    // helper(num)传入一个参数，helper返回的是一个函数，这个函数接收两个参数
+    function helper(num) {
+        const powY = num
+        return function() {
+                // 接收fn(1,2)的参数，将参数转化为数组
+            let args = Array.prototype.slice.call(arguments)
+                // 用数组的reduce方法求和
+            return args.reduce((total, pre) => {
+                return Math.pow(pre, powY) + total
+            }, 0)
+        }
+    }
+    const fn = helper(2)
+    console.log(fn(1, 2))
+
+
+    //作用域的问题  let var
+    let arr = []
+    for (var i = 0; i < 10; i++) {
+        arr[i] = function() {
+            console.log(i)
+        }
+    }
+    arr[6]()  //10
+</script>
+
+</html>
