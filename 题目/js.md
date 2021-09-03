@@ -2627,6 +2627,9 @@ Array.from(arrayLike);
 
   - Array.from:
       Array.from()是ES6中新增的方法，可以将两类对象转为真正的数组：类数组对象和可遍历（iterable）对象（包括ES6新增的数据结构Set和Map）;
+
+      什么是类数组对象呢？所谓类数组对象，最基本的要求就是具有length属性的对象。
+      
       var arrayLike = {
         '0':'a',
         '1':'b',
