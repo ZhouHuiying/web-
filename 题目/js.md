@@ -2246,11 +2246,18 @@ script 脚本请求都不会有跨域的限制，这是因为这些操作都不�
 H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中新增的，那就一定要提到。
 ```
 
-详细资料可以参考：
-[《前端常见跨域解决方案（全）》](https://segmentfault.com/a/1190000011145364)
-[《浏览器同源政策及其规避方法》](http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html)
-[《跨域，你需要知道的全在这里》](https://juejin.im/entry/59feae9df265da43094488f6)
-[《为什么 form 表单提交没有跨域问题，但 ajax 提交有跨域问题？》](https://www.zhihu.com/question/31592553)
+- 跨域配置（vue cli)
+Vue-CLI 是基于 webpack 的，通过 webpack-dev-server 在本地启动脚手架，也就是在本地启动了一个 Node 服务，来实时监听和打包编译静态资源，由于都是封装好的，只需要配置即可，我们在 vue.config.js 中配置代理如下，写法很多，列几个常见的自行选择.
+例如：
+  module.exports = {
+    //...
+    devServer: {
+      proxy: {
+        '/api': 'http://www.hahaha.com'
+      }
+    }
+  }
+  如上所示时，当你请求 /api/abc 接口时就会被代理到 http://www.hahaha.com/api/abc
 
 #### 61. 服务器代理转发时，该如何处理 cookie？
 
