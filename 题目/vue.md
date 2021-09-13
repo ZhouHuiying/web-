@@ -52,8 +52,11 @@ https://juejin.cn/post/6961222829979697165
       ref 加在子组件上，用this.$refs.（ref值） 获取到的是组件实例，可以使用组件的所有方法。在使用方法的时候直接this.$refs.（ref值）.方法() 就可以使用了；
 
 　　  利用 v-for 和 ref 获取一组数组或者dom 节点；
+
 ### 2、Vue 生命周期
+
 #### Vue2 -> Vue3
+
 beforeCreate	   Not needed*
 created	         Not needed*
 beforeMount	     onBeforeMount
@@ -67,6 +70,7 @@ renderTracked	   onRenderTracked
 renderTriggered	 onRenderTriggered
 
 - 因为 setup 是围绕 beforeCreate 和 created 生命周期钩子运行的，所以不需要显式地定义它们。换句话说，在这些钩子中编写的任何代码都应该直接在 setup 函数中编写。
+
 #### Vue2生命周期
 
   beforeCreate 在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。在当前阶段 data、methods、computed 以及 watch 上的数据和方法都不能被访问;
@@ -86,9 +90,8 @@ renderTriggered	 onRenderTriggered
   destroyed Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。 该钩子在服务器端渲染期间不被调用。
   
   - keep-alive 专属生命周期
-
-  activated - keep-alive 专属，组件被激活时调用
-  deactivated - keep-alive 专属，组件被销毁时调用
+    activated - keep-alive 专属，组件被激活时调用
+    deactivated - keep-alive 专属，组件被销毁时调用
 
 #### 谈谈你对 keep-alive 的了解？
 
@@ -101,11 +104,17 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 - 对应两个钩子函数 activated 和 deactivated ，当组件被激活时，触发钩子函数 activated，当组件被移除时，触发钩子函数 deactivated。
 
 #### 异步请求在哪一步发起？
+
   可以在钩子函数 created、beforeMount、mounted 中进行异步请求，因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
 
-  如果异步请求不需要依赖 Dom 推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+  - 如果异步请求不需要依赖 Dom 推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
+    此时组件的 data 数据、通过路由注入的数据已经具备，此时可以使用这些数据发送 ajax 请求；
     能更快获取到服务端数据，减少页面  loading 时间；
     ssr  不支持 beforeMount 、mounted 钩子函数，所以放在 created 中有助于一致性；
+  
+  - 在 mounted 钩子函数中发起也可以，但是相对比 created 稍微迟了一些。
+
+  - 如果不需要依赖任何数据发起 ajax 请求，那么在 beforeCreate 发起也可以。
 
 #### Vue SSR
   SSR 也就是服务端渲染，也就是将 Vue 在客户端把标签渲染成 HTML 的工作放在服务端完成，然后再把 html 直接返回给客户端。
@@ -130,6 +139,34 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 - 销毁过程
   父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
 
+
+#### vue2和vue3区别
+
+1. vue2和vue3双向数据绑定原理发生了改变
+  vue2 的双向数据绑定是利用ES5 的一个 API Object.definePropert()对数据进行劫持 结合 发布订阅模式的方式来实现的。
+  vue3 中使用了 es6 的 Proxy API 对数据代理。
+  相比于vue2.x，使用proxy的优势如下：
+    defineProperty只能监听某个属性，不能对全对象监听
+    可以省去for in、闭包等内容来提升效率（直接绑定整个对象即可）
+    可以监听数组，不用再去单独的对数组做特异性操作 vue3.x可以检测到数组内部数据的变化
+2. 组合式API
+  Vue3.0里出现了setup。新的setup组件选项在创建组件之前执行，一旦 props被解析，并充当合成 API 的入口点。由于在执行 setup时尚未创建组件实例，因此在 setup 选项中没有 this。如果想使用this可以在return中使用。
+3. 带 ref 的响应式变量
+  在 Vue 3.0 中，我们可以通过一个新的 ref 函数使任何响应式变量在任何地方起作用。
+4. watch 响应式更改
+  就像我们如何使用 watch 选项在组件内的 user property 上设置侦听器一样，我们也可以使用从 Vue 导入的 watch 函数执行相同的操作。它接受 3 个参数：
+    一个响应式引用或我们想要侦听的 getter 函数
+    一个回调
+    可选的配置选项
+      import { ref, watch } from 'vue'
+      const counter = ref(0)
+
+      watch(counter, (newValue, oldValue) => { 
+
+      console.log('The new counter value is: ' + counter.value)
+
+      })
+5. 独立的 computed 属性
 ### 3、双向绑定原理（响应式数据的原理）
 
 vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Object.defineProperty()来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
@@ -631,6 +668,11 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 
   v-show 适用于需要非常频繁切换条件的场景
 
+- 为什么v-for v-if不能一起用？
+    v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
+    把v-for和v-if用到一个元素上，会带来性能的浪费；
+    为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
+
 ### 17、computed 和 watch 的区别和运用的场景
 
 - 区别：
@@ -650,6 +692,7 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 （2）computed 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 computed 属性，才会计算新的值。而 watch 则是当数据发生变化便会调用执行函数。
 
 （3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
+
 ### 18、虚拟 DOM 是什么 有什么优缺点？
 
 由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
@@ -954,8 +997,3 @@ vue 单页应用（spa）前端路由实现原理：
         浏览器前进后退可能导致hash的变化，前提是两个网页地址中的hash值不同；
   
 vue router两种方式： hash history
-
-### 25. 为什么v-for v-if不能一起用？
-    v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
-    把v-for和v-if用到一个元素上，会带来性能的浪费；
-    为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
