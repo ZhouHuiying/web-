@@ -459,7 +459,8 @@ Promise 自带的 API 提供了如下实例方法：
 
 - promise.then()：获取异步任务的正常结果。
   Promise.prototype.then()：
-    then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。前面说过，then方法的第一个参数是resolved状态的回调函数，第二个参数是rejected状态的回调函数，它们都是可选的。
+    then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。
+    then方法的第一个参数是resolved状态的回调函数，第二个参数是rejected状态的回调函数，它们都是可选的。
     
     then方法返回的是一个新的Promise实例(不是原来那个)，因此可以采用链式写法，then后面再调用另一个then方法；
 

@@ -1309,7 +1309,7 @@ https://www.w3school.com.cn/tags/html_ref_eventattributes.asp
 Window事件属性：针对 window 对象触发的事件
    onload: 页面结束加载之后触发;
    onresize: 当浏览器窗口被调整大小时触发;
-   onunload:一旦页面已下载时触发（或者浏览器窗口已被关闭）;
+   onunload:一旦页面已卸载时触发（或者浏览器窗口已被关闭）;
 
 Form事件：由 HTML 表单内的动作触发的事件（应用到几乎所有 HTML 元素，但最常用在 form 元素中）
    onblur: 元素失去焦点时运行的脚本；

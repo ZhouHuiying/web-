@@ -193,6 +193,10 @@ BigInt（ES2020）
 
 ```
 
+null === null  // true
+{} === {}  // false
+undefined === undefined  // true
+
 #### 2. JavaScript 有几种类型的值？你能画一下他们的内存图吗？
 
 涉及知识点：
@@ -4082,21 +4086,23 @@ eg.
   ```
 
 #### async 函数
+
+  https://es6.ruanyifeng.com/#docs/async
   async 函数，使得异步操作变得更加方便。
+  async:异步，await:等待  async就是用来声明一个异步方法，而 await是用来等待异步方法执行；
   
   async是 Generator 函数的语法糖.async函数就是将 Generator 函数的星号（*）替换成async，将yield替换成await。
   async函数对Generator函数的改进(优点)：
-    内置执行器、更好的语义、更广的适用性、返回的是 Promise、结构清晰。
     (1)Generator函数函数的执行必须靠执行器，async函数自带执行器
+      会自动执行，输出最后结果。这完全不像 Generator 函数，需要调用next方法，或者用co模块，才能真正执行，得到最后结果。
     (2)更好的语义
     (3)更广的适用性:co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是 Promise 对象和原始类型的值（数值、字符串和布尔值，但这时会自动转成立即 resolved 的 Promise 对象）。
     (4)async函数的返回值是 Promise 对象，这比 Generator 函数的返回值是 Iterator 对象方便.
+  
   缺点：错误处理机制
 
   用法：async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
 
-  async:异步，await:等待
-  async就是用来声明一个异步方法，而 await是用来等待异步方法执行；
   eg.
     async function fn1 (){
       console.log(1)
@@ -4106,23 +4112,10 @@ eg.
     async function fn2 (){
         console.log('fn2')
     }
-  fn1()
-  console.log(3)
+    fn1()
+    console.log(3)
+
   上面的例子中，await 会阻塞下面的代码（即加入微任务队列），先执行 async外面的同步代码，同步代码执行完，再回到 async 函数中，再执行之前阻塞的代码.所以上述输出结果为：1，fn2，3，2。
-
-一个例子：(/image/事件循环例子.png)
-
-回答：
-js 中的异步机制可以分为以下几种：
-
-第一种最常见的是使用回调函数的方式，使用回调函数的方式有一个缺点是，多个回调函数嵌套的时候会造成回调函数地狱，上下两层的回调函数间的代码耦合度太高，不利于代码的可维护。
-
-第二种是 Promise 的方式，使用 Promise 的方式可以将嵌套的回调函数作为链式调用。但是使用这种方法，有时会造成多个 then 的链式调用，可能会造成代码的语义不够明确。
-
-第三种是使用 generator 的方式，它可以在函数的执行过程中，将函数的执行权转移出去，在函数外部我们还可以将执行权转移回来。当我们遇到异步函数执行的时候，将函数执行权转移出去，当异步函数执行完毕的时候我们再将执行权给转移回来。因此我们在 generator 内部对于异步操作的方式，可以以同步的顺序来书写。使用这种方式我们需要考虑的问题是何时将函数的控制权转移回来，因此我们需要有一个自动执行 generator 的机制，比如说 co 模块等方式来实现 generator 的自动执行。
-
-第四种是使用 async 函数的形式，async 函数是 generator 和 promise 实现的一个自动执行的语法糖，它内部自带执行器，当函数内部执行到一个 await 语句的时候，如果语句返回一个 promise 对象，那么函数将会等待 promise 对象的状态变为 resolve 后再继续向下执行。因此我们可以将异步逻辑，转化为同步的顺序来书写，并且这个函数可以自动执行。
-
 
 #### 119. Js 动画与 CSS 动画区别及相应实现
 

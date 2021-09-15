@@ -1178,9 +1178,9 @@ IFC指的是行级格式化上下文，它有这样的一些布局规则：
 
 清除浮动的方式：
 
-  （1）使用clear属性清除浮动。参考28。
+  （1）使用clear属性清除浮动。
 
-  （2）使用BFC块级格式化上下文来清除浮动。参考26。
+  （2）使用BFC块级格式化上下文来清除浮动。
 
 因为BFC元素不会影响外部元素的特点，所以BFC元素也可以用来清除浮动的影响，因为如果不清除，子元素浮动则父元
 素高度塌陷，必然会影响后面元素布局和定位，这显然有违BFC元素的子元素不会影响外部元素的设定。
@@ -2298,6 +2298,15 @@ p:after {
   bottom: 0;
   right: 0;
   background-color: #fff;
+}
+
+/* 让文字最多只显示两行，超出后显示省略号 */
+p{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	display:-webkit-box;
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2;
 }
 ```
 

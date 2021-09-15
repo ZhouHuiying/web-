@@ -21,6 +21,38 @@
 
 ### 链表
 
+- 反转链表
+  向curr的前面添加元素，让前一个元素的next指向curr；
+  var reverseList = function(head) {
+    let prev = null;
+    let curr = head;
+    while(curr){
+        let next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next
+    }
+    return prev;
+  };
+
+- 环形链表 检验链表是否有环
+  定义两个指针，快指针和慢指针，快指针每次走两步，慢指针每次走一步，最后两个指针如果相遇就是有环。
+  var hasCycle = function(head) {
+    if(head == null){
+        return false;
+    }
+    let slow = head;
+    let fast = head;
+    while(fast != null && fast.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+        if(slow == fast){
+            return true;
+        }
+    }
+    return false;
+  };
+
 ### 二叉树：
   #### 深度优先遍历 Depth-First-Search、
   #### 广度优先遍历
@@ -52,24 +84,39 @@
 set、map、hashMap、
   
 ### 动态规划DP 
-    求解最优化，在最后结果之前的数字在计算该数字前都已经计算过了。
-    788. 旋转数字
-    70. 爬楼梯
-      ```
-      var climbStairs = function(n) {
-      if(n===1) return 1;
-      let f=1,s=2;
-      for(let i=3; i<=n; i++){
-          let t=f+s;
-          f=s;
-          s=t;
-      }
-      return s;
-      };
-      ```
-    746. 使用最小花费爬楼梯
-    剑指 Offer 42. 连续子数组的最大和
-      var maxSubArray = function(nums) {
+  求解最优化，在最后结果之前的数字在计算该数字前都已经计算过了。
+  
+  788. 旋转数字
+  
+  70. 爬楼梯
+     function climb2(n){
+      let dp = [1,2];
+      for(let i=2; i<n; i++){
+        dp[i] = dp[i-1] + dp[i-2];
+      }
+      return dp[n-1];
+    }
+
+    var climbStairs = function(n) {
+    if(n===1) return 1;
+    let f=1,s=2;
+    for(let i=3; i<=n; i++){
+        let t=f+s;
+        f=s;
+        s=t;
+    }
+    return s;
+    };
+
+  746. 使用最小花费爬楼梯
+
+  42.  剑指 Offer 42 - 连续子数组的最大和
+  给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+    示例 1：
+    输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+    输出：6
+    解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+    var maxSubArray = function(nums) {
       const dp = new Array(nums.length);
       dp[0] = nums[0];
       dp[1] = nums[0];
@@ -77,8 +124,24 @@ set、map、hashMap、
           dp[i] = Math.max(nums[i-1],nums[i-1]+dp[i-1]);
       }
       return Math.max(...dp)
-  };
+    };
 
+  121. 买卖股票的最佳时机
+    得到最小值，然后根据这个最小值求出最大值
+    ```javascript
+    var maxProfit = function(prices) {
+      let min = Number.MAX_VALUE
+      let max = 0;
+      for(let i=0; i<prices.length; i++){
+          if(prices[i]<min){
+              min = prices[i]
+          }else if(max < prices[i]-min){
+              max = prices[i]-min
+          }
+      }
+      return max;
+    };
+    ```
 ### 指针:
     指针的基本要素：起始值、终止值、方向（增减）、速度;
     -双指针法  -单指针法
