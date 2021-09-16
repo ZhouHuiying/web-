@@ -1,6 +1,8 @@
 https://juejin.cn/post/6961222829979697165
 
 
+
+
 ### 1、MVVM 和 MVC 是什么，区别是什么？
 
 #### MVVM:
@@ -149,10 +151,34 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
     defineProperty只能监听某个属性，不能对全对象监听
     可以省去for in、闭包等内容来提升效率（直接绑定整个对象即可）
     可以监听数组，不用再去单独的对数组做特异性操作 vue3.x可以检测到数组内部数据的变化
-2. 组合式API
-  Vue3.0里出现了setup。新的setup组件选项在创建组件之前执行，一旦 props被解析，并充当合成 API 的入口点。由于在执行 setup时尚未创建组件实例，因此在 setup 选项中没有 this。如果想使用this可以在return中使用。
-3. 带 ref 的响应式变量
-  在 Vue 3.0 中，我们可以通过一个新的 ref 函数使任何响应式变量在任何地方起作用。
+
+2. 组合式API  Composition API
+  Vue3.0里出现了setup。新的setup组件选项在创建组件之前执行，(setup 是组件内使用 Composition API的入口。setup 执行时机是在 beforeCreate 之前执行)。
+  一旦 props被解析，并充当合成 API 的入口点。由于在执行 setup时尚未创建组件实例，因此在 setup 选项中没有 this。如果想使用this可以在return中使用。
+
+3. 带 ref 的响应式变量 - reactive、ref 与 toRefs、isRef
+  Vue3.x 可以使用reactive和ref来进行数据定义。
+  ```javascript
+    // props 传入组件对属性
+    // context 一个上下文对象,包含了一些有用的属性:attrs,parent,refs
+    setup(props, context) {
+      // ref 定义数据
+      const year = ref(0);
+      // reactive 处理对象的双向绑定
+      const user = reactive({ nickname: "xiaofan", age: 26, gender: "女" });
+      setInterval(() => {
+        year.value++;
+        user.age++;
+      }, 1000);
+      return {
+        year,
+        // 使用toRefs,结构解构
+        ...toRefs(user),
+      };
+    },
+    // 提供isRef，用于检查一个对象是否是ref对象
+  ```
+
 4. watch 响应式更改
   就像我们如何使用 watch 选项在组件内的 user property 上设置侦听器一样，我们也可以使用从 Vue 导入的 watch 函数执行相同的操作。它接受 3 个参数：
     一个响应式引用或我们想要侦听的 getter 函数
@@ -166,7 +192,25 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
       console.log('The new counter value is: ' + counter.value)
 
       })
+
 5. 独立的 computed 属性
+  computed可传入get和set
+  ```
+  const plusOne = computed({
+  get: () => count.value + 1,
+  set: val => { count.value = val - 1 }
+  });
+  ```
+
+6. 使用TypeScript和JSX
+  setup现在支持返回一个渲染函数，这个函数返回一个JSX，JSX可以直接使用声明在setup作用域的响应式状态：
+  export default {
+    setup() {
+    const count = ref(0);
+    return () => (<div>{count.value}</div>);
+    },
+  };
+
 ### 3、双向绑定原理（响应式数据的原理）
 
 vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Object.defineProperty()来劫持各个属性的 setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
@@ -245,7 +289,8 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
 
   vue3.xx中使用 **Proxy** 实现数据双向绑定；
   Vue3.x 改用 Proxy 替代 Object.defineProperty。因为 Proxy 可以直接监听对象和数组的变化，并且有多达 13 种拦截方法。
-  Proxy可以理解成，在目标对象之前架设一层 "拦截"，当外界对该对象访问的时候，都必须经过这层拦截，而Proxy就充当了这种机制，类似于代理的含义，它可以对外界访问对象之前进行过滤和改写该对象。
+  Proxy可以理解成，在目标对象之前架设一层 "拦截"，当外界对该对象访问的时候，都必须经过这层拦截，意味着你可以在这层拦截中进行各种操作。比如你可以在这层拦截中对原对象进行处理，返回你想返回的数据结构。
+  而Proxy就充当了这种机制，类似于代理的含义，它可以对外界访问对象之前进行过滤和改写该对象。
     const obj = new Proxy(target, handler);
 
   当外界每次对obj进行操作时，就会执行handler对象上的一些方法。
@@ -256,6 +301,21 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
     4. construct(target, args) 用来拦截new命令的
     5. apply(target, object, args) 用来拦截函数的调用
 
+  eg.
+    ```
+    const p = new Proxy(target, handler);
+    //target： 所要拦截的目标对象（可以是任何类型的对象，包括原生数组，函数，甚至另一个代理）
+    //handler：一个对象，定义要拦截的行为
+
+    const p = new Proxy({}, {
+        get(target, propKey) {
+            return '哈哈，你被我拦截了';
+        }
+    });
+
+    console.log(p.name);
+    ```
+
 ### 4、vue 的优点是什么？
 
 - 低耦合。视图（View）可以独立于 Model 变化和修改，一个 ViewModel 可以绑定到不同的"View"上，当 View 变化的时候 Model 可以不变，当 Model 变化的时候 View 也可以不变。
@@ -263,7 +323,7 @@ Object.defineProperty 函数一共有三个参数，第一个参数是需要定�
 - 独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计，使用 Expression Blend 可以很容易设计界面并生成 xml 代码。
 - 可测试。界面素来是比较难于测试的，而现在测试可以针对 ViewModel 来写。
 
-### 5、嵌套路由怎么定义？
+### 5、vue-router
 
 在实际项目中我们会碰到多层嵌套的组件组合而成，但是我们如何实现嵌套路由呢？因此我们需要在 VueRouter 的参数中使用 children 配置，这样就可以很好的实现路由嵌套。
 index.html，只有一个路由出口
@@ -313,8 +373,21 @@ main.js文件：
 ```
 home.vue，点击显示就会将子路由显示在出来，子路由的出口必须在父路由里面，否则子路由无法显示。
 
-### vue-router
 
+vue router两种方式： hash history
+
+vue 单页应用（spa）前端路由实现原理：
+  - window.history：
+      history.pushState
+      history.replaceState
+      popstate
+  - location.hash
+      window 对象中有一个事件是 onhashchange，以下几种情况都会触发这个事件：
+        直接更改浏览器地址，在最后面增加或改变#hash；
+        通过改变location.href或location.hash的值；
+        通过触发点击带锚点的链接；
+        浏览器前进后退可能导致hash的变化，前提是两个网页地址中的hash值不同；
+  
 主要文件：
   index.js
   install.js
@@ -425,318 +498,6 @@ component为通过route.matched获取到的需要渲染的组件
   pushState设置的新URL可以与当前URL一模一样，这样也会把记录添加到栈中；而hash设置的新值必须与原来不一样才会触发记录添加到栈中
   pushState通过stateObject可以添加任意类型的数据到记录中；而hash只可添加短字符串
   pushState可额外设置title属性供后续使用
-
-### Vue.mixin 混入
-
-- 概念：
-  混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
-
-- eg.
-
-  ```javascript
-    // 定义一个混入对象
-    var myMixin = {
-      created: function () {
-        this.hello()
-      },
-      methods: {
-        hello: function () {
-          console.log('hello from mixin!')
-        }
-      }
-    }
-
-    // 定义一个使用混入对象的组件
-    var Component = Vue.extend({
-      mixins: [myMixin]
-    })
-
-    var component = new Component() // => "hello from mixin!"
-  ```
-
-- vue 中 mixin 和 mixins 区别？
-
-  mixin 用于全局混入，会影响到每个组件实例。
-  mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
-
-- 选项合并：
-
-  当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。
-  1）比如，数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。
-  2）同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。
-
-
-### 6、路由之间跳转？跳转时传递参数？
-
-1. 路由跳转的方式
-
-- 声明式（标签跳转） `<router-link :to="index">`
-- 编程式（ js 跳转） `router.push('index')`
-
-2. 传递参数的两种方式
-
-- params
-  this.$router.push({ name: 'news', params: { userId: 123 }})
-- query 查询参数
-  <router-link :to="{ path: '/news', query: { userId: 1111}}">click to news page</router-link>
-
-总结：
-  1. 命名路由搭配params，刷新页面参数会丢失
-  2. 查询参数搭配query，刷新页面数据不会丢失
-
-### 7、懒加载（按需加载路由）
-
-webpack 中提供了 require.ensure()来实现按需加载。以前引入路由是通过 import 这样的方式引入，改为 const 定义的方式进行引入。
-
-- 不进行页面按需加载引入方式：
-
-```js
-import  home   from '../../common/home.vue'
-```
-
-- 进行页面按需加载的引入方式：
-
-```js
-const  home = r => require.ensure( [], () => r (require('../../common/home.vue')))
-```
-
-### 8、Vue组件通信
-
-(1)props 和$emit 父组件向子组件传递数据是通过 prop 传递的，子组件传递数据给父组件是通过$emit 触发事件来做到的;
-    父组件 -> 子组件： props
-      单向数据流：所有的 prop 都使得
-      其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外变更父级组件的状态，从而导致你的应用的数据流向难以理解。
-    子组件 -> 父组件： emit
-    
-    事件绑定： emit/on:
-      原生事件绑定是通过 addEventListener 绑定给真实元素的;
-      组件事件绑定是通过 Vue 自定义的$on 实现的。如果要在组件上使用原生事件，需要加.native 修饰符，这样就相当于在父组件中把子组件当做普通 html 标签，然后加上原生事件。
-      
-    - $on、$emit 是基于发布订阅模式的，维护一个事件中心，on 的时候将事件按名称存在事件中心里，称之为订阅者，然后 emit 将对应的事件进行发布，去执行事件中心里的对应的监听器
-
-(2)$refs 获取组件实例  (父组件访问子组件$refs)
-
-(3)envetBus 兄弟组件数据传递 这种情况下可以使用事件总线的方式
-
-(4)vuex 状态管理
-
-(5)父组件中通过 provide 来提供变量，然后在子组件中通过 inject 来注入变量;
-
-  provider/inject：简单的来说就是在父组件中通过provider来提供变量，然后在子组件中通过inject来注入变量;
-  需要注意的是这里不论子组件有多深，只要调用了inject那么就可以注入provider中的数据。而不是局限于只能从当前父组件的prop属性来获取数据。
-
-(6)$parent,$children 获取当前组件的父组件和当前组件的子组件
-  父组件访问子组件：使用$children;  this.$children: 可以拿到所有子组件数据(数组)；
-  子组件访问父组件：使用$parent;
-  子组件访问根组件：$root
-  
-(7)$attrs 和$listeners A->B->C。Vue 2.4 开始提供了$attrs 和$listeners 来解决这个问题
-  https://www.jb51.net/article/132371.htm
-  $attrs: 包含了父作用域中不被认为 (且不预期为) props 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 props 时，
-  这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=”$attrs” 传入内部组件——在创建更高层次的组件时非常有用。
-  $listeners: 包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=”$listeners” 传入内部组件——在创建更高层次的组件时非常有用。
-
-### 10、自定义指令(v-check, v-focus) 的方法有哪些? 它有哪些钩子函数? 还有哪些钩子函数参数
-
-- 全局定义指令：在 vue 对象的 directive 方法里面有两个参数, 一个是指令名称, 另一个是函数。
-- 组件内定义指令：directives
-- 钩子函数: bind(绑定事件出发)、inserted(节点插入时候触发)、update(组件内相关更新)
-- 钩子函数参数： el、binding
-
-### 11、vue 指令
-
-(image/vue内置指令.png)
-
-#### v-model
-  实现数据双向绑定；
-
-  原理：
-    v-model 只是语法糖而已
-    v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
-
-    text 和 textarea 元素使用 value property 和 input 事件；
-    checkbox 和 radio 使用 checked property 和 change 事件；
-    select 字段将 value 作为 prop 并将 change 作为事件。
-
-#### key值的作用
-
-- 为什么要在列表组件中写 key，其作用是什么？
-
-  key是给每一个vnode的唯一id，也是diff的一种优化策略，可以根据key，更准确， 更快的找到对应的vnode节点;
-  设置key能够大大减少对页面的DOM操作，提高了diff效率;
-
-vue 中 key 值的作用可以分为两种情况来考虑。
-
-第一种情况是 v-if 中使用 key。由于 Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。因此当我们使用 v-if 来实现元素切换的时候，如果切换前后含有相同类型的元素，那么这个元素就会被复用。如果是相同的 input 元素，那么切换前后用户的输入不会被清除掉，这样是不符合需求的。因此我们可以通过使用 key 来唯一的标识一个元素，这个情况下，使用 key 的元素不会被复用。这个时候 key 的作用是用来标识一个独立的元素。
-
-第二种情况是 v-for 中使用 key。用 v-for 更新已渲染过的元素列表时，它默认使用“就地复用”的策略。如果数据项的顺序发生了改变，Vue 不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处的每个元素。因此通过为每个列表项提供一个 key 值，来以便 Vue 跟踪元素的身份，从而高效的实现复用。这个时候 key 的作用是为了高效的更新渲染虚拟 DOM。
-
-- 
-1). react/vue中的key有什么作用？（key的内部原理是什么？）
-2). 为什么遍历列表时，key最好不要用index? 
-  1. 虚拟DOM中key的作用：
-      1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用。
-
-      2). 详细的说: 当状态中的数据发生变化时，react会根据【新数据】生成【新的虚拟DOM】, 
-                    随后React进行【新虚拟DOM】与【旧虚拟DOM】的diff比较，比较规则如下：
-
-              a. 旧虚拟DOM中找到了与新虚拟DOM相同的key：
-                    (1).若虚拟DOM中内容没变, 直接使用之前的真实DOM
-                    (2).若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM
-
-              b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
-                    根据数据创建新的真实DOM，随后渲染到到页面    
-  2. 用index作为key可能会引发的问题：
-            1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
-                    会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
-
-            2. 如果结构中还包含输入类的DOM：
-                    会产生错误DOM更新 ==> 界面有问题。
-                    
-            3. 注意！如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，
-              仅用于渲染列表用于展示，使用index作为key是没有问题的。
-  3. 开发中如何选择key?:
-            1.最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
-            2.如果确定只是简单的展示数据，用index也是可以的。
-### 12.diff算法
-  diff 是发生在虚拟 DOM 上的：新虚拟 DOM 和老虚拟 DOM 进行 diff （精细化比较），算出应该如何最小量更新，最后反映到真实的 DOM 上。
-
-  怎么实现 两颗新旧DOM树的对比 呢？这里就涉及到了 diff算法。常见的 diff算法如下：
-
-  tree diff / component diff / element diff 
-
- - tree diff：新旧DOM树，逐层对比的方式，就叫做 tree diff。每当我们从前到后，把所有层的节点对比完后，必然能够找到那些 需要被更新的元素。
-
- - component diff：在对比每一层的时候，组件之间的对比，叫做 component diff。当对比组件的时候，如果两个组件的类型相同，则暂时认为这个组件不需要被更新，如果组件的类型不同，则立即将旧组件移除，新建一个组件，替换到被移除的位置。
-
- - element diff：在组件中，每个元素之间也要进行对比，那么，元素级别的对比，叫做 element diff。
-
- - key：key这个属性，可以把 页面上的 DOM节点 和 虚拟DOM中的对象，做一层关联关系。
-
-#### h函数
-  h 函数用来产生虚拟节点（vnode），可以嵌套使用
-
-  h('a', { props: { href: 'http://www.atguigu.com' } }, '尚硅谷')
-  得到： { "sel": "a", "data": { "props": { "href": "http://www.atguigu.com" } }, "text": "尚硅谷" }
-  它表示的真正的 DOM 节点：<a href="http://www.atguigu.com">尚硅谷</a>
-
-  一个虚拟节点有哪些属性？
-    {
-      children: undefined, // 子节点，undefined表示没有子节点
-      data: {}, // 属性样式等
-      elm: undefined, // 该元素对应的真正的DOM节点，undefined表示它还没有上树
-      key: undefined, // 节点唯一标识
-      sel: 'div', // selector选择器 节点类型（现在它是一个div）
-      text: '我是一个盒子' // 文字
-    }
-
-
-### 14、vue项目结构及各部分的作用
-
-- main.ts: 
-    main.js主要是引入vue框架，根组件及路由设置，并且定义vue实例。
-
-    程序的入口；这里面调用了App这个组件，也就是说App组件对整个项目来说，为最上级的父组件。
-
-- App.vue: 
-    一个vue页面通常由三部分组成:模板(template)、js(script)、样式(style)
-
-    (1) template
-    其中模板只能包含一个父节点，<router-view/>为<router-view></router-view>的简写，是子路由视图，后面的路由页面都显示在此处。
-
-    (2) script
-    vue通常用es6来写，用export default导出，其下面可以包含数据data，生命周期(mounted等)，方法(methods)等。
-
-    (3) style
-    样式通过style标签<style></style>包裹，默认是影响全局的，如需定义作用域只在该组件下起作用，需在标签上加scoped，<style scoped></style>
-
-### 15、为什么data是一个函数？
-
-  组件中的 data 写成一个函数，数据以函数返回值形式定义，这样每复用一次组件，就会返回一份新的 data，
-  类似于给每个组件实例创建一个私有的数据空间，让各个组件实例维护各自的数据。
-  而单纯的写成对象形式，就使得所有组件实例共用了一份 data，就会造成一个变了全都会变的结果。
-
-### 16、v-if和v-show的区别
-
-v-if 在编译过程中会被转化成三元表达式,条件不满足时不渲染此节点。
-
-v-show 会被编译成指令，条件不满足时控制样式将对应节点隐藏 （display:none）。
-
-使用场景：
-
-  v-if 适用于在运行时很少改变条件，不需要频繁切换条件的场景
-
-  v-show 适用于需要非常频繁切换条件的场景
-
-- 为什么v-for v-if不能一起用？
-    v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
-    把v-for和v-if用到一个元素上，会带来性能的浪费；
-    为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
-
-### 17、computed 和 watch 的区别和运用的场景
-
-- 区别：
-
-  computed 是计算属性，依赖其他属性计算值，并且 computed 的值有缓存，只有当计算值变化才会返回内容，它可以设置 getter 和 setter。
-
-  watch 监听到值的变化就会执行回调，在回调中可以进行一些逻辑操作。
-
-- 运用场景
-
-  计算属性一般用在模板渲染中，某个值是依赖了其它的响应式对象甚至是计算属性计算而来；
-
-  侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑；
-
-（1）computed 是计算一个新的属性，并将该属性挂载到 Vue 实例上，而 watch 是监听已经存在且已挂载到 Vue 实例上的数据，所以用 watch 同样可以监听 computed 计算属性的变化。
-
-（2）computed 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 computed 属性，才会计算新的值。而 watch 则是当数据发生变化便会调用执行函数。
-
-（3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
-
-### 18、虚拟 DOM 是什么 有什么优缺点？
-
-由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
-Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。
-虚拟 DOM 本质就是用一个原生的 JS 对象去描述一个 DOM 节点，是对真实 DOM 的一层抽象。DOM 中的一切属性都在虚拟 DOM 中有对应的属性。
-
-优点：
-  保证性能下限： 框架的虚拟 DOM 需要适配任何上层 API 可能产生的操作，它的一些 DOM 操作的实现必须是普适的，所以它的性能并不是最优的；但是比起粗暴的 DOM 操作性能要好很多，因此框架的虚拟 DOM 至少可以保证在你不需要手动优化的情况下，依然可以提供还不错的性能，即保证性能的下限；
-  
-  无需手动操作 DOM： 我们不再需要手动去操作 DOM，只需要写好 View-Model 的代码逻辑，框架会根据虚拟 DOM 和 数据双向绑定，帮我们以可预期的方式更新视图，极大提高我们的开发效率；
-
-  跨平台： 虚拟 DOM 本质上是 JavaScript 对象,而 DOM 与平台强相关，相比之下虚拟 DOM 可以进行更方便地跨平台操作，例如服务器渲染、weex 开发等等。
-
-缺点:
-  无法进行极致优化： 虽然虚拟 DOM + 合理的优化，足以应对绝大部分应用的性能需求，但在一些性能要求极高的应用中虚拟 DOM 无法进行针对性的极致优化。
-
-  首次渲染大量 DOM 时，由于多了一层虚拟 DOM 的计算，会比 innerHTML 插入慢。
-
-#### 什么是 Virtual DOM？ 为什么 Virtual DOM 比原生 DOM 快？
-
-```
-我对 Virtual DOM 的理解是，
-
-首先对我们将要插入到文档中的 DOM 树结构进行分析，使用 js 对象将其表示出来，比如一个元素对象，包含 TagName、props 和 Children 这些属性。然后我们将这个 js 对象树给保存下来，最后再将 DOM 片段插入到文档中。
-
-当页面的状态发生改变，我们需要对页面的 DOM 的结构进行调整的时候，我们首先根据变更的状态，重新构建起一棵对象树，然后将这棵新的对象树和旧的对象树进行比较，记录下两棵树的的差异。
-
-最后将记录的有差异的地方应用到真正的 DOM 树中去，这样视图就更新了。
-
-我认为 Virtual DOM 这种方法对于我们需要有大量的 DOM 操作的时候，能够很好的提高我们的操作效率，通过在操作前确定需要做的最小修改，尽可能的减少 DOM 操作带来的重流和重绘的影响。
-其实 Virtual DOM 并不一定比我们真实的操作 DOM 要快，这种方法的目的是为了提高我们开发时的可维护性，在任意的情况下，都能保证一个尽量小的性能消耗去进行操作。
-```
-
-#### 如何比较两个 DOM 树的差异？
-
-```
-两个树的完全 diff 算法的时间复杂度为 O(n^3) ，但是在前端中，我们很少会跨层级的移动元素，所以我们只需要比较同一层级的元素进行比较，这样就可以将算法的时间复杂度降低为 O(n)。
-
-算法首先会对新旧两棵树进行一个深度优先的遍历，这样每个节点都会有一个序号。在深度遍历的时候，每遍历到一个节点，我们就将这个节点和新的树中的节点进行比较，如果有差异，则将这个差异记录到一个对象中。
-
-在对列表元素进行对比的时候，由于 TagName 是重复的，所以我们不能使用这个来对比。我们需要给每一个子节点加上一个 key，列表对比的时候使用 key 来进行比较，这样我们才能够复用老的 DOM 树上的节点。
-```
-
-### 19、 vue-router 路由钩子函数是什么？ 执行顺序是什么？
 
 #### 路由钩子函数
 路由钩子的执行流程, 钩子函数种类有:全局守卫、路由守卫、组件守卫。
@@ -849,6 +610,333 @@ const Foo = {
   - 调用全局的 afterEach 钩子。
   - 触发 DOM 更新。
   - 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+
+#### $route 和 $router 的区别？
+```
+$route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
+
+$router 是“路由实例”对象，包括了路由的跳转方法，钩子函数等。
+```
+
+### 6、路由之间跳转？跳转时传递参数？
+
+1. 路由跳转的方式
+
+- 声明式（标签跳转） `<router-link :to="index">`
+- 编程式（ js 跳转） `router.push('index')`
+
+2. 传递参数的两种方式
+
+- params
+  this.$router.push({ name: 'news', params: { userId: 123 }})
+- query 查询参数
+  <router-link :to="{ path: '/news', query: { userId: 1111}}">click to news page</router-link>
+
+总结：
+  1. 命名路由搭配params，刷新页面参数会丢失
+  2. 查询参数搭配query，刷新页面数据不会丢失
+
+### 7、懒加载（按需加载路由）
+
+webpack 中提供了 require.ensure()来实现按需加载。以前引入路由是通过 import 这样的方式引入，改为 const 定义的方式进行引入。
+
+- 不进行页面按需加载引入方式：
+
+```js
+import  home   from '../../common/home.vue'
+```
+
+- 进行页面按需加载的引入方式：
+
+```js
+const  home = r => require.ensure( [], () => r (require('../../common/home.vue')))
+```
+
+### 8、Vue组件通信
+
+(1)props 和$emit 父组件向子组件传递数据是通过 prop 传递的，子组件传递数据给父组件是通过$emit 触发事件来做到的;
+    父组件 -> 子组件： props
+      单向数据流：所有的 prop 都使得
+      其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外变更父级组件的状态，从而导致你的应用的数据流向难以理解。
+    子组件 -> 父组件： emit
+    
+    事件绑定： emit/on:
+      原生事件绑定是通过 addEventListener 绑定给真实元素的;
+      组件事件绑定是通过 Vue 自定义的$on 实现的。如果要在组件上使用原生事件，需要加.native 修饰符，这样就相当于在父组件中把子组件当做普通 html 标签，然后加上原生事件。
+      
+    - $on、$emit 是基于发布订阅模式的，维护一个事件中心，on 的时候将事件按名称存在事件中心里，称之为订阅者，然后 emit 将对应的事件进行发布，去执行事件中心里的对应的监听器
+
+(2)$refs 获取组件实例  (父组件访问子组件$refs)
+
+(3)envetBus 兄弟组件数据传递 这种情况下可以使用事件总线的方式
+
+(4)vuex 状态管理
+
+(5)父组件中通过 provide 来提供变量，然后在子组件中通过 inject 来注入变量;
+
+  provider/inject：简单的来说就是在父组件中通过provider来提供变量，然后在子组件中通过inject来注入变量;
+  需要注意的是这里不论子组件有多深，只要调用了inject那么就可以注入provider中的数据。而不是局限于只能从当前父组件的prop属性来获取数据。
+
+(6)$parent,$children 获取当前组件的父组件和当前组件的子组件
+  父组件访问子组件：使用$children;  this.$children: 可以拿到所有子组件数据(数组)；
+  子组件访问父组件：使用$parent;
+  子组件访问根组件：$root
+  
+(7)$attrs 和$listeners A->B->C。Vue 2.4 开始提供了$attrs 和$listeners 来解决这个问题
+  https://www.jb51.net/article/132371.htm
+  $attrs: 包含了父作用域中不被认为 (且不预期为) props 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 props 时，
+  这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=”$attrs” 传入内部组件——在创建更高层次的组件时非常有用。
+  $listeners: 包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=”$listeners” 传入内部组件——在创建更高层次的组件时非常有用。
+
+
+### 9、Vue.mixin 混入
+
+- 概念：
+  混入 (mixin) 提供了一种非常灵活的方式，来分发 Vue 组件中的可复用功能。一个混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被“混合”进入该组件本身的选项。
+
+- eg.
+
+  ```javascript
+    // 定义一个混入对象
+    var myMixin = {
+      created: function () {
+        this.hello()
+      },
+      methods: {
+        hello: function () {
+          console.log('hello from mixin!')
+        }
+      }
+    }
+
+    // 定义一个使用混入对象的组件
+    var Component = Vue.extend({
+      mixins: [myMixin]
+    })
+
+    var component = new Component() // => "hello from mixin!"
+  ```
+
+- vue 中 mixin 和 mixins 区别？
+
+  mixin 用于全局混入，会影响到每个组件实例。
+  mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
+
+- 选项合并：
+
+  当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。
+  1）比如，数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。
+  2）同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。
+
+
+### 10、自定义指令(v-check, v-focus) 的方法有哪些? 它有哪些钩子函数? 还有哪些钩子函数参数
+
+- 全局定义指令：在 vue 对象的 directive 方法里面有两个参数, 一个是指令名称, 另一个是函数。
+- 组件内定义指令：directives
+- 钩子函数: bind(绑定事件出发)、inserted(节点插入时候触发)、update(组件内相关更新)
+- 钩子函数参数： el、binding
+
+### 11、vue 指令
+
+(image/vue内置指令.png)
+
+#### v-model
+  实现数据双向绑定；
+
+  原理：
+    v-model 只是语法糖而已
+    v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+
+    text 和 textarea 元素使用 value property 和 input 事件；
+    checkbox 和 radio 使用 checked property 和 change 事件；
+    select 字段将 value 作为 prop 并将 change 作为事件。
+
+#### key值的作用
+
+- 为什么要在列表组件中写 key，其作用是什么？
+
+  key是给每一个vnode的唯一id，也是diff的一种优化策略，可以根据key，更准确， 更快的找到对应的vnode节点;
+  设置key能够大大减少对页面的DOM操作，提高了diff效率;
+
+vue 中 key 值的作用可以分为两种情况来考虑。
+
+第一种情况是 v-if 中使用 key。由于 Vue 会尽可能高效地渲染元素，通常会复用已有元素而不是从头开始渲染。因此当我们使用 v-if 来实现元素切换的时候，如果切换前后含有相同类型的元素，那么这个元素就会被复用。如果是相同的 input 元素，那么切换前后用户的输入不会被清除掉，这样是不符合需求的。因此我们可以通过使用 key 来唯一的标识一个元素，这个情况下，使用 key 的元素不会被复用。这个时候 key 的作用是用来标识一个独立的元素。
+
+第二种情况是 v-for 中使用 key。用 v-for 更新已渲染过的元素列表时，它默认使用“就地复用”的策略。如果数据项的顺序发生了改变，Vue 不会移动 DOM 元素来匹配数据项的顺序，而是简单复用此处的每个元素。因此通过为每个列表项提供一个 key 值，来以便 Vue 跟踪元素的身份，从而高效的实现复用。这个时候 key 的作用是为了高效的更新渲染虚拟 DOM。
+
+- 
+1). react/vue中的key有什么作用？（key的内部原理是什么？）
+2). 为什么遍历列表时，key最好不要用index? 
+  1. 虚拟DOM中key的作用：
+      1). 简单的说: key是虚拟DOM对象的标识, 在更新显示时key起着极其重要的作用。
+
+      2). 详细的说: 当状态中的数据发生变化时，react会根据【新数据】生成【新的虚拟DOM】, 
+                    随后React进行【新虚拟DOM】与【旧虚拟DOM】的diff比较，比较规则如下：
+
+              a. 旧虚拟DOM中找到了与新虚拟DOM相同的key：
+                    (1).若虚拟DOM中内容没变, 直接使用之前的真实DOM
+                    (2).若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM
+
+              b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
+                    根据数据创建新的真实DOM，随后渲染到到页面    
+  2. 用index作为key可能会引发的问题：
+            1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
+                    会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
+
+            2. 如果结构中还包含输入类的DOM：
+                    会产生错误DOM更新 ==> 界面有问题。
+                    
+            3. 注意！如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，
+              仅用于渲染列表用于展示，使用index作为key是没有问题的。
+  3. 开发中如何选择key?:
+            1.最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
+            2.如果确定只是简单的展示数据，用index也是可以的。
+
+### 12.diff算法
+  diff 是发生在虚拟 DOM 上的：新虚拟 DOM 和老虚拟 DOM 进行 diff （精细化比较），算出应该如何最小量更新，最后反映到真实的 DOM 上。
+
+  怎么实现 两颗新旧DOM树的对比 呢？这里就涉及到了 diff算法。常见的 diff算法如下：
+
+  tree diff / component diff / element diff 
+
+ - tree diff：新旧DOM树，逐层对比的方式，就叫做 tree diff。每当我们从前到后，把所有层的节点对比完后，必然能够找到那些 需要被更新的元素。
+
+ - component diff：在对比每一层的时候，组件之间的对比，叫做 component diff。当对比组件的时候，如果两个组件的类型相同，则暂时认为这个组件不需要被更新，如果组件的类型不同，则立即将旧组件移除，新建一个组件，替换到被移除的位置。
+
+ - element diff：在组件中，每个元素之间也要进行对比，那么，元素级别的对比，叫做 element diff。
+
+ - key：key这个属性，可以把 页面上的 DOM节点 和 虚拟DOM中的对象，做一层关联关系。
+
+#### h函数
+  h 函数用来产生虚拟节点（vnode），可以嵌套使用
+
+  h('a', { props: { href: 'http://www.atguigu.com' } }, '尚硅谷')
+  得到： { "sel": "a", "data": { "props": { "href": "http://www.atguigu.com" } }, "text": "尚硅谷" }
+  它表示的真正的 DOM 节点：<a href="http://www.atguigu.com">尚硅谷</a>
+
+  一个虚拟节点有哪些属性？
+    {
+      children: undefined, // 子节点，undefined表示没有子节点
+      data: {}, // 属性样式等
+      elm: undefined, // 该元素对应的真正的DOM节点，undefined表示它还没有上树
+      key: undefined, // 节点唯一标识
+      sel: 'div', // selector选择器 节点类型（现在它是一个div）
+      text: '我是一个盒子' // 文字
+    }
+
+
+### 14、Vue.component()、Vue.use()、this.$xxx()
+
+- Vue.component()
+  Vue.component()方法注册全局组件。
+    第一个参数是自定义元素名称，也就是将来在别的组件中使用这个组件的标签名称。
+    第二个参数是将要注册的Vue组件。
+  ```
+    import Vue from 'vue';
+    // 引入loading组件 
+    import Loading from './loading.vue';
+    // 将loading注册为全局组件，在别的组件中通过<loading>标签使用Loading组件
+    Vue.component('loading', Loading);
+  ```
+
+- Vue.use()
+  Vue.use注册插件,这接收一个参数。这个参数必须具有install方法。Vue.use函数内部会调用参数的install方法。
+
+  如果插件没有被注册过，那么注册成功之后会给插件添加一个installed的属性值为true。Vue.use方法内部会检测插件的installed属性，从而避免重复注册插件。
+  插件的install方法将接收两个参数，第一个是参数是Vue，第二个参数是配置项options。
+  在install方法内部可以添加全局方法或者属性
+
+- this.$xxx():
+  将Hello方法挂载到Vue的prototype上,vue组件中就可以this.$hello('hello world')
+    import Vue from 'vue';
+    import Hello from './hello.js';
+    Vue.prototype.$hello = Hello;
+    
+### 15、为什么data是一个函数？
+
+  组件中的 data 写成一个函数，数据以函数返回值形式定义，这样每复用一次组件，就会返回一份新的 data，
+  类似于给每个组件实例创建一个私有的数据空间，让各个组件实例维护各自的数据。
+  而单纯的写成对象形式，就使得所有组件实例共用了一份 data，就会造成一个变了全都会变的结果。
+
+### 16、v-if和v-show的区别
+
+v-if 在编译过程中会被转化成三元表达式,条件不满足时不渲染此节点。
+
+v-show 会被编译成指令，条件不满足时控制样式将对应节点隐藏 （display:none）。
+
+使用场景：
+
+  v-if 适用于在运行时很少改变条件，不需要频繁切换条件的场景
+
+  v-show 适用于需要非常频繁切换条件的场景
+
+- 为什么v-for v-if不能一起用？
+    v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
+    把v-for和v-if用到一个元素上，会带来性能的浪费；
+    为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
+
+### 17、computed 和 watch 的区别和运用的场景
+
+- 区别：
+
+  computed 是计算属性，依赖其他属性计算值，并且 computed 的值有缓存，只有当计算值变化才会返回内容，它可以设置 getter 和 setter。
+
+  watch 监听到值的变化就会执行回调，在回调中可以进行一些逻辑操作。
+
+- 运用场景
+
+  计算属性一般用在模板渲染中，某个值是依赖了其它的响应式对象甚至是计算属性计算而来；
+
+  侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑；
+
+（1）computed 是计算一个新的属性，并将该属性挂载到 Vue 实例上，而 watch 是监听已经存在且已挂载到 Vue 实例上的数据，所以用 watch 同样可以监听 computed 计算属性的变化。
+
+（2）computed 本质是一个惰性求值的观察者，具有缓存性，只有当依赖变化后，第一次访问 computed 属性，才会计算新的值。而 watch 则是当数据发生变化便会调用执行函数。
+
+（3）从使用场景上说，computed 适用一个数据被多个数据影响，而 watch 适用一个数据影响多个数据。
+
+### 18、虚拟 DOM 是什么 有什么优缺点？
+
+由于在浏览器中操作 DOM 是很昂贵的。频繁的操作 DOM，会产生一定的性能问题。这就是虚拟 Dom 的产生原因。
+Vue2 的 Virtual DOM 借鉴了开源库 snabbdom 的实现。
+虚拟 DOM 本质就是用一个原生的 JS 对象去描述一个 DOM 节点，是对真实 DOM 的一层抽象。DOM 中的一切属性都在虚拟 DOM 中有对应的属性。
+
+优点：
+  保证性能下限： 框架的虚拟 DOM 需要适配任何上层 API 可能产生的操作，它的一些 DOM 操作的实现必须是普适的，所以它的性能并不是最优的；但是比起粗暴的 DOM 操作性能要好很多，因此框架的虚拟 DOM 至少可以保证在你不需要手动优化的情况下，依然可以提供还不错的性能，即保证性能的下限；
+  
+  无需手动操作 DOM： 我们不再需要手动去操作 DOM，只需要写好 View-Model 的代码逻辑，框架会根据虚拟 DOM 和 数据双向绑定，帮我们以可预期的方式更新视图，极大提高我们的开发效率；
+
+  跨平台： 虚拟 DOM 本质上是 JavaScript 对象,而 DOM 与平台强相关，相比之下虚拟 DOM 可以进行更方便地跨平台操作，例如服务器渲染、weex 开发等等。
+
+缺点:
+  无法进行极致优化： 虽然虚拟 DOM + 合理的优化，足以应对绝大部分应用的性能需求，但在一些性能要求极高的应用中虚拟 DOM 无法进行针对性的极致优化。
+
+  首次渲染大量 DOM 时，由于多了一层虚拟 DOM 的计算，会比 innerHTML 插入慢。
+
+#### 什么是 Virtual DOM？ 为什么 Virtual DOM 比原生 DOM 快？
+
+```
+我对 Virtual DOM 的理解是，
+
+首先对我们将要插入到文档中的 DOM 树结构进行分析，使用 js 对象将其表示出来，比如一个元素对象，包含 TagName、props 和 Children 这些属性。然后我们将这个 js 对象树给保存下来，最后再将 DOM 片段插入到文档中。
+
+当页面的状态发生改变，我们需要对页面的 DOM 的结构进行调整的时候，我们首先根据变更的状态，重新构建起一棵对象树，然后将这棵新的对象树和旧的对象树进行比较，记录下两棵树的的差异。
+
+最后将记录的有差异的地方应用到真正的 DOM 树中去，这样视图就更新了。
+
+我认为 Virtual DOM 这种方法对于我们需要有大量的 DOM 操作的时候，能够很好的提高我们的操作效率，通过在操作前确定需要做的最小修改，尽可能的减少 DOM 操作带来的重流和重绘的影响。
+其实 Virtual DOM 并不一定比我们真实的操作 DOM 要快，这种方法的目的是为了提高我们开发时的可维护性，在任意的情况下，都能保证一个尽量小的性能消耗去进行操作。
+```
+
+#### 如何比较两个 DOM 树的差异？
+
+```
+两个树的完全 diff 算法的时间复杂度为 O(n^3) ，但是在前端中，我们很少会跨层级的移动元素，所以我们只需要比较同一层级的元素进行比较，这样就可以将算法的时间复杂度降低为 O(n)。
+
+算法首先会对新旧两棵树进行一个深度优先的遍历，这样每个节点都会有一个序号。在深度遍历的时候，每遍历到一个节点，我们就将这个节点和新的树中的节点进行比较，如果有差异，则将这个差异记录到一个对象中。
+
+在对列表元素进行对比的时候，由于 TagName 是重复的，所以我们不能使用这个来对比。我们需要给每一个子节点加上一个 key，列表对比的时候使用 key 来进行比较，这样我们才能够复用老的 DOM 树上的节点。
+```
 
 ### 20、Vue源码
 
@@ -967,12 +1055,7 @@ h函数
 #### 5) vue源码解析之mustache模板引擎
 
 #### 6）vue router 源码
-### 21、$route 和 $router 的区别？
-```
-$route 是“路由信息对象”，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
 
-$router 是“路由实例”对象，包括了路由的跳转方法，钩子函数等。
-```
 
 ### 22、 vue 常用的修饰符？
 
@@ -982,18 +1065,4 @@ $router 是“路由实例”对象，包括了路由的跳转方法，钩子函
   .self: 当事件发生在该元素本身而不是子元素的时候会触发；
 ```
 
-### 24、vue单页应用 SPA
 
-vue 单页应用（spa）前端路由实现原理：
-  - window.history：
-      history.pushState
-      history.replaceState
-      popstate
-  - location.hash
-      window 对象中有一个事件是 onhashchange，以下几种情况都会触发这个事件：
-        直接更改浏览器地址，在最后面增加或改变#hash；
-        通过改变location.href或location.hash的值；
-        通过触发点击带锚点的链接；
-        浏览器前进后退可能导致hash的变化，前提是两个网页地址中的hash值不同；
-  
-vue router两种方式： hash history
