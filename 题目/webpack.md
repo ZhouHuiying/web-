@@ -44,12 +44,15 @@ Webpack 具有四个核心的概念，分别是 Entry（入口）、Output（输
     主要功能：
       1. 为静态文件提供http服务
       2. 自动刷新新热替换（HMR）
+
   2）mini-css-extract-plugin
     将css单独打包成一个文件的插件，它为每个包含css的js文件都创建一个css文件。它支持css和sourceMaps的按需加载。
+
   3）HMR
     当对代码进行修改并保存后，webpack 将对代码重新打包，并将新的模块发送到浏览器端，浏览器通过新的模块替换老的模块，这样在不刷新浏览器的前提下就能够对应用进行更新，这就是HMR。
     webpack 可以通过配置 webpack.HotModuleReplacementPlugin 插件来开启全局的 HMR 能力。
     开启后 bundle 文件会变大一些，因为它加入了一个小型的 HMR 运行时（runtime），当你的应用在运行的时候，webpack 监听到文件变更并重新打包模块时，HMR 会判断这些模块是否接受 update，若允许，则发信号通知应用进行热替换。
+
   4）其他
     1.ProvidePlugin：自动加载模块，代替require和import
     2.html-webpack-plugin可以根据模板自动生成html代码，并自动引用css和js文件
@@ -61,6 +64,9 @@ Webpack 具有四个核心的概念，分别是 Entry（入口）、Output（输
     8.compression-webpack-plugin 生产环境可采用gzip压缩JS和CSS
     9.happypack：通过多进程模型，来加速代码构建
     10.clean-wenpack-plugin 清理每次打包下没有使用的文件
+    
+  5）SourceMap：
+    SourceMap是一种映射关系。当项目运行后，如果出现错误，错误信息只能定位到打包后文件中错误的位置。如果想查看在源文件中错误的位置，则需要使用映射关系，找到对应的位置。
 
 - mode
   webpack5提供了模式选择，包括开发模式，生产模式和空模式；
@@ -93,16 +99,20 @@ Webpack 具有四个核心的概念，分别是 Entry（入口）、Output（输
 
 ### 2. webpack里面的插件是怎么实现的？-  Compiler（编译器） 和 Compilation（编译方法）
 
+https://mp.weixin.qq.com/s/9Dueq-emxjofmHGoRUS7MA
+
 在开发 Plugin 时最常用的两个对象就是 Compiler 和 Compilation，它们是 Plugin 和 Webpack 之间的桥梁。
 
 Compiler 和 Compilation 的含义如下：
+
   - Compiler：对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例；
+
   - Compilation：对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象。
 
 Compiler 和 Compilation 的区别在于：
   Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
 
-### 3. webpack打包过程？
+### 3. webpack打包过程？（webpack编译过程）
 
 初始化阶段，编译阶段，输出阶段；
 

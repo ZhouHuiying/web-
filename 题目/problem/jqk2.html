@@ -67,7 +67,6 @@
             if (timer) clearInterval(timer)
             timer = setTimeout(() => {
                 timer = null
-
                 fn.apply(this, args)
             }, delay || 400)
         }

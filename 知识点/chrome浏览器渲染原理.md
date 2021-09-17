@@ -1,4 +1,8 @@
-### 浏览器渲染原理：
+### 浏览器渲染原理
+
+https://www.cnblogs.com/codexlx/p/13993356.html
+
+
 [链接](https://segmentfault.com/a/1190000038468748#shareToWeibo)
 首先，JavaScript引擎是基于事件驱动单线程执行的，渲染线程负责渲染浏览器界面，
 但是GUI渲染线程与JS引擎是互斥的，当JS引擎执行时GUI线程会被挂起，GUI的更新也会被保存在—个队列中，等到JS引擎空闲时才有机会被执行。

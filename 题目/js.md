@@ -3118,6 +3118,30 @@ Object.is 应被认为有其特殊的用途，而不能用它认为它比其它�
 使用 Object.is 来进行相等判断时，一般情况下和三等号的判断相同，它处理了一些特殊的情况，比如 -0 和 +0 不再相等，两个 NaN 认定为是相等的。
 ```
 
+#### url 编码和解码
+
+URI (Uniform ResourceIdentifiers,通用资源标识符)进行编码，以便发送给浏览器。有效的URI中不能包含某些字符，例如空格。而这URI编码方法就可以对URI进行编码，它们用特殊的UTF-8编码替换所有无效的字符，从而让浏览器能够接受和理解。
+
+```javascript
+    encodeURIComponent();   //把字符串作为 URI 组件进行编码
+    decodeURIComponent();   //把字符串作为 URI 组件进行解码
+```
+
+举例：
+
+```javascript
+    var url = "http://www.cnblogs.com/smyhvae/";
+
+    var str = encodeURIComponent(url);
+    console.log(str);                           //打印url的编码
+    console.log(decodeURIComponent(str));       //对url进行编码后，再解码，还原为url
+```
+
+打印结果：
+
+![](http://img.smyhvae.com/20180202_1432.png)
+
+
 #### 93. escape,encodeURI,encodeURIComponent 有什么区别？
 
 相关知识点：
@@ -3136,9 +3160,35 @@ encodeURIComponent 是对 URI 的组成部分进行转义，所以一些特殊�
 
 escape 和 encodeURI 的作用相同，不过它们对于 unicode 编码为 0xff 之外字符的时候会有区别，escape 是直接在字符的 unicode 编码前加上 %u，而 encodeURI 首先会将字符转换为 UTF-8 的格式，再在每个字节前加上 %。
 ```
+#### escape,encodeURI,encodeURIComponent 有什么区别？
 
-详细资料可以参考：
-[《escape,encodeURI,encodeURIComponent 有什么区别?》](https://www.zhihu.com/question/21861899)
+https://segmentfault.com/a/1190000039764369
+
+- 安全字符不同
+
+下面列出了这三个函数的安全字符（即函数不会对这些字符进行编码）
+  escape（69个）：*/@+-._0-9a-zA-Z
+  encodeURI（82个）：!#$&'()*+,/:;=?@-._~0-9a-zA-Z
+  encodeURIComponent（71个）：!'()*-._~0-9a-zA-Z
+
+- 兼容性不同
+
+  escape函数是从Javascript 1.0的时候就存在了，其他两个函数是在Javascript 1.5才引入的。但是由于Javascript 1.5已经非常普及了，所以实际上使用encodeURI和encodeURIComponent并不会有什么兼容性问题。
+
+- 对Unicode字符的编码方式不同
+
+这三个函数对于ASCII字符的编码方式相同，均是使用百分号+两位十六进制字符来表示。但是对于Unicode字符，escape的编码方式是%uxxxx，其中的xxxx是用来表示unicode字符的4位十六进制字符。这种方式已经被ECMAScript v3 已从标准中删除了 unescape() 函数，并反对使用它，因此应该用 decodeURI() 和 decodeURIComponent() 取而代之。encodeURI和encodeURIComponent则使用UTF-8对非ASCII字符进行编码，然后再进行百分号编码。这是RFC推荐的。因此建议尽可能的使用这两个函数替代escape进行编码。
+
+- 适用场合不同
+
+  1. encodeURI被用作对一个完整的URI进行编码。
+
+  2. encodeURIComponent被用作对URI的一个组件进行编码。从上面提到的安全字符范围表格来看，我们会发现，encodeURIComponent编码的字符范围要比encodeURI的大。
+
+  3. 我们上面提到过，保留字符一般是用来分隔URI组件（一个URI可以被切割成多个组件，参考预备知识一节）或者子组件（如URI中查询参数的分隔符），如：号用于分隔scheme和主机，?号用于分隔主机和路径。
+    3.1 由于encodeURI操纵的对象是一个完整的的URI，这些字符在URI中本来就有特殊用途，因此这些保留字符不会被encodeURI编码，否则意义就变了。
+    3.2 组件内部有自己的数据表示格式，但是这些数据内部不能包含有分隔组件的保留字符，否则就会导致整个URI中组件的分隔混乱。因此对于单个组件使用encodeURIComponent。
+
 
 #### 94. Unicode 和 UTF-8 之间的关系？
 
@@ -4212,10 +4262,8 @@ post 不同，post 做的一般是修改和删除的工作，所以必须与数�
 #### 124. mouseover 和 mouseenter 的区别？
 
 ```
-
 mouseover：当鼠标移入元素或其子元素都会触发事件，所以有一个重复触发，冒泡的过程。对应的移除事件是mouseout
 mouseenter：当鼠标移除元素本身（不包含元素的子元素）会触发事件，也就是不会冒泡，对应的移除事件是mouseleave
-
 
 当鼠标移动到元素上时就会触发 mouseenter 事件，类似 mouseover，它们两者之间的差别是 mouseenter 不会冒泡。
 由于 mouseenter 不支持事件冒泡，导致在一个元素的子元素上进入或离开的时候会触发其 mouseover 和 mouseout 事件，但是却不会触发 mouseenter 和 mouseleave 事件。
