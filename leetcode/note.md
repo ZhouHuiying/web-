@@ -81,6 +81,73 @@
   
   回溯法写法比较统一，就是循环对所有数据执行入栈，递归，然后出栈。
 
+  回溯法解决的问题：  回溯 - 递归
+    1.递归的下面就是回溯的过程
+    2.回溯法是一个 纯暴力的 搜索
+    3.回溯法解决的问题：
+      3.1组合 如：1234  两两组合
+      3.2切割问题 如：一个字符串有多少个切割方式 ，或者切割出来是回文
+      3.3子集 ： 1 2 3 4  的子集
+      3.4排列问题（顺序）
+      3.5棋盘问题：n皇后  解数独
+    4.回溯可抽象成树形结构
+    5.void  backtracking(){
+      if(终止条件)	{
+        收集结果 
+        return
+      }
+    for(集合的元素集，类似子节点的个数)
+      {
+        处理结点
+        递归函数；
+        回溯操作
+      （撤销处理结点12， 2撤销 ，13 撤销3， 14）
+      }
+    }
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+    // 保存结果数组，保存每个路径（排列）
+    const result = []
+    // 调用回溯函数，传入参数
+    backtracking(nums, nums.length, [], [])
+    // 返回结果数组
+    return result
+
+
+    // 定义回溯递归函数，传入数组，长度，节点是否被使用过的数组
+    // used 用来标记节点是否被用过 path 用来存储路径，定义为一个栈
+    function backtracking(nums, len, used, path){
+    	// 递归出口
+        // 如果到达叶子节点，将路径推入结果数组，并返回
+        if(path.length === len) {
+            result.push([...path])
+            return
+        }
+        // 遍历候选字符
+        for(let i = 0; i < len; i++){
+            // 使用过就下一轮循环
+            if(!used[i]){
+            	// undefind和fasle都会进来
+				// 这里说明这个数还没有被使用，入栈path
+				path.push(nums[i])
+				// 标记这个数被使用过了
+				used[i] = true
+				// 开始进行递归
+				backtracking(nums, len, used, path)
+				// 回溯【状态重置】撤销之前的操作
+				path.pop()
+				used[i] = false
+			}
+        }
+    }
+};
+````
+
 set、map、hashMap、
   
 ### 动态规划DP 

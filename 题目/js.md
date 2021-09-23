@@ -113,8 +113,6 @@
 - [107. SQL 注入攻击？](#107-sql-注入攻击)
 - [108. 什么是 MVVM？比之 MVC 有什么区别？什么又是 MVP ？](#108-什么是-mvvm比之-mvc-有什么区别什么又是-mvp-)
 - [109. vue 双向数据绑定原理？](#109-vue-双向数据绑定原理)
-- [110. Object.defineProperty 介绍？](#110-objectdefineproperty-介绍)
-- [111. 使用 Object.defineProperty() 来进行数据劫持有什么缺点？](#111-使用-objectdefineproperty-来进行数据劫持有什么缺点)
 - [112. 什么是 Virtual DOM？为什么 Virtual DOM 比原生 DOM 快？](#112-什么是-virtual-dom为什么-virtual-dom-比原生-dom-快)
 - [113. 如何比较两个 DOM 树的差异？](#113-如何比较两个-dom-树的差异)
 - [115. 谈谈你对 webpack 的看法](#115-谈谈你对-webpack-的看法)
@@ -3347,6 +3345,8 @@ function deepCopy(object) {
 
 ```
 浅拷贝指的是将一个对象的属性值复制到另一个对象，如果有的属性的值为引用类型的话，那么会将这个引用的地址复制给对象，因此两个对象会有同一个引用类型的引用。浅拷贝可以使用 Object.assign 和展开运算符来实现。
+
+obj2 = Object.assgin(obj2, obj1);
 
 深拷贝相对浅拷贝而言，如果遇到属性值为引用类型的时候，它新建一个引用类型并将对应的值复制给它，因此对象获得的一个新的引用类型而不是一个原有类型的引用。深拷贝对于一些对象可以使用 JSON 的两个函数来实现，但是由于 JSON 的对象格式比 js 的对象格式更加严格，所以如果属性值里边出现函数或者 Symbol 类型的值时，会转换失败。
 ```

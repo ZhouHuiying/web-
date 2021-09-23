@@ -157,7 +157,7 @@ babel的配置文件 .babelrc 主要有两个配置：
 #### babel是如何把 es6代码转换成 es5代码的？
 
 babel将es6代码转换成es5，主要有三个阶段；
-  1. 【解析Parse】把es6代码，通过babylon解析成，AST语法树，即词法分析与语法分析的过程 
+  1. 【解析Parse】把es6代码，通过babylon解析成，AST抽象语法树，即词法分析与语法分析的过程 
   2. 【转换Transform】通过babel-traverse plugin 对AST树进行遍历转译，在此过程中进行添加/更新/删除等操作，生成新的AST
   3. 【生成Generate】通过 babel-generator，将变换后的AST再转成es5代码
 
