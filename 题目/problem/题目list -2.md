@@ -85,6 +85,26 @@ css3兼容性问题
 es6 -> es5 方法 - babel
 TCP三次连接 四次握手断开连接
 
+### 9.25 有赞一面
 
-
+两道编程题
+如何做样式隔离？
+BFC，哪些属性可以设置BFC
+两个div margin都是10，他们之间的间距是多少，为什么？
+JS基础数据类型
+如何判断数据类型
+instanceof原理
+Object.prototype.toString.call( [1,2,3] ); 如何调用？
+apply call bind
+vue的data为什么是一个函数
+props data computed顺序
+vue响应式原理，如何发布依赖，什么是订阅者发布者
+数组响应式怎么实现，改写了哪些方法，了解他们怎么改写的
+组件之间怎么传值
+前端怎么管理登录态
+cookie localstorage sessionstorage 区别 使用场景
+cookie怎么设置cookie
+跨域问题解决办法
+npm规范 版本号 了解嘛？
+vuerouter原理
 
