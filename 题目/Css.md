@@ -603,7 +603,7 @@ css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最
   - 新增了一些选择器；（:not(.input)：所有class不是“input”的节点）
   - 新样式：
       边框：border-radius; box-shadow; border-image;
-      背景：background-clip; background-origin; background-size; background-break;
+      背景：background-clip; background-origin;  background-size; background-break;
       文字 ：word-wrap; text-overflow; 文字特效text-shadow; 文字渲染 text-decoration;
       颜色：rgba; hsla;
   - transition 过渡
@@ -1098,7 +1098,7 @@ margin重叠指的是在垂直方向上，两个相邻元素的margin发生重�
 
 第四种情况，是没有内容的元素，自身的margin-top和margin-bottom发生的重叠。我们可以通过为其设置border、pa
 dding或者高度来解决这个问题。
-``` 
+```  
 
 #### 27.对 BFC 规范（块级格式化上下文：block formatting context）的理解？
 
@@ -1134,10 +1134,6 @@ BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么�
 一般来说根元素是一个BFC区域，浮动和绝对定位的元素也会形成BFC，display属性的值为inline-block、flex这些
 属性时也会创建BFC。还有就是元素的overflow的值不为visible时都会创建BFC。
 ```
-
-详细资料可以参考：
-[《深入理解 BFC 和 MarginCollapse》](https://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html)
-[《前端面试题-BFC（块格式化上下文）》](https://segmentfault.com/a/1190000013647777)
 
 #### BFC的特性
   

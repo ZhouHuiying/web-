@@ -411,7 +411,7 @@ vue 单页应用（spa）前端路由实现原理：
   在vue-router中是通过mode这一参数控制路由的实现模式的：
     const router = new VueRouter({
       mode: 'history',
-      routes: [...]
+      routes: [...]  
     })
 
   1. new VueRouter实例的时候可以传入mode history，根据mode确定history实际的类并实例化；
@@ -419,7 +419,7 @@ vue 单页应用（spa）前端路由实现原理：
   2. 在初始化对应的history之前，会对mode做一些校验：若浏览器不支持HTML5History方式（通过supportsPushState变量判断），则mode强制设为'hash'；若不是在浏览器环境下运行，则mode强制设为'abstract'；
 
   3. VueRouter类中的onReady(), push()等方法只是一个代理，实际是调用的具体history对象的对应方法，在init()方法中初始化时，也是根据history对象具体的类别执行不同操作；
-
+ 
   在浏览器环境下的两种方式，分别就是在HTML5History，HashHistory两个类中实现的。他们都定义在src/history文件夹下，继承自同目录下base.js文件中定义的History类。History中定义的是公用和基础的方法
 
 #### HashHistory

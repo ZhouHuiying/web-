@@ -482,7 +482,7 @@ https://www.cnblogs.com/binguo666/p/10928907.html
       用于媒介回放的 video 和 audio 元素;
 
       语义化更好的内容元素，比如 article、footer、header、nav、section aside dialog 
-
+       
       表单控件：
          html5修改一些新的input输入特性，改善更好的输入控制和验证:
             calendar、date、time、email、url、search color month week number range;
