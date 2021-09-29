@@ -71,7 +71,8 @@ errorCaptured	   onErrorCaptured
 renderTracked	   onRenderTracked
 renderTriggered	 onRenderTriggered
 
-- 因为 setup 是围绕 beforeCreate 和 created 生命周期钩子运行的，所以不需要显式地定义它们。换句话说，在这些钩子中编写的任何代码都应该直接在 setup 函数中编写。
+- 因为 setup 是围绕 beforeCreate 和 created 
+钩子运行的，所以不需要显式地定义它们。换句话说，在这些钩子中编写的任何代码都应该直接在 setup 函数中编写。
 
 #### Vue2生命周期
 

@@ -241,7 +241,7 @@ js 可以分为两种类型的值，一种是基本数据类型，一种是复�
 栈区内存由编译器自动分配释放，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。
 
 堆区内存一般由程序员分配释放，若程序员不释放，程序结束时可能由垃圾回收机制回收。
-```
+``` 
 
 详细资料可以参考：
 [《什么是堆？什么是栈？他们之间有什么区别和联系？》](https://www.zhihu.com/question/19729973)
@@ -1081,6 +1081,41 @@ function randomSort(array) {
 
 详细资料可以参考：
 [《JavaScript 深入理解之继承》](http://cavszhouyou.top/JavaScript%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E4%B9%8B%E7%BB%A7%E6%89%BF.html)
+
+#### es6 class 继承
+
+子类通过extends关键字来实现继承；
+
+```javascript
+class Foo {
+  static classMethod() {
+    return 'hello';
+  }
+}
+
+class Bar extends Foo {
+}
+
+Bar.classMethod() // 'hello'
+```
+
+- constructor
+    如果子类没有定义constructor方法，这个方法会默认添加，也就是说，不管有没有显式定义，任何一个子类都有constructor方法。
+    class ColorPoint extends Point {
+    }
+
+    // 等同于 
+    class ColorPoint extends Point {
+        constructor(...args) {
+            super(...args);
+        }
+    }
+
+    ES6的继承机制，实质是先创建父类的实例对象this，所以必须调用super方法，然后再用子类的构造函数修改this;
+    如果子类没有添加constructor方法，这个方法会被默认添加；
+
+- 为什么必须在constructor方法中调用super方法？
+    子类必须在constructor方法中调用super方法，否则新建实例时会报错，这是因为子类没有自己的this对象，而是继承父类的this对象，然后对其进行加工，如果不调用super方法，子类就得不到this对象；
 
 #### 36. 寄生式组合继承的实现？
 
@@ -2299,10 +2334,6 @@ HttpOnly 规定了这个 cookie 只能被服务器访问，不能使用 js 脚�
 
 在发生 xhr 的跨域请求的时候，即使是同源下的 cookie，也不会被自动添加到请求头部，除非显示地规定。
 ```
-
-详细资料可以参考：
-[《HTTP cookies》 ](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies)
-[《聊一聊 cookie》 ](https://segmentfault.com/a/1190000004556040)
 
 #### session
 

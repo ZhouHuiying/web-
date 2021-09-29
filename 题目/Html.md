@@ -494,7 +494,7 @@ https://www.cnblogs.com/binguo666/p/10928907.html
             pattern	描述一个正则表达式验证输入的值
             min/max	设置元素最小/最大值
             step	为输入域规定合法的数字间隔
-            height/wdith	用于image类型<input>标签图像高度/宽度
+            height/width	用于image类型<input>标签图像高度/宽度
             autofocus	规定在页面加载时，域自动获得焦点
             multiple	规定<input>元素中可选择多个值
       
@@ -1257,11 +1257,6 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
 
     （4）通过对 JavaScript 和 CSS 的文件进行压缩，来减小文件的体积。
    ```
-   详细的资料可以参考：
-   [《前端性能优化之雅虎35条军规》](https://juejin.im/post/5b73ef38f265da281e048e51#heading-10)
-   [《你真的了解 gzip 吗？》](https://juejin.im/entry/58709b9a128fe1006b29cd5d)
-   [《前端性能优化之 gzip》](https://segmentfault.com/a/1190000012571492)
-
 
 #### 67. Chrome 中的 Waterfall ？
    详细资料可以参考：
