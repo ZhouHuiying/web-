@@ -139,7 +139,7 @@
    间。
    
    常见的行内元素有 a b span img strong sub sup button input label select textarea
-   ```
+   ``` 
    
 
 #### 7. 块级元素定义
@@ -518,6 +518,14 @@ https://www.cnblogs.com/binguo666/p/10928907.html
       纯表现的元素：basefont，big，center，font, s，strike，tt，u;
       对可用性产生负面影响的元素：frame，frameset，noframes；
    ```
+
+#### HTML5新增API
+   requestAnimationFrame
+   客户端存储 localstorage
+   历史记录 BOM中的history对象
+   worker
+   fileReader 读取文件
+   websocoket
 
 #### 29. 如何处理 HTML5 新标签的浏览器兼容问题？
    ```html
@@ -1056,7 +1064,7 @@ sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除
     <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>   优先使用 IE 最新版本和 Chrome
     <meta name=”description” content=”不超过150个字符”/>       页面描述
     <meta name=”keywords” content=””/>      页面关键词者
-    <meta name=”author” content=”name, email@gmail.com”/>    网页作
+    <meta name=”author” content=”name, email@gmail.com”/>    网页作者
     <meta name=”robots” content=”index,follow”/>      搜索引擎抓取
     <meta name=”viewport” content=”initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no”> 为移动设备添加 viewport
     <meta name=”apple-mobile-web-app-title” content=”标题”> iOS 设备 begin

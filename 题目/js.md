@@ -2297,20 +2297,45 @@ script 脚本请求都不会有跨域的限制，这是因为这些操作都不�
 （8）使用服务器来代理跨域的访问请求，就是有跨域的请求操作时发送请求给后端，让后端代为请求，然后最后将获取的结果发返回。
 
 （9）postMessage()方法
-H5中新增的postMessage()方法，可以用来做跨域通信。既然是H5中新增的，那就一定要提到。
+  H5中新增的postMessage()方法，可以用来做跨域通信。
+
+（10）HTML的img标签
+  由于img标签不受浏览器同源策略的影响，允许跨域引用资源。因此可以通过img标签的src属性进行跨域，这也就是图像Ping跨域的基本原理。
+  优点：
+      用于实现跟踪用户点击页面或动态广告曝光次数有较大的优势。
+  缺点：
+      只支持GET请求。
+      只能浏览器与服务器的单向通信，因为浏览器不能访问服务器的响应文本。
+  
+  （1）在A窗口中操作如下：向B窗口发送数据：
+      ```javascript
+        // 窗口A(http:A.com)向跨域的窗口B(http:B.com)发送信息
+        Bwindow.postMessage('data', 'http://B.com'); //这里强调的是B窗口里的window对象
+      ```
+  （2）在B窗口中操作如下：
+      ```javascript
+          // 在窗口B中监听 message 事件
+          Awindow.addEventListener('message', function (event) {   //这里强调的是A窗口里的window对象
+              console.log(event.origin);  //获取 ：url。这里指：http://A.com
+              console.log(event.source);  //获取：A window对象
+              console.log(event.data);    //获取传过来的数据
+          }, false);
+      ```
+
 ```
 
 - 跨域配置（vue cli)
-Vue-CLI 是基于 webpack 的，通过 webpack-dev-server 在本地启动脚手架，也就是在本地启动了一个 Node 服务，来实时监听和打包编译静态资源，由于都是封装好的，只需要配置即可，我们在 vue.config.js 中配置代理如下，写法很多，列几个常见的自行选择.
-例如：
-  module.exports = {
-    //...
-    devServer: {
-      proxy: {
-        '/api': 'http://www.hahaha.com'
+  Vue-CLI 是基于 webpack 的，通过 webpack-dev-server 在本地启动脚手架，也就是在本地启动了一个 Node 服务，来实时监听和打包编译静态资源，由于都是封装好的，只需要配置即可，我们在 vue.config.js 中配置代理如下，写法很多，列几个常见的自行选择.
+  
+  例如：
+    module.exports = {
+      //...
+      devServer: {
+        proxy: {
+          '/api': 'http://www.hahaha.com'
+        }
       }
     }
-  }
   如上所示时，当你请求 /api/abc 接口时就会被代理到 http://www.hahaha.com/api/abc
 
 #### 61. 服务器代理转发时，该如何处理 cookie？
@@ -2460,7 +2485,7 @@ CommonJS 模块输出的是值的拷贝，也就是说，一旦输出一个值�
 #### 67. requireJS 的核心原理是什么？（如何动态加载的？如何避免多次加载的？如何 缓存的？）
 
 ```
-require.js 的核心原理是通过动态创建 script 脚本来异步引入模块，然后对每个脚本的 load 事件进行监听，如果每个脚本都加载完成了，再调用回调函数。
+require.js 的核心原理是通过动态创建 script 脚本来异步引入模块，然后对每个脚本的 load 事件进行监听，如果每个脚本都加载完成了，再调用回调函数。 
 ```
 
 详细资料可以参考：
@@ -3274,6 +3299,7 @@ UTF-8 是一种对 Unicode 的编码方式，它是一种变长的编码方式�
   2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
   3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
   4）主线程不断重复上面的第三步。
+  
 #### JS同步和异步 事件循环的定义
   同步：前一个任务结束后再执行后一个任务，程序的执行顺序和任务的排列顺序是一致的、同步的。
   异步：一件事情要花很长时间，在做这件事的同时，还可以去处理其他事情。
@@ -3755,8 +3781,7 @@ eg.
 使用 es6 的 Number.EPSILON
 ```
 
-不等于，在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。
-精度丢失可能出现在进制转换和对阶运算中；
+不等于，在两数相加时，会先转换成二进制，0.1 和 0.2 转换成二进制的时候尾数会发生无限循环，然后进行对阶运算，JS 引擎对二进制进行截断，所以造成精度丢失。精度丢失可能出现在进制转换和对阶运算中；
 
 
 详细资料可以参考：
@@ -5359,8 +5384,7 @@ for...of 语句遍历可迭代对象定义要迭代的数据。
 
 #### 184. window.postMessage()实现跨域消息传递
 
-window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），
-端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window .postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全.
+window.postMessage() 方法可以安全地实现跨源通信。通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信。window .postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全.
 
 otherWindow.postMessage(message, targetOrigin, [transfer]);
 
@@ -5380,6 +5404,54 @@ targetOrigin:
 transfer :
   可选,是一串和message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。
 
+注意点：  
+  1，第二个参数不是明确的网页地址
+  2，postmessage事件一定是window.iframes[n]下发出的
+  3，事件一定要绑定在iframe框架onload加载上面才有用。
+
+eg.
+```javascript
+
+// window.onload页面加载完毕以后再执行此代码
+
+//发送程序
+  <div>
+      <input id="text" type="text" value="Runoob" />
+      <button id="sendMessage" >发送消息</button>
+  </div>
+  <iframe loading="lazy" id="receiver" src="https://c.runoob.com/runoobtest/postMessage_receiver.html" width="300" height="360">
+      <p>你的浏览器不支持 iframe。</p>
+  </iframe>
+  <script>
+
+  window.onload = function() {
+      var receiver = document.getElementById('receiver').contentWindow;
+      var btn = document.getElementById('sendMessage');
+      btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var val = document.getElementById('text').value;
+          receiver.postMessage("Hello "+val+"！", "https://c.runoob.com");
+      });
+  }
+  </script>
+
+//接收程序
+  <div id="recMessage">
+  Hello World!
+  </div>
+  <script>
+  window.onload = function() {
+      var messageEle = document.getElementById('recMessage');
+      window.addEventListener('message', function (e) {  // 监听 message 事件
+          alert(e.origin);
+          if (e.origin !== "https://www.runoob.com") {  // 验证消息来源地址
+              return;
+          }
+          messageEle.innerHTML = "从"+ e.origin +"收到消息： " + e.data;
+      });
+  }
+  </script>
+```
 #### 185. 可选链
 
 可选链操作符( ?. )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。?. 操作符的功能类似于 . 链式操作符，不同之处在于，在引用为空(nullish ) (null 或者 undefined) 的情况下不会引起错误，该表达式短路返回值是 undefined。与函数调用一起使用时，如果给定的函数不存在，则返回 undefined。

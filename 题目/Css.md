@@ -106,7 +106,6 @@
 - [100.css 两栏布局的实现？](#100css-两栏布局的实现)
 - [101.css 三栏布局的实现？](#101css-三栏布局的实现)
 - [102.实现一个宽高自适应的正方形](#102实现一个宽高自适应的正方形)
-- [103.实现一个三角形](#103实现一个三角形)
 - [104.一个自适应矩形，水平垂直居中，且宽高比为 2:1](#104一个自适应矩形水平垂直居中且宽高比为-21)
 - [105.你知道 CSS 中不同属性设置为百分比\x 时对应的计算基准？](#105你知道-css-中不同属性设置为百分比时对应的计算基准)
 
@@ -120,7 +119,7 @@
 
 IE盒模型和W3C标准盒模型的区别：
 
-（1）IE盒模型：属性width，height包含content、border和padding，指的是content
+（1）IE盒模型（怪异盒模型）：属性width，height包含content、border和padding，指的是content
 +padding+border。
 （2）W3C标准盒模型：属性width，height只包含内容content，不包含border和padding
 
@@ -601,7 +600,7 @@ inherit: 规定从父元素继承position属性的值。
 css，即层叠样式表（Cascading Style Sheets）的简称。css3是css的最新标准。
 
   - 新增了一些选择器；（:not(.input)：所有class不是“input”的节点）
-  - 新样式：
+  - 新样式： 
       边框：border-radius; box-shadow; border-image;
       背景：background-clip; background-origin;  background-size; background-break;
       文字 ：word-wrap; text-overflow; 文字特效text-shadow; 文字渲染 text-decoration;

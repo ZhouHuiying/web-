@@ -1,8 +1,5 @@
 https://juejin.cn/post/6961222829979697165
 
-
-
-
 ### 1、MVVM 和 MVC 是什么，区别是什么？
 
 #### MVVM:
@@ -34,7 +31,7 @@ https://juejin.cn/post/6961222829979697165
   主要就是 mvc 中 Controller 演变成 mvvm 中的 viewModel。
   mvvm 主要解决了 mvc 中大量的 DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。当 Model 频繁发生变化，开发者需要主动更新到 View 。   
 
-  - MVC　获取数据修改页面要手动去操作dom，而mvvm模式　页面是和数据绑定在一起的。当我们需要改变页面我们只需要改变数据就好了；
+  - MVC　获取数据修改页面要手动去操作dom，而mvvm模式页面是和数据绑定在一起的。当我们需要改变页面我们只需要改变数据就好了；
     MVVM可以帮助解决DOM操作的一些内容，让开发者把重点聚焦到数据和业务上，提高开发效率；
   
   MVVM 与 MVC 最大的区别就是：它实现了 View 和 Model 的自动同步，也就是当 Model 的属性改变时，我们不用再自己手动操作 Dom 元素，来改变 View 的显示，
@@ -62,7 +59,7 @@ https://juejin.cn/post/6961222829979697165
 beforeCreate	   Not needed*
 created	         Not needed*
 beforeMount	     onBeforeMount
-mounted	         onMounted
+mounted	         onMounted 
 beforeUpdate	   onBeforeUpdate 
 updated	         onUpdated
 beforeUnmount	   onBeforeUnmount
@@ -104,6 +101,7 @@ keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状�
 
 - 一般结合路由和动态组件一起使用，用于缓存组件；
 - 提供 include 和 exclude 属性，两者都支持字符串或正则表达式， include 表示只有名称匹配的组件会被缓存，exclude 表示任何名称匹配的组件都不会被缓存 ，其中 exclude 的优先级比 include 高；
+
 - 对应两个钩子函数 activated 和 deactivated ，当组件被激活时，触发钩子函数 activated，当组件被移除时，触发钩子函数 deactivated。
 
 #### 异步请求在哪一步发起？
@@ -247,8 +245,10 @@ vue.js 是采用数据劫持结合发布者-订阅者模式的方式，通过 Ob
     2.实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。
     3.实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。
 
-  数组考虑性能原因没有用 defineProperty 对数组的每一项进行拦截，而是选择对 7 种数组（push,shift,pop,splice,unshift,sort,reverse）方法进行重写(AOP 切片思想)
-  所以在 Vue 中修改数组的索引和长度是无法监控到的。需要通过以上 7 种变异方法修改数组才会触发数组对应的 watcher 进行更新
+  数组考虑性能原因没有用 defineProperty 对数组的每一项进行拦截，而是选择对 7 种数组
+  （push,shift,pop,splice,unshift,sort,reverse）方法进行重写(AOP 切片思想)
+
+  所以在 Vue 中修改数组的索引和长度是无法监控到的。需要通过以上 7 种变异方法修改数组才会触发数组对应的 watcher 进行更新。
 
 #### Object.defineProperty 介绍？
 
@@ -662,7 +662,7 @@ const  home = r => require.ensure( [], () => r (require('../../common/home.vue')
 
 ### 8、Vue组件通信
 
-(1)props 和$emit 父组件向子组件传递数据是通过 prop 传递的，子组件传递数据给父组件是通过$emit 触发事件来做到的;
+(1)props 和$emit 父组件向子组件传递数据是通过 prop 传递的，子组件传递数据给父组件是通过$emit触发事件来做到的;
     父组件 -> 子组件： props
       单向数据流：所有的 prop 都使得
       其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外变更父级组件的状态，从而导致你的应用的数据流向难以理解。
@@ -695,7 +695,6 @@ const  home = r => require.ensure( [], () => r (require('../../common/home.vue')
   $attrs: 包含了父作用域中不被认为 (且不预期为) props 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 props 时，
   这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=”$attrs” 传入内部组件——在创建更高层次的组件时非常有用。
   $listeners: 包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=”$listeners” 传入内部组件——在创建更高层次的组件时非常有用。
-
 
 ### 9、Vue.mixin 混入
 
@@ -787,7 +786,8 @@ vue 中 key 值的作用可以分为两种情况来考虑。
                     (2).若虚拟DOM中内容变了, 则生成新的真实DOM，随后替换掉页面中之前的真实DOM
 
               b. 旧虚拟DOM中未找到与新虚拟DOM相同的key
-                    根据数据创建新的真实DOM，随后渲染到到页面    
+                    根据数据创建新的真实DOM，随后渲染到到页面  
+
   2. 用index作为key可能会引发的问题：
             1. 若对数据进行：逆序添加、逆序删除等破坏顺序操作:
                     会产生没有必要的真实DOM更新 ==> 界面效果没问题, 但效率低。
@@ -797,11 +797,13 @@ vue 中 key 值的作用可以分为两种情况来考虑。
                     
             3. 注意！如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，
               仅用于渲染列表用于展示，使用index作为key是没有问题的。
+
   3. 开发中如何选择key?:
             1.最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
             2.如果确定只是简单的展示数据，用index也是可以的。
 
 ### 12.diff算法
+
   diff 是发生在虚拟 DOM 上的：新虚拟 DOM 和老虚拟 DOM 进行 diff （精细化比较），算出应该如何最小量更新，最后反映到真实的 DOM 上。
 
   怎么实现 两颗新旧DOM树的对比 呢？这里就涉及到了 diff算法。常见的 diff算法如下：
@@ -817,6 +819,7 @@ vue 中 key 值的作用可以分为两种情况来考虑。
  - key：key这个属性，可以把 页面上的 DOM节点 和 虚拟DOM中的对象，做一层关联关系。
 
 #### h函数
+
   h 函数用来产生虚拟节点（vnode），可以嵌套使用
 
   h('a', { props: { href: 'http://www.atguigu.com' } }, '尚硅谷')
@@ -879,7 +882,8 @@ v-show 会被编译成指令，条件不满足时控制样式将对应节点隐�
 
   v-show 适用于需要非常频繁切换条件的场景
 
-- 为什么v-for v-if不能一起用？
+### 为什么v-for v-if不能一起用？
+
     v-for优先级比v-if高，在进行if判断的时候，v-for是比v-if先进行判断；
     把v-for和v-if用到一个元素上，会带来性能的浪费；
     为了避免这种情况，在外层嵌套template,在这一层进行v-if判断，在内部进行v-for循环。
@@ -1078,10 +1082,86 @@ h函数
 
 ### 22、 vue 常用的修饰符？
 
-```
-  .prevent: 提交事件不再重载页面；
-  .stop: 阻止单击事件冒泡；
-  .self: 当事件发生在该元素本身而不是子元素的时候会触发；
-```
+- 事件修饰符
 
+  ```html
 
+    <!-- .prevent: 提交事件不再重载页面；
+    .stop: 阻止单击事件冒泡；
+    .capture 使用事件捕获模式,即元素自身触发的事件先在此处处理，然后才交由内部元素进行处理
+    .self 只当在 event.target 是当前元素自身时触发处理函数
+    .once 事件将只会触发一次
+    .passive 告诉浏览器你不想阻止事件的默认行为 -->
+
+    <!-- 阻止单击事件继续传播 -->
+    <a v-on:click.stop="doThis"></a>
+
+    <!-- 提交事件不再重载页面 -->
+    <form v-on:submit.prevent="onSubmit"></form>
+
+    <!-- 修饰符可以串联 -->
+    <a v-on:click.stop.prevent="doThat"></a>
+
+    <!-- 只有修饰符 -->
+    <form v-on:submit.prevent></form>
+
+    <!-- 添加事件监听器时使用事件捕获模式 -->
+    <!-- 即元素自身触发的事件先在此处处理，然后才交由内部元素进行处理 -->
+    <div v-on:click.capture="doThis">...</div>
+
+    <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+    <!-- 即事件不是从内部元素触发的 -->
+    <div v-on:click.self="doThat">...</div>
+
+    <!-- 点击事件将只会触发一次 -->
+    <a v-on:click.once="doThis"></a>
+
+    <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+    <!-- 而不会等待 `onScroll` 完成  -->
+    <!-- 这其中包含 `event.preventDefault()` 的情况 -->
+    <div v-on:scroll.passive="onScroll">...</div>
+
+  ```
+
+-  v-model的修饰符
+
+<1> .lazy
+  默认情况下，v-model同步输入框的值和数据。可以通过这个修饰符，转变为在change事件再同步。
+  <input v-model.lazy="msg">
+
+<2> .number
+  自动将用户的输入值转化为数值类型
+  <input v-model.number="msg">
+
+<3> .trim
+  自动过滤用户输入的首尾空格
+  <input v-model.trim="msg">
+
+- 键盘事件的修饰符
+
+    在我们的项目经常需要监听一些键盘事件来触发程序的执行，而Vue中允许在监听的时候添加关键修饰符：
+    <input v-on:keyup.13="submit">
+    
+    对于一些常用键，还提供了按键别名：
+    <input @keyup.enter="submit">      <!-- 缩写形式 -->
+    
+    全部的按键别名：
+      .enter
+      .tab
+      .delete (捕获“删除”和“退格”键)
+      .esc
+      .space
+      .up
+      .down
+      .left
+      .right
+    修饰键：
+      .ctrl
+      .alt
+      .shift
+      .meta
+
+    <!-- Alt + C -->
+    <input @keyup.alt.67="clear">
+    <!-- Ctrl + Click -->
+    <div @click.ctrl="doSomething">Do something</div>
